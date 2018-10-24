@@ -1,0 +1,129 @@
+﻿@{
+    ViewBag.Title = "角色菜单权限管理";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<script>
+    var RoleID = getQueryString("RoleID");
+
+    $(function () {
+        //初始化表格
+        $('#gd_url').InitTreeGird({
+            url: "../AppRoleManager/GetRoleMenuTreeGrid",
+            pagination:false,
+            queryParams: { RoleID: RoleID },
+            idField: 'id',
+            treeField: 'text'
+        });
+
+
+        InitSize();
+
+        $(window).resize(function () {
+            InitSize();
+        });
+    })
+
+    //初始化尺寸
+    function InitSize() {
+        $('#gd_url').datagrid('resize', {
+            width: $(window).width() - 100,
+            height: $(window).height() - 20
+        });
+    }
+    //刷新
+    function Refresh() {
+        $('#gd_url').treegrid("load", { RoleID: RoleID });
+    }
+    //多选框
+    function IsChecked(value, rowData, index) {
+        var str = "";
+        if (rowData.ischecked == 1) {
+            str = '<input type="checkbox" class="' + rowData.parentid + '"  id="' + rowData.id + '" value="' + rowData.id + '" checked="checked" name="DataGridCheckbox" onclick=CheckRow(this)>';
+        }
+        else
+            str = '<input type="checkbox" class="' + rowData.parentid + '"  id="' + rowData.id + '" value="' + rowData.id + '" name="DataGridCheckbox" onclick=CheckRow(this)>';
+        return str;
+    }
+
+    //子集联动选择
+    function CheckChild(obj, checked) {
+        var id = $(obj).val();
+        if ($("." + id).length > 0) {
+            $("." + id).prop("checked", checked);
+            CheckRow($("." + id));
+        }
+    }
+    //父集联动选择
+    function CheckParent(obj) {
+        var id = $(obj).attr("class");//父级的id
+        if (id != undefined && id != null && id != "" && $("#" + id)) {
+            var checked = $("." + id + ":checked").length > 0;//父级的所有子级是否有被选中的
+            $("#" + id).prop("checked", checked);
+            CheckParent($("#" + id));
+        }
+    }
+    //多选框联动选择
+    function CheckRow(obj) {
+        var id = $(obj).val();
+        var checked = $(obj).is(":checked");//获取当前选中状态
+        //子集联动
+        CheckChild(obj, checked);
+        //父集联动
+        CheckParent(obj);
+    }
+
+    //全选
+    function CheckAll(IsChecked) {
+        $("input:checkbox").prop("checked", IsChecked);
+    }
+
+    //保存
+    function Save() { 
+        var ids = "";
+        $("input[type='checkbox'][name=DataGridCheckbox]:checked").each(function () {
+            if ($(this).prop("checked")) {
+                ids += $(this).attr('value') + ",";
+            }
+        });
+        $.DoAjax({
+            needWaiting: true,
+            url: "/AppRoleManager/PostRoleMenu",
+            dataParams: { RoleID: RoleID, MenuIDs: ids },
+            successFunc: function (result) {
+                if (result.StatusCode == "200") {
+                    $.messager.alert('提示', '保存成功');
+                }
+                else {
+                    console.log(result);
+                    $.messager.alert('提示', '保存失败');
+                    window.location.reload();
+                }
+            }
+        });
+    }
+</script>
+
+
+
+
+<div class="content_grid">
+    <div class="StTitle" id="ToolBar">
+        <div class="sipac_table_menu">
+            <a href="javascript:void(0);" onclick="CheckAll(true)">全选</a><em></em>
+            <a href="javascript:void(0);" onclick="CheckAll(false)">取消全选</a><em></em>
+            <a href="javascript:void(0);" onclick="Save()">保存</a><em></em>
+            <a href="javascript:void(0);" onclick="Refresh()">刷新</a><em></em>
+        </div>
+    </div>
+
+    <table id="gd_url" class="easyui-treegrid">
+        <thead>
+            <tr>
+                <th data-options="field:'ck',width:10,align:'center',formatter:IsChecked"></th>
+                <th data-options="field:'text',width:200">菜单名称</th>
+            </tr>
+        </thead>
+    </table>
+</div>

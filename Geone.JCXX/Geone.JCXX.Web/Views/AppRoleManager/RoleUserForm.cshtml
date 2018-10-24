@@ -1,0 +1,227 @@
+﻿@{
+    ViewBag.Title = "角色用户管理";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    #userList {
+        padding-left: 15px;
+    }
+
+        #userList li {
+            position: relative;
+            outline: none;
+            display: inline;
+            float: left;
+            height: 43px;
+            position: relative;
+            margin: 10px 15px 0px 0;
+            outline: none;
+        }
+
+            #userList li a i.fa-user {
+                margin-right: 5px;
+            }
+
+            #userList li a i.man {
+                color: #428bca;
+            }
+
+            #userList li a i.woman {
+                color: #ff5722;
+            }
+
+            #userList li a {
+                cursor: pointer;
+                vertical-align: middle;
+                text-align: center;
+                word-break: keep-all;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                border-radius: 5px 5px 5px 5px;
+                height: 39px;
+                line-height: 39px;
+                width: 98px;
+                text-align: center;
+                padding: 0px 0px;
+                border: 1px solid #ccc;
+                background: #fff;
+                display: inline-block;
+                outline: none;
+            }
+
+
+            #userList li.selected a {
+                border: 1px solid #2c6f9b;
+                padding: 0 0px;
+            }
+
+            #userList li.selected i.select {
+                position: absolute;
+                width: 10px;
+                height: 10px;
+                font-size: 0;
+                line-height: 0;
+                right: 1px;
+                bottom: 2px;
+                background: url(../images/sys_item_selected.gif) no-repeat right bottom;
+                z-index: 99;
+            }
+</style>
+
+
+<script>
+    var RoleID = getQueryString("RoleID");
+
+    $(function () {
+        //初始化左侧部门树
+        $('#treeDept').tree({
+            method: "post",
+            url: "../DeptManager/GetEasyuiTreeList",
+            onSelect: function (node) {
+                Search(false)
+            },
+            onDblClick: function (node) {
+                //取消选择
+                $('#treeDept').find('.tree-node-selected').removeClass('tree-node-selected');
+                $("#userList li").show();
+            }
+        });
+
+        LoadUser();
+
+        InitSize();
+
+        $(window).resize(function () {
+            InitSize();
+        });
+    });
+
+    //初始加载用户
+    function LoadUser() {
+        //获取用户
+        $.DoAjax({
+            url: "/UserManager/GetAllList",
+            successFunc: function (udata) {
+                var _html = "";
+                $.each(udata, function (index, item) {
+                    _html += '<li class="' + item.DeptID + '"  id="' + item.ID + '">';
+                    _html += '  <a title="用户名：' + item.UserName + '\n账户：' + item.Account + '">';
+                    _html += '      <i class="fa fa-user ' + (item.Gender == '女' ? 'woman' : 'man') + '"></i>' + item.UserName;
+                    _html += '      <i class="select"></i>';
+                    _html += '  </a>';
+                    _html += '</li>';
+                });
+                $("#userList").html(_html);
+                
+
+                //获取角色用户
+                $.DoAjax({
+                    url: "/AppRoleManager/GetRoleUserList",
+                    dataParams: { RoleID: RoleID },
+                    successFunc: function (rudata) {
+                        var _selectHtml = "";
+                        //遍历已选择的用户角色，添加勾选状态
+                        $.each(rudata, function (index, item) {
+                            _selectHtml += '<li class="' + $("#" + item.UserID).attr("class") + ' selected"  id="' + item.UserID + '">';
+                            _selectHtml += $("#" + item.UserID).html();
+                            _selectHtml += '</li>';
+                            $("#" + item.UserID).remove();
+                           
+                        });
+                        $("#userList").prepend(_selectHtml);
+                        $("#userList li").on("click", function () {
+                            if ($(this).hasClass("selected")) {
+                                $(this).removeClass("selected");
+                            } else {
+                                $(this).addClass("selected");
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    }
+
+    //初始化尺寸
+    function InitSize() {
+        $('.content_grid_lft').height($(window).height() - 50);
+        $('.content_grid_rt').height($(window).height() - 50);
+        $('.content_grid_rt').width($(window).width() - 250);
+    }
+
+
+    //根据部门、姓名查找
+    //IsNeedName 是否需要用户姓名参数（只有点击查询才需要，部门树联动不需要）
+    function Search(IsNeedName) {
+        var treenode = $('#treeDept').tree('getSelected');
+        var queryDept = treenode == null ? "" : treenode.id;
+        var queryName = IsNeedName ? $("#searchName").val().trim() : "";
+        $.DoAjax({
+            url: "/UserManager/GetAllList",
+            dataParams: { DeptParentID: queryDept, Like_AccountOrName: queryName },
+            successFunc: function (data) {
+                $("#userList li").hide();
+                $.each(data, function (index, item) {
+                    $("#" + item.ID).show();
+                });
+            }
+        });
+    }
+
+    //全选
+    function CheckAll(IsChecked) {
+        if (IsChecked)
+            $("#userList li:not(:hidden)").addClass("selected");
+        else
+            $("#userList li:not(:hidden)").removeClass("selected");
+    }
+
+    //保存
+    function Save() {
+        var ids = "";
+        $("#userList li.selected").each(function (index, item) {
+            ids += $(this).attr("id") + ",";
+        });
+        $.DoAjax({
+            needWaiting:true,
+            url: "/AppRoleManager/PostRoleUser",
+            dataParams: { RoleID: RoleID, UserIDs: ids },
+            successFunc: function (result) {
+                if (result.StatusCode == "200") {
+                    $.messager.alert('提示', '保存成功', 'info', function () {
+                        parent.callback(true);
+                    });
+                }
+                else {
+                    console.log(result);
+                    $.messager.alert('提示', '保存失败');
+                    window.location.reload();
+                }
+            }
+        });
+    }
+</script>
+
+
+
+
+
+<div class="content_grid_lft">
+    <ul id="treeDept"></ul>
+</div>
+<div class="content_grid_rt content_grid">
+    <div class="StTitle" id="ToolBar">
+        <div class="sipac_rtsearchbar">
+            <input class="s_s_text" type="text" id="searchName" placeholder="输入用户姓名/账号">
+            <input class="StBtn_submit" type="button" value="查询" onclick="Search(true) ">
+        </div>
+        <div class="sipac_table_menu">
+            <a href="javascript:void(0);" onclick="CheckAll(true)">全选</a><em></em>
+            <a href="javascript:void(0);" onclick="CheckAll(false)">取消全选</a><em></em>
+            <a href="javascript:void(0);" onclick="Save()">保存</a><em></em>
+        </div>
+    </div>
+    <ul id="userList"></ul>
+</div>
+

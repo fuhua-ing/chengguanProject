@@ -1,0 +1,210 @@
+﻿@{
+    ViewBag.Title = "车辆管理";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string Dict_VehicleType = ConstHelper.Dict_VehicleType;//数据字典-设备类型
+    string Dict_CarType = ConstHelper.Dict_CarType;//数据字典-车辆类型
+}
+
+<script>
+    $(function () {
+
+        $('#treeDept').tree({
+            method: "post",
+            url: "../DeptManager/GetEasyuiTreeList",
+            queryParams: $("#queryTab").getJsonValues().jsonData,
+            //双击事件
+            onDblClick: function (node) {
+                //取消选择
+                $('#treeDept').find('.tree-node-selected').removeClass('tree-node-selected');
+                $("#DeptID").val('');
+                Search();
+            },
+            //单击事件
+            onClick: function (node) {
+
+                if (node.id == $("#DeptID").val()) {
+                    $("#DeptID").val('');
+                }
+                else {
+                    $("#DeptID").val(node.id);
+                }
+
+                Search();
+            }
+
+        });
+
+        //初始化表格
+        $('#gd_url').InitGird({ url: "../VehicleManager/GetGrid" });
+
+        InitSize();
+        InitCombo();
+        //搜索栏切换显示
+        $(".StTitle .s_s_morebtn,.s_s_close a").click(function () {
+            $(".sipac_rtsearchbar").toggle();
+            $(".sipac_searchBox").toggle();
+            InitSize();
+        });
+        $(window).resize(function () {
+            InitSize();
+        });
+    })
+
+    //初始化尺寸
+    function InitSize() {
+        $(".content_grid_lft").height($(window).height() - 20);
+        $('#gd_url').datagrid('resize', {
+            width: $(window).width() - 300,
+            height: $(window).height() - 20
+        });
+    }
+    function InitCombo() {
+        var Dict_VehicleType = '@Dict_VehicleType';
+        var Dict_CarType = '@Dict_CarType';
+        $('#VehicleType').InitDictCombobox({ url: Dict_VehicleType });
+        $('#CarType').InitDictCombobox({ url: Dict_CarType });
+
+    }
+    //查询
+    function Search() {
+        var param = $("#queryTab").getJsonValues().jsonData;
+        $('#gd_url').datagrid("load", param);
+    }
+    //刷新
+    function Refresh() {
+        $("#queryTab .easyui-textbox").textbox('clear');
+        $("#queryTab .easyui-combobox").combobox('setValue', '');
+        Search();
+    }
+    //新增
+    function Add() {
+        $("#win").OpenWin({ title: "车辆-新增", url: "../VehicleManager/VehicleForm", width: 700, height: 450 });
+    }
+    //修改
+    function Edit() {
+        if ($('#gd_url').datagrid('IsSelectedRow')) {
+            var row = $('#gd_url').datagrid('getSelected');
+            $("#win").OpenWin({ title: "车辆-编辑", url: "../VehicleManager/VehicleForm?ID=" + row.ID, width: 700, height: 450 });
+        }
+    }
+    //删除
+    function Del() {
+        if ($('#gd_url').datagrid('IsSelectedRow')) {
+            $.messager.confirm('确认', '确认删除？', function (r) {
+                if (r) {
+                    var row = $('#gd_url').datagrid('getSelected');
+                    $.DoAjax({
+                        needWaiting:true,
+                        url: "/VehicleManager/DelInfo",
+                        dataParams: { ID: row.ID },
+                        successFunc: function (result) {
+                            if (result.StatusCode == "200") {
+                                $.messager.alert('提示', '删除成功', 'info', function () {
+                                    Search();
+                                });
+                            }
+                            else {
+                                console.log(result);
+                                $.messager.alert('提示', '删除失败');
+                            }
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+
+    //回调
+    function callback(isOk) {
+        $("#win").window('close');
+        if (isOk)
+            Search();
+    }
+
+    function formatDate(val, row) {
+        if (val == null || val == 'undefined') {
+            return "";
+        }
+        else {
+            return val.substring(0, 10);
+        }
+    }
+</script>
+
+<div id="win"></div>
+<div class="content_grid_lft">
+    <ul id="treeDept"></ul>
+</div>
+<div class="content_grid">
+    <div class="StTitle" id="ToolBar">
+        <div class="sipac_rtsearchbar">
+            @*<input class="s_s_text" type="text" value="当前栏目搜索">
+                <input class="StBtn_submit" type="submit" value="查询">*@
+            <div class="s_s_mBox">
+                <a title="点击下拉内容较多搜索" class="s_s_morebtn" href="#">
+                    <i class="fa fa-chevron-down"></i>
+                </a>
+            </div>
+        </div>
+        <div class="sipac_searchBox sipac_form" id="queryTab">
+            <table>
+                <tbody>
+                    <tr>
+                        <th>车牌号</th>
+
+                        <td width="35%">
+                            <input type="hidden" id="DeptID" name="DeptID" />
+                            <input class="easyui-textbox" name="Like_CarNo">
+                        </td>
+                        <th>GPS设备码</th>
+                        <td width="35%">
+                            <input class="easyui-textbox" name="Like_GPRS">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>设备类型</th>
+                        <td width="35%">
+                            <input class="easyui-combobox defaultAll" id="VehicleType" name="VehicleType" />
+                        </td>
+                        <th>车辆类型</th>
+                        <td width="35%">
+
+                            <input class="easyui-combobox defaultAll" id="CarType" name="CarType" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>是否有效</th>
+                        <td colspan="3">
+                            <input class="easyui-combobox Dict_Enabled defaultAll" name="Enabled" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="s_s_bar"><button class="StBtn StBtn_submit" onclick="Search()">搜索</button></div>
+            <div class="s_s_close"><a href="javascript:void(0);" title="点击收起"><i class="fa fa-chevron-up"></i></a></div>
+        </div>
+        <div class="sipac_table_menu">
+            <a href="javascript:void(0);" onclick="Add()">新增</a><em></em>
+            <a href="javascript:void(0);" onclick="Edit()">修改</a><em></em>
+            <a href="javascript:void(0);" onclick="Del()">删除</a><em></em>
+            <a href="javascript:void(0);" onclick="Refresh()">刷新</a><em></em>
+        </div>
+    </div>
+
+    <table id="gd_url">
+        <thead>
+            <tr>
+                <th data-options="field:'DeptName',width:10">所属部门</th>
+                <th data-options="field:'CarNo',width:10">车牌号</th>
+                <th data-options="field:'VehicleTypeDesc',width:10">设备类型</th>
+                <th data-options="field:'CarTypeDesc',width:10">车辆类型</th>
+                <th data-options="field:'RegDate',width:10" formatter="formatDate">发证日期</th>
+                <th data-options="field:'DueDate',width:10">年检合格期</th>
+                <th data-options="field:'GPRS',width:15">缴费号码(GPRS号)</th>
+                <th data-options="field:'Note',width:15">备注</th>
+                <th data-options="field:'Enabled',width:10,align:'center',formatter:formatter_valid">是否有效</th>
+            </tr>
+        </thead>
+    </table>
+</div>

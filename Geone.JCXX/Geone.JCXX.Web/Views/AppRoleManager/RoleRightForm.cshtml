@@ -1,0 +1,95 @@
+﻿@{
+    ViewBag.Title = "角色权限管理";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script>
+    var RoleID = getQueryString("RoleID");
+
+    $(function () {
+        SwicthTab(0);
+
+        InitSize();
+
+        $(window).resize(function () {
+            InitSize();
+        });
+    })
+
+
+    function SwicthTab(index) {
+        $(".sipac_table_menu a").removeClass("live");
+        $(".sipac_table_menu a").eq(index).addClass("live");
+
+        //切换tab显示
+        $(".swicthtab").hide();
+        var $tab = $(".swicthtab" + index);
+        //tab异步加载
+        if (!$tab.hasClass("loaded")) {
+            var _url = $tab.attr("url");
+            _url = _url.indexOf("?") > 0 ? (_url + "&RoleID=" + RoleID) : (_url + "?RoleID=" + RoleID);
+            var _html = "<iframe id='icontent' marginheight='0' marginwidth='0' frameborder='0' scrolling='auto' width='100%' height='100%' src='"
+                + _url + "'/>";
+            $tab.html(_html);
+            $tab.addClass("loaded");
+        }
+        $tab.show();
+
+    }
+
+    //初始化尺寸
+    function InitSize() {
+        $(".swicthtab").height($(window).height() - 50);
+        $(".swicthtab").width($(window).width() - 50);
+    }
+
+
+    //根据角色加载权限
+    function Search() {
+        $('#gd_url').datagrid('reload');
+    }
+
+    //多选框
+    function IsChecked(value, rowData, index) {
+        var str = "";
+        //if (rowData.isChecked == '1')
+        //    str = '<input type="checkbox" class="' + rowData.parentid + '" value="' + rowData.id + '" checked="true" name="DataGridCheckbox">';
+        //else
+        str = '<input type="checkbox" id="' + rowData.id + '" class="' + rowData.parentid + '" value="' + rowData.id + '" name="DataGridCheckbox" onClick="CheckRow(this)" >';
+        return str;
+    }
+
+    //多选框联动选择
+    function CheckRow(obj) {
+        var IsChecked = $(obj).is(":checked");//获取当前选中状态
+        $("." + $(obj).val()).prop("checked", IsChecked);//当前的子项联动
+        if (IsChecked)
+            $("#" + $(obj).attr("class")).prop("checked", IsChecked);//当选中时，父级必须选中
+
+    }
+
+    //全选
+    function CheckAll(IsChecked) {
+        $("input:checkbox").prop("checked", IsChecked);
+    }
+
+    //保存
+    function Save() {
+        parent.callback(false);
+    }
+</script>
+
+
+
+
+<div class="content_grid_top">
+    @*系统应用：<input id="sysApp" class="easyui-combobox" />*@
+    <div class="sipac_table_menu">
+        <a href="javascript:void(0);" onclick="SwicthTab(0)" class="live">菜单配置</a><em></em>
+    </div>
+</div>
+<div class="content_grid">
+    <div class="swicthtab swicthtab0 live" url="../AppRoleManager/MenuList"> </div>
+</div>
+
+

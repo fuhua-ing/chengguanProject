@@ -1,0 +1,23 @@
+﻿{
+  "Id": "bdfefcd0-88a9-4a79-9f23-30d1da813aee",
+  "Name": "CG_JCXX",
+  "Desc": "基础信息平台",
+  "Key": "geone123",
+  "Host": "192.168.34.*",
+  "Port": 80,
+  "Sql": {
+    "Default": "Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=JCXX_CG_TEST;Data Source=192.168.34.147,8033"
+  },
+  "Redis": {
+    "Default": "{\"Rwservers\":[\"127.0.0.1: 6379\"],\"Ronlyservers\":[\"127.0.0.1: 6379\"],\"Timeout\":180,\"Max\":60,\"Auto\":true}"
+  },
+  "Log": {
+    "IsTrack": false,
+    "IsDebug": false,
+    "LogKey": "Development",
+    "LogPath": "\\log",
+    "LogQueue": "logger",
+    "RedisHost": "127.0.0.1",
+    "RedisPort": 6379
+  }
+}

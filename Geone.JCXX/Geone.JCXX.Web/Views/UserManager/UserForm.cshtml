@@ -1,0 +1,179 @@
+﻿@{
+    ViewBag.Title = "人员编辑";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script>
+
+    $(function () {
+        var ID = getQueryString("ID");
+        var DeptID = getQueryString("DeptID");
+        
+
+
+        //编辑
+        if (ID != null && ID != "") {
+            $("#divPwd").css("display", "none");
+            $.DoAjax({
+                url: "/UserManager/GetInfo",
+                dataParams: { ID: ID },
+                successFunc: function (result) {
+                    $("#fmInfo").form("load", result);
+                    BindDept(result.DeptID);
+                }
+            });
+        } else {
+            BindDept(DeptID);
+        }
+    })
+
+    //初始化树形选择框
+    function BindDept(UserDeptID) {
+        $('#DeptID').combotree({
+            method: "post",
+            url: "../DeptManager/GetEasyuiTreeList",
+            required:true,
+            onBeforeSelect: function (node, checked) {
+                //不能选择自己
+                if (node.id == $(":input[name='ID']").val())
+                    return false;
+            },
+            onSelect: function (node) {
+                console.log(node);
+                //清除选中
+                if ("0" == node.id)
+                    $('#DeptID').combotree('clear');
+            },
+            onLoadSuccess: function (node, data) {
+                if (UserDeptID != "") {
+                    $('#DeptID').combotree('setValue', UserDeptID);
+                }
+            }
+        });
+    }
+
+    //保存
+    function Save() {
+        if ($("#fmInfo").form('validate'))
+            $.DoAjax({
+                needWaiting:true,
+                url: "/UserManager/PostInfo",
+                dataParams: { info: $("#fmInfo").getJsonValues().jsonStr },
+                successFunc: function (result) {
+                    if (result.StatusCode == "200") {
+                        $.messager.alert('提示', '保存成功', 'info', function () {
+                            parent.callback(true);
+                        });
+
+                    }
+                    else if (result.StatusCode == "300") {
+                        $.messager.alert('提示', result.Message);
+                    } else {
+                        console.log(result);
+                        $.messager.alert('提示', '保存失败');
+                        window.location.reload();
+                    }
+                }
+            });
+    }
+
+    //取消
+    function Cancel() {
+        parent.callback(false);
+    }
+</script>
+
+
+<form id="fmInfo">
+    <input type="hidden" name="ID" />
+    <div class="easyui-from-row">
+        <div class="easyui-from-row-col6">
+            <label class="easyui-form-label">所属部门：</label>
+            <div class="easyui-from-row-item">
+                <input class="easyui-combotree" name="DeptID" id="DeptID" style="width:100%" />
+            </div>
+        </div>
+        <div class="easyui-from-row-col6">
+            <label class="easyui-form-label">*人员编号：</label>
+            <div class="easyui-from-row-item">
+                <input class="easyui-textbox" name="UserCode" data-options="required:true" style="width:100%" />
+            </div>
+        </div>
+    </div>
+    <div class="easyui-from-row">
+        <div class="easyui-from-row-col6">
+            <label class="easyui-form-label">*人员姓名：</label>
+            <div class="easyui-from-row-item">
+                <input class="easyui-textbox" name="UserName" data-options="required:true" style="width:100%" />
+            </div>
+        </div>
+        <div class="easyui-from-row-col6">
+            <label class="easyui-form-label">*人员性别：</label>
+            <div class="easyui-from-row-item">
+                <input class="easyui-combobox" name="Gender" data-options="editable:false,data:[
+                                  {text: '男',value:'男'},{text: '女',value:'女'}]" value="男" style="width:100%" />
+            </div>
+        </div>
+    </div>
+    <div class="easyui-from-row">
+        <div class="easyui-from-row-col6">
+            <label class="easyui-form-label">*登陆账号：</label>
+            <div class="easyui-from-row-item">
+                <input class="easyui-textbox" name="Account" data-options="required:true" style="width:100%" />
+            </div>
+        </div>
+        <div class="easyui-from-row-col6" id="divPwd">
+            <label class="easyui-form-label">*登陆密码：</label>
+            <div class="easyui-from-row-item">
+                <input type="password" class="easyui-textbox" name="Pwd" data-options="required:true" style="width:100%" />
+            </div>
+        </div>
+    </div>
+    <div class="easyui-from-row">
+        <div class="easyui-from-row-col6">
+            <label class="easyui-form-label">身份证号：</label>
+            <div class="easyui-from-row-item">
+                <input class="easyui-textbox" name="IDNumber" data-options="" style="width:100%" />
+            </div>
+        </div>
+        <div class="easyui-from-row-col6">
+            <label class="easyui-form-label">联系电话：</label>
+            <div class="easyui-from-row-item">
+                <input class="easyui-textbox" name="Mobile" data-options="" style="width:100%" />
+            </div>
+        </div>
+    </div>
+    <div class="easyui-from-row">
+        <div class="easyui-from-row-col6">
+            <label class="easyui-form-label">联系邮箱：</label>
+            <div class="easyui-from-row-item">
+                <input class="easyui-textbox" name="Email" data-options="" style="width:100%" />
+            </div>
+        </div>
+    </div>
+    <div class="easyui-from-row">
+        <label class="easyui-form-label">备注：</label>
+        <div class="easyui-from-row-item">
+            <input class="easyui-textbox" name="Note" data-options="multiline:true" style="width:100%;height:80px" />
+        </div>
+    </div>
+    <div class="easyui-from-row">
+        <div class="easyui-from-row-col6">
+            <label class="easyui-form-label">*是否有效：</label>
+            <div class="easyui-from-row-item">
+                <input class="easyui-combobox Dict_Enabled" name="Enabled" value="1"/>
+            </div>
+        </div>
+    </div>
+
+
+</form>
+
+<div class="easyui-from-row">
+    <label class="easyui-form-label"></label>
+    <div class="easyui-from-row-item">
+        <button class="StBtn StBtn_submit" onclick="Save()">保存</button>
+        <button class="StBtn StBtn_cancel" onclick="Cancel()">取消</button>
+    </div>
+</div>
+

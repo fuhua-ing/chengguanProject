@@ -1,0 +1,76 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="wwwroot\Map\.vscode\symbols.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="4.8.1" />
+    <PackageReference Include="DotNetCore.NPOI" Version="1.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Geone.JCXX.BLL\Geone.JCXX.BLL.csproj" />
+    <ProjectReference Include="..\Geone.JCXX.Meta\Geone.JCXX.Meta.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\json\menu.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\Map\page\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Map\css\common.css" />
+    <None Include="wwwroot\Map\images\maptool\icon_btn_clear.png" />
+    <None Include="wwwroot\Map\images\maptool\icon_btn_fullMap.png" />
+    <None Include="wwwroot\Map\images\maptool\icon_btn_iquery.png" />
+    <None Include="wwwroot\Map\images\maptool\icon_btn_more.png" />
+    <None Include="wwwroot\Map\images\maptool\icon_btn_zoomIn.png" />
+    <None Include="wwwroot\Map\images\maptool\icon_btn_zoomOut.png" />
+    <None Include="wwwroot\Map\images\maptool\icon_satemode_image.png" />
+    <None Include="wwwroot\Map\images\maptool\icon_satemode_map.png" />
+    <None Include="wwwroot\Map\images\point.png" />
+    <None Include="wwwroot\Map\images\point_selected.png" />
+    <None Include="wwwroot\Map\index.html" />
+    <None Include="wwwroot\Map\js\bootstrap\css\bootstrap-theme.css" />
+    <None Include="wwwroot\Map\js\bootstrap\css\bootstrap-theme.css.map" />
+    <None Include="wwwroot\Map\js\bootstrap\css\bootstrap-theme.min.css" />
+    <None Include="wwwroot\Map\js\bootstrap\css\bootstrap.css" />
+    <None Include="wwwroot\Map\js\bootstrap\css\bootstrap.css.map" />
+    <None Include="wwwroot\Map\js\bootstrap\css\bootstrap.min.css" />
+    <None Include="wwwroot\Map\js\bootstrap\fonts\glyphicons-halflings-regular.eot" />
+    <None Include="wwwroot\Map\js\bootstrap\fonts\glyphicons-halflings-regular.svg" />
+    <None Include="wwwroot\Map\js\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
+    <None Include="wwwroot\Map\js\bootstrap\fonts\glyphicons-halflings-regular.woff" />
+    <None Include="wwwroot\Map\js\bootstrap\js\bootstrap.min.js" />
+    <None Include="wwwroot\Map\js\business\getsymbol.js" />
+    <None Include="wwwroot\Map\js\business\index.js" />
+    <None Include="wwwroot\Map\js\business\map.js" />
+    <None Include="wwwroot\Map\js\business\tool.js" />
+    <None Include="wwwroot\Map\js\jquery\jquery-3.0.0.min.js" />
+    <None Include="wwwroot\Map\js\lib\arcgis.js" />
+    <None Include="wwwroot\Map\js\lib\jquery-3.0.0.min.js" />
+    <None Include="wwwroot\Map\js\lib\wicket-arcgis.js" />
+    <None Include="wwwroot\Map\js\lib\wicket.arcgis.js" />
+    <None Include="wwwroot\Map\js\lib\wicket.js" />
+    <None Include="wwwroot\Map\js\lib\wkttographic.js" />
+  </ItemGroup>
+
+</Project>

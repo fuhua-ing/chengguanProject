@@ -1,0 +1,156 @@
+﻿@{
+    ViewBag.Title = "监控设备管理";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string Dict_MonitorType = ConstHelper.Dict_MonitorType;//数据字典-网格类型
+}
+
+<script>
+    var Dict_MonitorType = '@Dict_MonitorType';
+
+    $(function () {
+        //初始化表格
+        $('#gd_url').InitGird({ url: "../MonitorManager/GetGrid" });
+        //初始化数据字典
+        $('#MonitorType').InitDictCombobox({ url: Dict_MonitorType});
+        InitSize();
+
+        //搜索栏切换显示
+        $(".StTitle .s_s_morebtn,.s_s_close a").click(function () {
+            $(".sipac_rtsearchbar").toggle();
+            $(".sipac_searchBox").toggle();
+            InitSize();
+        });
+        $(window).resize(function () {
+            InitSize();
+        });
+    })
+
+    //初始化尺寸
+    function InitSize() {
+        $('#gd_url').datagrid('resize', {
+            width: $(window).width() - 100,
+            height: $(window).height() - 20
+        });
+    }
+    //是否带音柱渲染
+    function formatter_IsYZ(value, row, index) {
+            if (value.toString() == "1")
+                return '<span class="label label-success">是</span>';
+            else
+                return '<span class="label label-danger">否</span>';
+    }
+
+    //查询
+    function Search() {
+        var param = $("#queryTab").getJsonValues().jsonData;
+        $('#gd_url').datagrid("load", param);
+    }
+    //刷新
+    function Refresh() {
+        $("#queryTab .easyui-textbox").textbox('clear');
+        $("#queryTab .easyui-combobox").combobox('setValue', '');
+        Search();
+    }
+    //新增
+    function Add() {
+        $("#win").OpenWin({ title: "设备-新增", url: "../MonitorManager/MonitorForm", width: 700, height: 400 });
+    }
+    //修改
+    function Edit() {
+        if ($('#gd_url').datagrid('IsSelectedRow')) {
+            var row = $('#gd_url').datagrid('getSelected');
+            $("#win").OpenWin({ title: "设备-编辑", url: "../MonitorManager/MonitorForm?ID=" + row.ID, width: 700, height: 400 });
+        }
+    }
+    //删除
+    function Del() {
+        if ($('#gd_url').datagrid('IsSelectedRow')) {
+            $.messager.confirm('确认', '确认删除？', function (r) {
+                if (r) {
+                    var row = $('#gd_url').datagrid('getSelected');
+                    $.DoAjax({
+                        needWaiting:true,
+                        url: "/MonitorManager/DelInfo",
+                        dataParams: { ID: row.ID },
+                        successFunc: function (result) {
+                            if (result.StatusCode == "200") {
+                                $.messager.alert('提示', '删除成功', 'info', function () {
+                                    Search();
+                                });
+                            }
+                            else {
+                                console.log(result);
+                                $.messager.alert('提示', '删除失败');
+                            }
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+
+    //回调
+    function callback(isOk) {
+        $("#win").window('close');
+        if (isOk)
+            Search();
+    }
+
+
+</script>
+
+<div id="win"></div>
+<div class="content_grid">
+    <div class="StTitle" id="ToolBar">
+        <div class="sipac_rtsearchbar">
+            @*<input class="s_s_text" type="text" value="当前栏目搜索">
+                <input class="StBtn_submit" type="submit" value="查询">*@
+            <div class="s_s_mBox">
+                <a title="点击下拉内容较多搜索" class="s_s_morebtn" href="#">
+                    <i class="fa fa-chevron-down"></i>
+                </a>
+            </div>
+        </div>
+        <div class="sipac_searchBox sipac_form" id="queryTab">
+            <table>
+                <tbody>
+                    <tr>
+                        <th>设备类型</th>
+                        <td width="35%"><input class="easyui-combobox defaultAll" name="MonitorType" id="MonitorType"></td>
+                        <th>设备名称</th>
+                        <td width="35%"><input class="easyui-textbox" name="Like_MonitorName"></td>
+                    </tr>
+                    <tr>
+                        <th>是否有效</th>
+                        <td colspan="3">
+                            <input class="easyui-combobox Dict_Enabled defaultAll" name="Enabled" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="s_s_bar"><button class="StBtn StBtn_submit" onclick="Search()">搜索</button></div>
+            <div class="s_s_close"><a href="javascript:void(0);" title="点击收起"><i class="fa fa-chevron-up"></i></a></div>
+        </div>
+        <div class="sipac_table_menu">
+            <a href="javascript:void(0);" onclick="Add()">新增</a><em></em>
+            <a href="javascript:void(0);" onclick="Edit()">修改</a><em></em>
+            <a href="javascript:void(0);" onclick="Del()">删除</a><em></em>
+            <a href="javascript:void(0);" onclick="Refresh()">刷新</a><em></em>
+        </div>
+    </div>
+
+    <table id="gd_url">
+        <thead>
+            <tr>
+                <th data-options="field:'MonitorType',width:100">设备类型</th>
+                <th data-options="field:'MonitorName',width:200">设备名称</th>
+                <th data-options="field:'ServiceUrl',width:200">视频服务地址</th>
+                <th data-options="field:'Shape',width:200">空间坐标</th>
+                <th data-options="field:'IsYZ',width:100,align:'center',formatter:formatter_IsYZ">是否带音柱</th>
+                <th data-options="field:'Note',width:200">备注</th>
+                <th data-options="field:'Enabled',width:100,align:'center',formatter:formatter_valid">是否有效</th>
+            </tr>
+        </thead>
+    </table>
+</div>

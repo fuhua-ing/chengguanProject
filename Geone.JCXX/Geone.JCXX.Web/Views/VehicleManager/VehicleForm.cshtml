@@ -1,0 +1,190 @@
+﻿@{
+    ViewBag.Title = "车辆编辑";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string Dict_DeptType = ConstHelper.Dict_DeptType;//数据字典-部门
+    string Dict_VehicleType = ConstHelper.Dict_VehicleType;//数据字典-设备类型
+    string Dict_CarType = ConstHelper.Dict_CarType;//数据字典-车辆类型
+}
+<script>
+    $(function () {
+        var ID = getQueryString("ID");
+        InitCombo();
+        //编辑
+        if (ID != null && ID != "") {
+            $.DoAjax({
+                url: "/VehicleManager/GetInfo",
+                dataParams: { ID: ID },
+                successFunc: function (result) {
+                    $("#fmInfo").form("load", result);
+                    BindParentDept(result.DeptID);
+                }
+            });
+        }
+        else {
+            BindParentDept("");
+        }
+    });
+
+    //保存
+    function Save() {
+
+        if ($("#fmInfo").form('validate'))
+            $.DoAjax({
+                needWaiting: true,
+                url: "/VehicleManager/PostInfo",
+                dataParams: { info: $("#fmInfo").getJsonValues().jsonStr },
+                successFunc: function (result) {
+                    if (result.StatusCode == "200") {
+                        $.messager.alert('提示', '保存成功', 'info', function () {
+                            parent.callback(true);
+                        });
+                    }
+                    else {
+                        console.log(result);
+                        $.messager.alert('提示', '保存失败');
+                        window.location.reload();
+                    }
+                }
+            });
+    }
+
+    //取消
+    function Cancel() {
+        parent.callback(false);
+    }
+    function InitCombo() {
+        // $('#DeptID').InitDeptCombobox({ url: null });
+        var Dict_DeptType = '@Dict_DeptType';
+        var Dict_VehicleType = '@Dict_VehicleType';
+        var Dict_CarType = '@Dict_CarType';
+        //$('#DeptID').InitDictCombobox({ url: Dict_DeptType });
+        $('#VehicleType').InitDictCombobox({ url: Dict_VehicleType });
+        $('#CarType').InitDictCombobox({ url: Dict_CarType });
+
+
+    }
+    function BindParentDept(DeptParentID) {
+        //var ParentID = getQueryString("ParentID");
+        //初始化树形选择框
+        $('#DeptID').combotree({
+            method: "post",
+            url: "../DeptManager/GetEasyuiTreeList?ChoiceAll=0",
+            loadFilter: function (data, DeptParentID) {
+
+                return data;
+            },
+            onBeforeSelect: function (node, checked) {
+                //不能选择自己
+                if (node.id == $(":input[name='ID']").val())
+                    return false;
+            },
+            onLoadSuccess: function (node, data) {
+                if (DeptParentID != "") {
+                    $('#DeptID').combotree('setValue', DeptParentID);
+                }
+            }
+        });
+    }
+
+
+</script>
+
+
+<form id="fmInfo" style="overflow: hidden;">
+    <input name="ID" type="hidden" />
+    <div class="easyui-from-row">
+        <div class="easyui-from-row-col6">
+            <label class="easyui-form-label">*所属部门：</label>
+            <div class="easyui-from-row-item">
+                <input class="easyui-combobox " id="DeptID" name="DeptID" data-options="required:true" />
+            </div>
+        </div>
+        <div class="easyui-from-row-col6">
+            <label class="easyui-form-label">*车牌号：</label>
+            <div class="easyui-from-row-item">
+                <input class="easyui-textbox" name="CarNo" data-options="required:true" style="width:100%" />
+            </div>
+        </div>
+    </div>
+
+    <div class="easyui-from-row">
+        <div class="easyui-from-row-col6">
+            <label class="easyui-form-label">*车辆识别号：</label>
+            <div class="easyui-from-row-item">
+                <input class="easyui-textbox" name="FrameNo" data-options="required:true" style="width:100%" />
+            </div>
+        </div>
+        <div class="easyui-from-row-col6">
+            <label class="easyui-form-label">*设备类型：</label>
+            <div class="easyui-from-row-item">
+                <input class="easyui-combobox " id="VehicleType" name="VehicleType" data-options="required:true" />
+            </div>
+        </div>
+    </div>
+    <div class="easyui-from-row">
+        <div class="easyui-from-row-col6">
+            <label class="easyui-form-label">*车辆类型：</label>
+            <div class="easyui-from-row-item">
+
+                <input class="easyui-combobox " id="CarType" name="CarType" data-options="required:true" />
+            </div>
+        </div>
+        <div class="easyui-from-row-col6">
+            <label class="easyui-form-label">*GPS设备码：</label>
+            <div class="easyui-from-row-item">
+                <input class="easyui-textbox" name="GPRS" data-options="required:true" style="width:100%" />
+            </div>
+        </div>
+
+    </div>
+    <div class="easyui-from-row">
+        <div class="easyui-from-row-col6">
+            <label class="easyui-form-label">发动机编号：</label>
+            <div class="easyui-from-row-item">
+                <input class="easyui-textbox" name="EngineNo" style="width:100%" />
+            </div>
+        </div>
+        <div class="easyui-from-row-col6">
+            <label class="easyui-form-label">发证日期：</label>
+            <div class="easyui-from-row-item">
+                <input class="easyui-datebox" name="RegDate" style="width:100%" />
+            </div>
+        </div>
+    </div>
+    <div class="easyui-from-row">
+        <div class="easyui-from-row-col6">
+            <label class="easyui-form-label">年检合格期：</label>
+            <div class="easyui-from-row-item">
+                <input class="easyui-datebox" name="DueDate" style="width:100%" />
+            </div>
+        </div>
+
+        <div class="easyui-from-row-col6">
+            <label class="easyui-form-label">*是否有效：</label>
+            <div class="easyui-from-row-item">
+                <input class="easyui-combobox Dict_Enabled" name="Enabled" value="1" />
+            </div>
+        </div>
+
+    </div>
+    <div class="easyui-from-row">
+        <label class="easyui-form-label">备注：</label>
+        <div class="easyui-from-row-item">
+            <input class="easyui-textbox" name="Note" data-options="multiline:true" style="width:100%;height:80px" />
+        </div>
+    </div>
+
+    <div class="easyui-from-row">
+        <label class="easyui-form-label">&nbsp;</label>
+        <div class="easyui-from-row-item">
+            <input type="button" class="StBtn StBtn_submit" onclick="Save()" value="保存" />
+            <input type="button" class="StBtn StBtn_cancel" onclick="Cancel()" value="取消" />
+        </div>
+    </div>
+    <input class="easyui-combobox" name="browser" style="width:280px;" data-options="
+				url: '../VehicleManager/combobox_data2.json',
+				method: 'get',
+				valueField:'value',
+				textField:'text',
+				groupField:'group'">
+</form>

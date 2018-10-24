@@ -1,0 +1,94 @@
+﻿@{
+    ViewBag.Title = "应用角色编辑";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script>
+    $(function () {
+        var ID = getQueryString("ID");
+        var AppID = getQueryString("AppID");
+       
+        //编辑
+        if (ID != null && ID != "")
+            $.DoAjax({
+                url: "/AppRoleManager/GetInfo",
+                dataParams: { ID: ID },
+                successFunc: function (result) {
+                    $("#fmInfo").form("load", result);
+                }
+            });
+        else {
+            $("#AppID").val(AppID);
+        }
+
+    })
+
+    //保存
+    function Save() {
+        if ($("#fmInfo").form('validate'))
+            $.DoAjax({
+                needWaiting: true,
+                url: "/AppRoleManager/PostInfo",
+                dataParams: { info: $("#fmInfo").getJsonValues().jsonStr },
+                successFunc: function (result) {
+                    if (result.StatusCode == "200") {
+                        $.messager.alert('提示', '保存成功', 'info', function () {
+                            parent.callback(true);
+                        });
+
+                    }
+                    else {
+                        console.log(result);
+                        $.messager.alert('提示', '保存失败');
+                        window.location.reload();
+                    }
+                }
+            });
+    }
+
+    //取消
+    function Cancel() {
+        parent.callback(false);
+    }
+</script>
+
+
+<form id="fmInfo" style="overflow: hidden;">
+    <input name="ID" type="hidden" />
+    <input name="AppID" type="hidden" id="AppID"/>
+   
+    <div class="easyui-from-row">
+        <div class="easyui-from-row-col6">
+            <label class="easyui-form-label">*角色编号：</label>
+            <div class="easyui-from-row-item">
+                <input class="easyui-textbox" name="RoleCode" data-options="required:true" style="width:100%" />
+            </div>
+        </div>
+        <div class="easyui-from-row-col6">
+            <label class="easyui-form-label">*角色名称：</label>
+            <div class="easyui-from-row-item">
+                <input class="easyui-textbox" name="RoleName" data-options="required:true" style="width:100%" />
+            </div>
+        </div>
+    </div>
+    <div class="easyui-from-row">
+        <label class="easyui-form-label">备注：</label>
+        <div class="easyui-from-row-item">
+            <input class="easyui-textbox" name="Note" data-options="multiline:true" style="width:100%;height:80px" />
+        </div>
+    </div>
+    <div class="easyui-from-row">
+        <div class="easyui-from-row-col6">
+            <label class="easyui-form-label">*是否有效：</label>
+            <div class="easyui-from-row-item">
+                <input class="easyui-combobox Dict_Enabled" name="Enabled" value="1"/>
+            </div>
+        </div>
+    </div>
+    <div class="easyui-from-row">
+        <label class="easyui-form-label"></label>
+        <div class="easyui-from-row-item">
+            <input type="button" class="StBtn StBtn_submit" onclick="Save()" value="保存" />
+            <input type="button" class="StBtn StBtn_cancel" onclick="Cancel()" value="取消" />
+        </div>
+    </div>
+</form>

@@ -1,0 +1,94 @@
+﻿
+@{
+    ViewData["Title"] = "数据字典编辑";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script>
+
+    $(function () {
+        var AppID = getQueryString("AppID");
+        var ID = getQueryString("ID");
+       
+
+        //编辑
+        if (ID != null && ID != "")
+            $.DoAjax({
+                url: "/DictManager/GetInfo",
+                dataParams: { ID: ID },
+                successFunc: function (result) {
+                    $("#fmInfo").form("load", result);
+                }
+            });
+        else
+            $("#AppID").val(AppID);
+    })
+
+    //保存
+    function Save() {
+        if ($("#fmInfo").form('validate'))
+            $.DoAjax({
+                needWaiting: true,
+                url: "/DictManager/PostInfo",
+                dataParams: { info: $("#fmInfo").getJsonValues().jsonStr },
+                successFunc: function (result) {
+                    if (result.StatusCode == "200") {
+                        $.messager.alert('提示', '保存成功', 'info', function () {
+                            parent.callback(true);
+                        });
+                    }
+                    else {
+                        console.log(result);
+                        $.messager.alert('提示', '保存失败', 'info', function () {
+                            window.location.reload();
+                        });
+                    }
+                }
+            });
+    }
+
+    //取消
+    function Cancel() {
+        parent.callback(false);
+    }
+</script>
+<form id="fmInfo">
+    <input type="hidden" name="ID" />
+    <input type="hidden" name="AppID" id="AppID" />
+
+    <div class="easyui-from-row">
+        <div class="easyui-from-row-col6">
+            <label class="easyui-form-label">*字典编号：</label>
+            <div class="easyui-from-row-item">
+                <input class="easyui-textbox" name="CategoryCode" data-options="required:true" style="width:100%" />
+            </div>
+        </div>
+        <div class="easyui-from-row-col6">
+            <label class="easyui-form-label">*字典名称：</label>
+            <div class="easyui-from-row-item">
+                <input class="easyui-textbox" name="CategoryName" data-options="required:true" style="width:100%" />
+            </div>
+        </div>
+    </div>
+    <div class="easyui-from-row">
+        <label class="easyui-form-label">备注：</label>
+        <div class="easyui-from-row-item">
+            <input class="easyui-textbox" name="Note" data-options="multiline:true" style="width:100%;height:80px" />
+        </div>
+    </div>
+    <div class="easyui-from-row">
+        <div class="easyui-from-row-col6">
+            <label class="easyui-form-label">*是否有效：</label>
+            <div class="easyui-from-row-item">
+                <input class="easyui-combobox Dict_Enabled" name="Enabled" value="1"/>
+            </div>
+        </div>
+    </div>
+    <div class="easyui-from-row">
+        <label class="easyui-form-label">&nbsp;</label>
+        <div class="easyui-from-row-item">
+            <input type="button" class="StBtn StBtn_submit" onclick="Save()" value="保存" />
+            <input type="button" class="StBtn StBtn_cancel" onclick="Cancel()" value="取消" />
+        </div>
+    </div>
+</form>
+

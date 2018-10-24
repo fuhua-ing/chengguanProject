@@ -1,0 +1,35 @@
+.tree-title {
+    font-size: 14px;
+    color: #666;
+}
+
+.tree-node {
+    height: 18px;
+    white-space: nowrap;
+    cursor: pointer;
+    padding: 5px 0 5px 15px;
+}
+
+.tree-folder {
+    background: none;
+    width: 0;
+}
+
+.tree-folder-open {
+    background: none;
+    width: 0;
+}
+
+.tree-file {
+    background: none;
+    width: 0;
+}
+
+.tree-node-selected {
+    background: #009688;
+    color: #fff;
+}
+
+    .tree-node-selected .tree-title {
+        color: #fff;
+    }

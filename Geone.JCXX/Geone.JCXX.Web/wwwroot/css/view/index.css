@@ -1,0 +1,282 @@
+body, h1, h2, h3, h4, h5, h6, dl, dt, dd, ul, ol, li, th, td, p, blockquote, pre, form, fieldset, legend, input, button, textarea, hr {
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    color: #444444;
+    text-decoration: none;
+}
+
+li {
+    list-style: none;
+}
+
+/********************************** 菜单 ************************************/
+.index_menu {
+    position: fixed;
+    width: 60px;
+    height: 100%;
+    background: #2C6F9B;
+    top: 0px;
+    left: 0px;
+    z-index: 10;
+}
+
+    /********************************** 一级 ************************************/
+    .index_menu .fi-ul {
+        margin: 0px;
+        padding: 0px;
+        list-style: none;
+        border: 0;
+    }
+
+        .index_menu .fi-ul .fi-li {
+            height: 50px;
+            position: relative;
+            cursor: pointer;
+        }
+
+            .index_menu .fi-ul .fi-li:hover, .index_menu .fi-ul li.on, .index_menu .fi-li:hover .sec-ul {
+                display: block;
+                background-color: #138cda;
+            }
+
+            .index_menu .fi-ul .fi-li span {
+                background-size: 85% auto !important;
+                width: 50px;
+                height: 50px;
+                display: inline-block;
+                margin-top: 5px;
+                margin-left: 5px;
+            }
+
+            .index_menu .fi-ul .fi-li a {
+                color: #FFF;
+                white-space: nowrap;
+                font: 25px/50px "微软雅黑","Microsoft YaHei";
+                padding: 0 0 0 20px;
+                border-bottom: 1px solid #245C80;
+                display: block;
+                color: #DDE7EF;
+            }
+
+    /********************************** 二级 ************************************/
+    .index_menu .sec-ul {
+        display: none;
+        background: #138cda;
+        width: 150px;
+        position: absolute;
+        top: -1px;
+        left: 60px;
+    }
+
+        .index_menu .sec-ul .sec-li {
+            height: 50px;
+            position: relative;
+            border-bottom: 1px solid #347FB1;
+        }
+
+            .index_menu .sec-ul .sec-li:hover {
+                background: #2fa7f5;
+            }
+
+            .index_menu .sec-ul .sec-li a {
+                font: 16px/50px "微软雅黑","Microsoft YaHei";
+            }
+
+/********************************** 顶部标题栏 ************************************/
+.index_top {
+    background: #F9F9F9;
+    min-height: 50px;
+    border-bottom: 1px solid #DDDDDD;
+}
+
+.lft_title {
+    font: 18px/40px "微软雅黑","Microsoft YaHei";
+    color: #444444;
+    padding: 5px 20px;
+    width: 300px;
+    float: left;
+}
+
+.rt_box {
+    position: absolute;
+    right: 70px;
+    top: 0;
+
+    z-index: 101;
+}
+    /*提醒*/
+    .rt_box .TopTip {
+        display: inline-block;
+        width: 38px;
+        font-size: 23px;
+        cursor: pointer;
+        position: relative;
+        top: 5px;
+    }
+
+    /*提醒的红点*/
+    .rt_box .badge-dot {
+        top: -13px;
+        left: -8px;
+        position: relative;
+        display: inline-block;
+        padding: 0 6px;
+        font-size: 12px;
+        text-align: center;
+        background-color: #FF5722;
+        color: #fff;
+        width: 8px;
+        height: 8px;
+        padding: 0;
+        border-radius: 50%;
+    }
+
+    /*用户头像*/
+    .rt_box .avatar {
+        border-left: 1px solid #DDDDDD;
+        display: inline-block;
+        width: 40px;
+        background: url(../../images/avatar.gif);
+        background-size: 40px 40px;
+        background-repeat: no-repeat;
+        cursor: pointer;
+    }
+
+        .rt_box .avatar img {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            bottom: 5px;
+        }
+
+    /*用户名*/
+    .rt_box .username {
+        display: inline-block;
+        line-height: 50px;
+    }
+
+    /*更多菜单*/
+    .rt_box .more {
+        display: inline-block;
+        font-size: 23px;
+        cursor: pointer;
+        margin-left: 5px;
+        position: relative;
+        top: 5px;
+    }
+
+.dropdown_nav {
+    display: none;
+    position: absolute;
+    background: #444444;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 5px;
+    right: 0;
+    top: 40px;
+    z-index: 99999;
+}
+
+    .dropdown_nav em {
+        display: block;
+        position: absolute;
+        right: 20px;
+        top: -6px;
+        width: 0;
+        height: 0;
+        line-height: 0;
+        border-bottom: 6px solid #444444;
+        border-bottom: 6px solid rgba(0, 0, 0, 0.5);
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+    }
+
+    .dropdown_nav li {
+        border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+        padding: 0 10px;
+        overflow: auto;
+        clear: both;
+        float: none;
+    }
+
+        .dropdown_nav li:hover {
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+    .dropdown_nav a {
+        display: block;
+        background: none;
+        border: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        width: auto;
+        height: auto;
+        font: 12px/30px Arial;
+        padding: 0 20px;
+        color: #DDE7EF;
+        white-space: nowrap;
+        text-align: center;
+    }
+
+.dropdown_hover {
+    display: block;
+}
+
+
+/********************************************案件提醒窗************************************************/
+#winCase {
+    margin-top: 30px;
+}
+
+    #winCase p {
+        margin: 40px 0 10px 20px;
+        font-size: 20px;
+    }
+
+        #winCase p i {
+            color: rgba(255, 144, 22, 1);
+            padding: 0 2px;
+        }
+
+    #winCase .alert-info {
+        font-size: 20px;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        margin-bottom: 13px !important;
+        padding: 12.8px !important;
+        color: white;
+        background-color: rgba(161, 176, 197, 0.3607843137254902);
+    }
+
+    #winCase .alert-icon {
+        float: left;
+        background-color: #99cce3;
+        border-radius: 100%;
+        display: inline-block;
+        line-height: 35px;
+        height: 35px;
+        width: 35px;
+    }
+
+        #winCase .alert-icon i {
+            width: 40px;
+            height: 40px;
+            display: block;
+            text-align: center;
+            line-height: 40px;
+            font-size: 20px;
+            color: #fff;
+        }
+
+    #winCase .noti-info {
+        padding-left: 10px;
+        padding-top: 6px;
+        color: #fff;
+    }
+
+        #winCase .noti-info i {
+            color: rgba(255, 144, 22, 1);
+            padding: 0 2px;
+            font-size: 25px;
+        }

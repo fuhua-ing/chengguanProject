@@ -1,0 +1,109 @@
+﻿[
+  {
+    "id": "index",
+    "name": "首页",
+    "url": "/Map/index.html",
+    "icon": "fa-home",
+    "children": []
+  },
+  {
+    "id": "01",
+    "name": "部门管理",
+    "url": "/DeptManager/DeptList",
+    "icon": "fa-sitemap",
+    "children": []
+  },
+  {
+    "id": "02",
+    "name": "人员管理",
+    "url": "/UserManager/UserList",
+    "icon": "fa-users",
+    "children": []
+  },
+  {
+    "id": "03",
+    "name": "车辆管理",
+    "url": "/VehicleManager/VehicleList",
+    "icon": "fa-car",
+    "children": []
+  },
+  {
+    "id": "04",
+    "name": "监控设备管理",
+    "url": "/MonitorManager/MonitorList",
+    "icon": "fa-camera",
+    "children": []
+  },
+  {
+    "id": "04",
+    "name": "节假日管理",
+    "url": "/HolidayManager/HolidayList",
+    "icon": "fa-calendar",
+    "children": []
+  },
+  {
+    "id": "05",
+    "name": "应用管理",
+    "url": "",
+    "icon": "fa-laptop",
+    "children": [
+      {
+        "id": "0501",
+        "name": "应用管理",
+        "url": "/AppManager/AppList",
+        "icon": "fa-laptop"
+      },
+      {
+        "id": "0502",
+        "name": "数据字典管理",
+        "url": "/DictManager/DictCategoryList",
+        "icon": ""
+      },
+      {
+        "id": "0503",
+        "name": "菜单管理",
+        "url": "/AppMenuManager/AppMenuList",
+        "icon": "fa-bars"
+      },
+      {
+        "id": "0504",
+        "name": "角色管理",
+        "url": "/AppRoleManager/RoleList",
+        "icon": "fa-bars"
+      }
+    ]
+  },
+  {
+    "id": "06",
+    "name": "地图管理",
+    "url": "",
+    "icon": "fa-globe",
+    "children": [
+      {
+        "id": "0501",
+        "name": "权属角色管理",
+        "url": "/QSRoleManager/QSRoleList",
+        "icon": "fa-bars"
+      },
+      {
+        "id": "0602",
+        "name": "网格管理",
+        "url": "/GridManager/GridList",
+        "icon": "fa-globe"
+      },
+
+      {
+        "id": "0506",
+        "name": "案件权属管理",
+        "url": "/CaseClassManager/CaseClassList",
+        "icon": "fa-bars"
+      },
+      {
+        "id": "0507",
+        "name": "短信号码组管理",
+        "url": "/PhoneGroupManager/PhoneGroupList",
+        "icon": "fa-bars"
+      }
+    ]
+  }
+]

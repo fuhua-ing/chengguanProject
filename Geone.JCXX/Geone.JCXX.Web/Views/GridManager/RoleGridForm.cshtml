@@ -1,0 +1,250 @@
+﻿@{
+    ViewBag.Title = "角色网格组管理";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    #userList {
+        padding-left: 15px;
+    }
+    #userList li {
+        position: relative;
+        outline: none;
+        display: inline;
+        float: left;
+        height: 43px;
+        margin: 10px 15px 0px 0;
+        vertical-align: middle;
+        text-align: center;
+        word-break: keep-all;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        border-radius: 5px 5px 5px 5px;
+        height: 39px;
+        line-height: 39px;
+        width: 115px;
+        text-align: center;
+        border: 1px solid #2c6f9b;
+        padding: 0 0px;
+        background: #fff;
+        display: inline-block;
+        outline: none;
+    }
+
+        #userList li i {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            font-size: 0;
+            line-height: 0;
+            right: 1px;
+            bottom: 2px;
+            background: url(../images/sys_item_selected.gif) no-repeat right bottom;
+            z-index: 99;
+        }
+</style>
+
+
+<script>
+
+    var ID = getQueryString("ID");
+    
+    $(function () {
+
+        //初始化左侧树
+        $('#treeRoleQS').tree({
+            method: "post",
+            url: "../QSRoleManager/GetEasyuiTreeList",
+            checkbox: true,
+            onCheck: function (node, isCheck) {
+                
+                var params = [];
+               
+                var _tree = $('#treeRoleQS').tree('getChildren');
+                var userList = $("#userList li");
+               
+                $.each(userList, function (index, item) {
+                    params.push({ "RoleID": '' + item.id + '', "RoleName": '' + item.title + '' });
+                });
+               
+                var isExist;
+                $.each(_tree, function (ind, node) {
+                    isExist = true;
+                    
+                    if (params.length > 0) {
+                        for (var i = 0; i < params.length; i++) {
+                            if (node.id == params[i].RoleID && node.checkState == "unchecked") {
+                                isExist = false;
+                                params.splice(i , 1);
+                                break;
+                            }
+                            else if (node.id == params[i].RoleID && node.checkState == "checked") {
+                                isExist = false;
+                                break;
+                            }
+
+                            
+                        }
+                    }
+                    if (isExist && node.checkState == "checked") {
+                        if (node.parentid != null && node.parentid != "") {
+                            params.push({ "RoleID": '' + node.id + '', "RoleName": '' + node.text + '' });
+                        }
+                    }
+                });
+               
+                    //var _tree = $('#treeRoleQS').tree('getChecked');
+                    //for (var i = 0; i < _tree.length; i++) {
+
+                    //    if (_tree[i].parentid != null && _tree[i].parentid != "") {
+                    //        params.push({ "RoleID": '' + _tree[i].id + '', "RoleName": '' + _tree[i].text + '' });
+                    //    }
+                    //}
+               
+                LoadChoiceRoleInfo(params);
+
+            },
+            onLoadSuccess: function (node) {
+                LoadRoleGrid();
+            }
+        });
+
+        InitSize();
+
+        $(window).resize(function () {
+            InitSize();
+        });
+    });
+
+    //初始加载用户
+    function LoadRoleGrid() {
+        //获取用户
+        $.DoAjax({
+            url: "/GridManager/GetRoleGridList",
+            dataParams: { ID: ID },
+            successFunc: function (udata) {
+                LoadChoiceRoleInfo(udata);
+                LoadChoiceRole(udata);
+            }
+        });
+    }//根据roleID加载下拉树选中项
+    function LoadChoiceRole(udata) {
+        var _tree = $('#treeRoleQS');
+        var _roots = $('#treeRoleQS').tree('getChildren');
+     
+        $.each(udata, function (index, item) {
+
+            for (var i = 0; i < _roots.length; i++) {
+
+                if (_roots[i].parentid != null && _roots[i].parentid != "") {
+
+                    if (item.RoleID == _roots[i].id) {
+
+                        _tree.tree('check', _roots[i].target);
+                    }
+                }
+            }
+        });
+    }
+    ///加载已选中的角色
+    function LoadChoiceRoleInfo(udata) {
+        debugger;
+        var _html = "";
+        $("#userList").html("");
+     
+        $.each(udata, function (index, item) {
+
+            _html += '<li class="' + item.RoleID + '"  id="' + item.RoleID + '" title="' + item.RoleName + '">';
+
+            _html += '      <i class="fa fa-user"></i>' + item.RoleName;
+
+
+            _html += '</li>';
+        });
+        $("#userList").html(_html);
+        
+    }
+    //初始化尺寸
+    function InitSize() {
+      
+        $('.content_grid_lft').height($(window).height() - 20);
+        $('.content_grid_lft').width(300);
+        $('.content_grid_rt').height($(window).height() - 20);
+        $('.content_grid_rt').width($(window).width() - 350);
+
+    }
+
+    //全选
+    function CheckAll(IsChecked) {
+        var _tree = $('#treeRoleQS');
+        roots = _tree.tree('getRoots');
+        if (IsChecked) {
+            for (var i = 0; i < roots.length; i++) {
+                var node = _tree.tree('find', roots[i].id);
+                _tree.tree('check', node.target);
+            }
+        } else {
+            for (var i = 0; i < roots.length; i++) {
+                var node = _tree.tree('find', roots[i].id);
+                _tree.tree('uncheck', node.target);
+            }
+        }
+    }
+
+    //保存
+    function Save() {
+        var ids = "";
+        $("#userList li").each(function (index, item) {
+            ids += $(this).attr("id") + ",";
+        });
+
+        $.DoAjax({
+            needWaiting: true,
+            url: "/GridManager/PostRoleGrid",
+            dataParams: { ID: ID, RoleIDs: ids },
+            successFunc: function (result) {
+                if (result.StatusCode == "200") {
+                    $.messager.alert('提示', '保存成功', 'info', function () {
+                        parent.callback(true);
+                    });
+                }
+                else {
+                    console.log(result);
+                    $.messager.alert('提示', '保存失败');
+                    window.location.reload();
+                }
+            }
+        });
+    }
+    //根据权属角色、查找
+    function Search() {
+
+        var queryName = $("#searchName").val().trim();
+
+        moduleTree = $('#treeRoleQS');
+ 
+        moduleTree.tree("options").url = "../QSRoleManager/GetEasyuiTreeList?RoleName=" + queryName;
+        moduleTree.tree('reload');
+    }
+</script>
+
+<div class="content_grid_lft">
+    <div class="StTitle" id="ToolBar">
+        <div class="sipac_rtsearchbar" style="width:100%;">
+            <input class="s_s_text" type="text" id="searchName" placeholder="输入角色名">
+            <input class="StBtn_submit" type="button" value="查询" onclick="Search() ">
+        </div>
+        <div class="sipac_table_menu" style="width:100%;">
+
+            <a href="javascript:void(0);" onclick="CheckAll(true)">全选</a><em></em>
+            <a href="javascript:void(0);" onclick="CheckAll(false)">取消全选</a><em></em>
+            <a href="javascript:void(0);" onclick="Save()">保存</a><em></em>
+        </div>
+    </div><br />
+    <ul id="treeRoleQS"></ul>
+</div>
+<div class="content_grid_rt content_grid">
+
+    <ul id="userList"></ul>
+</div>
+

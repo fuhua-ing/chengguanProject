@@ -1,0 +1,193 @@
+﻿@{
+    ViewBag.Title = "部门管理";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script>
+
+    $(function () {
+        //初始化表格
+        $('#gd_url').InitTreeGird({
+            url: "../DeptManager/GetEasyuiTreeList",
+            idField: 'id',
+            treeField: 'text',
+            pagination: false,
+            animate: true,
+            fitColumns: true,
+            resizable: true,
+            rownumbers: false,
+            frozenColumns: [[
+                { title: '部门名称', field: 'text', width: 200 }
+            ]],
+            onLoadSuccess: function (node, data) {
+                var parentID = $("#hfParentID").val() == undefined ? "" : $("#hfParentID").val();
+                if (parentID != "") {
+                    $('#gd_url').treegrid('select', parentID);
+                }
+            },
+            onClickRow: function (row) {
+                if (row.id != undefined && row.id != "") {
+                    $("#hfParentID").val(row.id);
+                } else {
+                    $("#hfParentID").val("");
+                }
+            },
+            onDblClickRow: function (node) {
+                //取消选择
+                var parentID = $("#hfParentID").val() == undefined ? "" : $("#hfParentID").val();
+                $('#gd_url').treegrid("unselect", parentID);
+            }
+        });
+
+        InitSize();
+
+        //搜索栏切换显示
+        $(".StTitle .s_s_morebtn,.s_s_close a").click(function () {
+            $(".sipac_rtsearchbar").toggle();
+            $(".sipac_searchBox").toggle();
+            InitSize();
+        });
+
+        $(window).resize(function () {
+            InitSize();
+        });
+    })
+
+    //初始化尺寸
+    function InitSize() {
+        $('#gd_url').treegrid('resize', {
+            width: $(window).width()-100,
+            height: $(window).height() - 20
+        });
+    }
+    //查询
+    function Search() {
+        var param = $("#queryTab").getJsonValues().jsonData;
+        $('#gd_url').treegrid("load", param);
+    }
+    //刷新
+    function Refresh() {
+        $("#queryTab .easyui-textbox").textbox('clear');
+        $("#queryTab .easyui-combobox").combobox('setValue', '');
+        Search();
+    }
+    //新增
+    function Add() {
+        var parentID = $("#hfParentID").val();
+        $("#win").OpenWin({ title: "部门-新增", url: "../DeptManager/DeptForm?ParentID=" + parentID, width: 800, height: 450 });
+    }
+    //修改
+    function Edit() {
+        if ($('#gd_url').treegrid('IsSelectedRow')) {
+            var row = $('#gd_url').treegrid('getSelected');
+            if (row.id == "")
+                return;
+            $("#win").OpenWin({ title: "部门-编辑", url: "../DeptManager/DeptForm?ID=" + row.id, width: 800, height: 450 });
+        }
+    }
+    //删除
+    function Del() {
+        if ($('#gd_url').treegrid('IsSelectedRow')) {
+            var row = $('#gd_url').treegrid('getSelected');
+            if (row.id == "")
+                return;
+            $.messager.confirm('确认', '确认删除？', function (r) {
+                if (r) {
+                    $.DoAjax({
+                        needWaiting: true,
+                        url: "/DeptManager/DelInfo",
+                        dataParams: { ID: row.id },
+                        successFunc: function (result) {
+                            if (result.StatusCode == "200") {
+                                $.messager.alert('提示', '删除成功', 'info', function () {
+                                    Search();
+                                    $('#treeDept').tree('reload');
+                                });
+                            }
+                            else {
+                                console.log(result);
+                                $.messager.alert('提示', '删除失败');
+                            }
+                        }
+                    });
+                }
+            });
+        }
+    }
+    //回调
+    function callback(isOk) {
+        $("#win").window('close');
+        if (isOk) {
+            Search();
+            $('#treeDept').tree('reload');
+        }
+    }
+
+    //树节点右击
+    function TreeNodeEdit() {
+        var node = $('#treeDept').tree('getSelected');
+        if (node != null)
+            $("#win").OpenWin({ title: "部门-编辑", url: "../DeptManager/DeptForm?ID=" + node.id, width: 800, height: 450 });
+    }
+</script>
+
+
+<div id="mm" class="easyui-menu" style="width:120px;">
+    <div onclick="TreeNodeEdit()" data-options="iconCls:'icon-add'">修改</div>
+</div>
+
+<div id="win"></div>
+
+<div class="content_grid">
+    <div class="StTitle" id="ToolBar">
+        <div class="sipac_rtsearchbar">
+            <div class="s_s_mBox">
+                <a title="点击下拉内容较多搜索" class="s_s_morebtn" href="#">
+                    <i class="fa fa-chevron-down"></i>
+                </a>
+            </div>
+        </div>
+        <div class="sipac_searchBox sipac_form" id="queryTab">
+            <input type="hidden" id="hfParentID"  />
+            <table>
+                <tbody>
+                    <tr>
+                        <th>部门编号</th>
+                        <td width="35%"><input class="easyui-textbox" name="Like_DeptCode"></td>
+                        <th>部门名称</th>
+                        <td width="35%"><input class="easyui-textbox" name="Like_DeptName"></td>
+                    </tr>
+                    <tr>
+                        <th>是否有效</th>
+                        <td colspan="3">
+                            <input class="easyui-combobox Dict_Enabled defaultAll" name="Enabled" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="s_s_bar"><button class="StBtn StBtn_submit" onclick="Search()">搜索</button></div>
+            <div class="s_s_close"><a href="javascript:void(0);" title="点击收起"><i class="fa fa-chevron-up"></i></a></div>
+        </div>
+        <div class="sipac_table_menu">
+            <a href="javascript:void(0);" onclick="Add()">新增</a><em></em>
+            <a href="javascript:void(0);" onclick="Edit()">修改</a><em></em>
+            <a href="javascript:void(0);" onclick="Del()">删除</a><em></em>
+            <a href="javascript:void(0);" onclick="Refresh()">刷新</a><em></em>
+        </div>
+    </div>
+
+    <table id="gd_url">
+        <thead>
+            <tr>
+                <th data-options="field:'DeptCode',width:200">部门编号</th>
+                <th data-options="field:'DeptName',width:200">部门名称</th>
+                <th data-options="field:'ShortName',width:150">简称</th>
+                <th data-options="field:'Contact',width:100">负责人</th>
+                <th data-options="field:'ContactTel',width:100">联系电话</th>
+                <th data-options="field:'ContactEmail',width:100">联系邮箱</th>
+                <th data-options="field:'Note',width:400">备注</th>
+                <th data-options="field:'Enabled',width:100,align:'center',formatter:formatter_valid">是否有效</th>
+            </tr>
+        </thead>
+    </table>
+</div>

@@ -1,0 +1,149 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>基础信息管理系统</title>
+
+    <!-- CSS -->
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/font-awesome/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/css/view/login.css" rel="stylesheet" />
+    <!-- Javascript -->
+    <script src="~/lib/jquery/jquery-1.10.2.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/js/tool.js"></script>
+
+    <!-- Favicon and touch icons -->
+    <link rel="shortcut icon" href="~/ico/favicon.png">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="~/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="~/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="~/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="~/ico/apple-touch-icon-57-precomposed.png">
+
+    <script>
+        $(document).keyup(function (event) {
+            if (event.keyCode == 13) {
+                $("#btnLogin").trigger("click");
+            }
+        });
+
+        $(document).ready(function () {
+            $('.login-form input[type="text"], .login-form input[type="password"], .login-form textarea').on('focus', function () {
+                $(this).removeClass('input-error');
+            });
+
+            $('#btnLogin').click(function () {
+                $("#login-errorMsg").hide();
+                var isok = true;
+                $('.login-form').find('input[type="text"], input[type="password"], textarea').each(function () {
+                    if ($(this).val() == "") {
+                        $(this).addClass('input-error');
+                        $(this).focus();
+                        isok = false;
+                        return false;
+                    }
+                    else {
+                        $(this).removeClass('input-error');
+                    }
+                });
+                if (!isok) {
+                    var msg = "账号或密码不能为空.";
+                    $("#login-errorMsg").html(msg);
+                    $("#login-errorMsg").show();
+                    return;
+                }
+                var account = $("#form-username").val();
+                var pwd = $("#form-password").val();
+
+                $.DoAjax({
+                    url: "/Home/Submit_Login",
+                    dataParams: { Account: account, Pwd: pwd },
+                    successFunc: function (msg) {
+                        console.log(msg);
+                        if (msg == "") {
+                            window.location.href = getRootPath() + "/Home/Index";
+                        }
+                        else {
+                            $("#login-errorMsg").html(msg);
+                            $("#login-errorMsg").show();
+                        }
+                    },
+                    errorFunc: function (msg) {
+                        $("#login-errorMsg").html(msg);
+                        $("#login-errorMsg").show();
+                    }
+                });
+            });
+
+        });
+
+    </script>
+
+</head>
+
+<body>
+
+    <!-- Top content -->
+    <div class="top-content">
+
+        <div class="inner-bg">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-8 col-sm-offset-2 text">
+                        <h1>基础信息管理系统</h1>
+                        <div class="description">
+                            <p>
+
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 col-sm-offset-3 form-box">
+                        <div class="form-top">
+                            <div class="form-top-left">
+                                <h3>请登录</h3>
+                                <p>在下方输入您的账号和密码:</p>
+                            </div>
+                            <div class="form-top-right">
+                                <i class="fa fa-lock"></i>
+                            </div>
+                        </div>
+                        <div class="form-bottom">
+                            <form role="form" class="login-form" autocomplete="off">
+                                <div class="form-group">
+                                    <label class="sr-only" for="form-username">Username</label>
+                                    <input type="text" name="form-username" autocomplete="off" placeholder="请输入账号..." class="form-username form-control" id="form-username">
+                                </div>
+                                <div class="form-group">
+                                    <label class="sr-only" for="form-password">Password</label>
+                                    <input type="password" name="form-password" autocomplete="off" placeholder="请输入密码..." class="form-password form-control" id="form-password">
+                                </div>
+                                <div id="login-errorMsg">
+
+                                </div>
+                                <input type="button" class="btn" id="btnLogin" value="登  录">
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                @*<div class="row">
+                        <div class="col-sm-6 col-sm-offset-3 social-login">
+                            苏州工业园区测绘地理信息有限公司&nbsp;&nbsp;技术支持
+                        </div>
+                    </div>*@
+            </div>
+        </div>
+
+    </div>
+
+
+</body>
+
+</html>

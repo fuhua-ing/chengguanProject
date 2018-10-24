@@ -1,0 +1,293 @@
+﻿@{
+    ViewBag.Title = "节假日管理";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script>
+    $(function () {
+        var today = new Date();//本日
+        var year = today.getFullYear();//本年
+        var yearList = [];//年份列表
+        yearList.push({ "value": year - 1, "text": year - 1 });
+        yearList.push({ "value": year, "text": year, "selected": true });
+        yearList.push({ "value": year + 1, "text": year + 1 });
+        $("#searchYear").combobox({
+            editable: false,
+            data: yearList
+        });
+
+        InitPika(year);
+    });
+
+    //初始化月历
+    function InitPika(Year) {
+        //获取节假日列表
+        $.DoAjax({
+            url: "/HolidayManager/GetList",
+            dataParams: { YearNo: Year },
+            successFunc: function (result) {
+                var jsonData = JSON.parse(result);
+                var startMonth = 1;//开始月份 1月份
+                var numTr = 0;  //记录行的个数，不满6的时候自动补齐
+                var numTd = 0;  //记录一行的个数，到达7的时候创建tr
+                var _html = "";
+                for (; startMonth <= 12; startMonth++) {
+                    _html += '<div class="pika-single">';
+                    _html += '      <div class="pika-single-content" >';
+                    _html += '          <div class="pika-title">' + startMonth + '月份</div>';
+                    _html += '          <table class="pika-table">';
+                    _html += '              <thead>';
+                    _html += '                  <tr>';
+                    _html += '                      <th><abbr title="星期天">日</abbr></th>';
+                    _html += '                      <th><abbr title="星期一">一</abbr></th>';
+                    _html += '                      <th><abbr title="星期二">二</abbr></th>';
+                    _html += '                      <th><abbr title="星期三">三</abbr></th>';
+                    _html += '                      <th><abbr title="星期四">四</abbr></th>';
+                    _html += '                      <th><abbr title="星期五">五</abbr></th>';
+                    _html += '                      <th><abbr title="星期六">六</abbr></th>';
+                    _html += '                  </tr>';
+                    _html += '              </thead>';
+                    _html += '              <tbody>';
+
+                    numTr = 0;  //记录行的个数，不满6的时候自动补齐
+                    numTd = 0;  //记录一行的个数，到达7的时候创建tr
+                    //本月第一天是星期几（距星期日离开的天数）
+                    var startDay = new Date(Year, startMonth - 1, 1).getDay();
+                    //本月有多少天(即最后一天的getDate()，但是最后一天不知道，我们可以用“上个月的0来表示本月的最后一天”)
+                    var nDays = new Date(Year, startMonth, 0).getDate();
+                    //第一行
+                    _html += '                  <tr>';
+                    numTr++;
+                    //开始第一天非第一列，补齐第一行格子
+                    for (var i = 0; i < startDay; i++) {
+                        _html += '                   <td><div class="day"></div><div class="lunar-day"></div></td>';
+                        numTd++;
+                    }
+                    for (var j = 1; j <= nDays; j++) {
+                        _html += '                  <td>';
+                        _html += '                      <div class="day">' + j + '</div>';
+                        let holiday = "";
+                        let holidayID = "";
+                        for (var n = 0; n < jsonData.length; n++) {
+                            if (jsonData[n].Holiday == Year.toString() + "-" + (startMonth < 10 ? "0" : "") + startMonth.toString() + "-" + (j < 10 ? "0" : "") + j.toString()) {
+                                holiday = jsonData[n].Note;
+                                holidayID = jsonData[n].ID;
+                                break;
+                            }
+                        }
+                        _html += holiday == "" ? '<div class="lunar-day"></div>' : '<div class="lunar-day enable" ID="' + holidayID + '">' + holiday + '</div>';
+                        _html += '                   </td>';
+                        numTd++;
+                        if (numTd == 7) {
+                            //如果已经到一行（一周）了，重新创建tr
+                            numTd = 0;
+                            _html += '</tr><tr>';
+                            numTr++;
+                        }
+                    }
+                    //如果日期全部加载完，一行没有画满，需要补充完整格子
+                    if (numTd < 7)
+                        for (; numTd < 7; numTd++)
+                            _html += '<td><div class="day"></div><div class="lunar-day"></div></td>';
+
+                    _html += '</tr>';
+                    //如果行数不满6行，需要补充行格子
+                    if (numTr < 6) {
+                        _html += '<tr>';
+                        for (var k = 0; k < 7; k++)
+                            _html += '<td><div class="day"></div><div class="lunar-day"></div></td>';
+                        _html += '</tr>';
+                    }
+                    _html += '</tbody></table></div></div>';
+                }
+
+                $("#test").html(_html);
+
+                //日期选择事件
+                $(".pika-table tbody td").click(function () {
+                    $("td").removeClass("checked");
+                    $(this).addClass("checked");
+                });
+            }
+        });
+    }
+
+
+    //查询
+    function Search() {
+        InitPika($("#searchYear").combobox('getValue'));
+    }
+
+    //新增
+    function AddDay() {
+        $("#win").OpenWin({ title: "节假日-新增", url: "../HolidayManager/HolidayForm", width: 400, height: 300 });
+    }
+    //修改
+    function EditDay() {
+        if ($('td.checked').length == 0) {
+            $.messager.alert('提示', '请先选择日期！');
+            return;
+        }
+        if ($('td.checked .enable').length == 0) {
+            $.messager.alert('提示', '所选日期并非节假日，请重新选择！');
+            return;
+        }
+        var ID = $('td.checked .enable').eq(0).attr("ID");
+        $("#win").OpenWin({ title: "节假日-编辑", url: "../HolidayManager/HolidayForm?ID=" + ID, width: 400, height: 300 });
+    }
+    //删除
+    function DelDay() {
+        if ($('td.checked').length == 0) {
+            $.messager.alert('提示', '请先选择日期！');
+            return;
+        }
+        if ($('td.checked .enable').length == 0) {
+            $.messager.alert('提示', '所选日期并非节假日，请重新选择！');
+            return;
+        }
+        $.messager.confirm('确认', '确认删除该节假日？', function (r) {
+            if (r) {
+                var ID = $('td.checked .enable').eq(0).attr("ID");
+                $.DoAjax({
+                    needWaiting:true,
+                    url: "/HolidayManager/DelInfo",
+                    dataParams: { ID: ID },
+                    successFunc: function (result) {
+                        if (result.StatusCode == "200") {
+                            $.messager.alert('提示', '删除成功', 'info', function () {
+                                $('td.checked .enable').html('');
+                                $('td.checked .enable').removeClass('enable');
+                            });
+                        }
+                        else {
+                            console.log(result);
+                            $.messager.alert('提示', '删除失败');
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    //回调方法
+    function callback(isOk) {
+        $("#win").window("close");
+        if (isOk)
+            Search();
+    }
+
+</script>
+<style>
+    .sipac_rtsearchbar {
+        width: 300px;
+    }
+
+        .sipac_rtsearchbar .textbox {
+            display: block;
+            float: left;
+            height: 35px;
+        }
+
+        .sipac_rtsearchbar .textbox-text, .sipac_rtsearchbar .textbox-icon {
+            height: 35px !important;
+            color: #333 !important;
+        }
+
+    .pika-single {
+        float: left;
+        width: 16%;
+        margin: 20px 0;
+    }
+
+    .pika-single-content {
+        box-shadow: none;
+        width: 90%;
+        margin: auto;
+        padding: 8px;
+        color: #333;
+        background: #fff;
+        border: 1px solid #ccc;
+        border-right-color: #bbb;
+        border-bottom-color: #bbb;
+        box-shadow: 2px 4px 5px #bdbdbd;
+    }
+
+    .pika-title {
+        text-align: center;
+        font-size: 16px;
+    }
+
+    .pika-table {
+        width: 100%;
+        border-collapse: collapse;
+        border-spacing: 0;
+        border: 0;
+    }
+
+
+        .pika-table th {
+            color: #999;
+            font-size: 12px;
+            line-height: 25px;
+            font-weight: 700;
+            text-align: center;
+            width: 30px;
+            height: 25px;
+        }
+
+        .pika-table abbr {
+            cursor: default;
+            text-decoration: none;
+            border: none;
+        }
+
+        .pika-table td {
+            cursor: pointer;
+            border: 1px solid #f1ebe4;
+            text-align: center;
+            color: #565555;
+        }
+
+            .pika-table td:hover, .pika-table td.checked {
+                color: #fff;
+                background-color: orange;
+            }
+
+            .pika-table td .day {
+                font-weight: 600;
+                height: 20px;
+                font-size: 15px;
+            }
+
+            .pika-table td .lunar-day {
+                font-weight: 400;
+                height: 24px;
+                font-size: 12px;
+            }
+
+            .pika-table td:first-child .day, .pika-table th:first-child, .pika-table td:last-child .day, .pika-table th:last-child, .enable {
+                color: red;
+            }
+</style>
+
+<div id="win"></div>
+<div class="content_grid">
+    <div class="StTitle" id="ToolBar">
+        <div class="sipac_rtsearchbar">
+            <input class="easyui-combobox" id="searchYear" data-options='' />
+            <input class="StBtn_submit" type="button" value="查询" onclick="Search() ">
+        </div>
+        <div class="sipac_table_menu">
+            <a href="#" onclick="AddDay()">新增</a><em></em>
+            <a href="#" onclick="EditDay()">修改</a><em></em>
+            <a href="#" onclick="DelDay()">删除</a><em></em>
+            <a href="#" onclick="Search()">刷新</a><em></em>
+        </div>
+    </div>
+
+    <div id="test"></div>
+</div>
+
+
+
+

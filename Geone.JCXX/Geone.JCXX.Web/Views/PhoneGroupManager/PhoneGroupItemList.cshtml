@@ -1,0 +1,155 @@
+﻿@{
+    ViewBag.Title = "号码管理";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script>
+
+    $(function () {
+
+        var GroupID = getQueryString("GroupID");
+        $("#hfGroupID").val(GroupID);
+        //初始化表格
+        var param = $("#queryTab").getJsonValues().jsonData;
+
+        $('#gd_url').InitGird({ url: "../PhoneGroupManager/GetItemGrid", queryParams: param });
+
+        InitSize();
+
+        //搜索栏切换显示
+        $(".StTitle .s_s_morebtn,.s_s_close a").click(function () {
+            $(".sipac_rtsearchbar").toggle();
+            $(".sipac_searchBox").toggle();
+            InitSize();
+        });
+
+        $(window).resize(function () {
+            InitSize();
+        });
+    })
+
+    //初始化尺寸
+    function InitSize() {
+        $(".content_grid_lft").height($(window).height() - 20);
+        $('#gd_url').datagrid('resize', {
+            width: $(window).width() - 60,
+            height: $(window).height() - 20
+        });
+    }
+    //查询
+    function Search() {
+        var param = $("#queryTab").getJsonValues().jsonData;
+        $('#gd_url').datagrid("load", param);
+    }
+    //刷新
+    function Refresh() {
+        $("#queryTab .easyui-textbox").textbox('clear');
+        $("#queryTab .easyui-combobox").combobox('setValue', '');
+        Search();
+    }
+
+
+    //新增
+    function Add() {
+        var GroupID = $("#hfGroupID").val();
+        $("#win").OpenWin({ title: "短信号码组-新增", url: "../PhoneGroupManager/PhoneGroupItemForm?GroupID=" + GroupID, width: 800, height: 450 });
+    }
+    //修改
+    function Edit() {
+        if ($('#gd_url').datagrid('IsSelectedRow')) {
+            var row = $('#gd_url').datagrid('getSelected');
+            $("#win").OpenWin({ title: "短信号码组-编辑", url: "../PhoneGroupManager/PhoneGroupItemForm?ID=" + row.ID, width: 800, height: 450 });
+        }
+    }
+    //删除
+    function Del() {
+        if ($('#gd_url').datagrid('IsSelectedRow')) {
+            $.messager.confirm('确认', '确认删除？', function (r) {
+                if (r) {
+                    var row = $('#gd_url').datagrid('getSelected');
+                    $.DoAjax({
+                        needWaiting: true,
+                        url: "/PhoneGroupManager/DelItemInfo",
+                        dataParams: { ID: row.ID },
+                        successFunc: function (result) {
+                            if (result.StatusCode == "200") {
+                                $.messager.alert('提示', '删除成功', 'info', function () {
+                                    Search();
+                                    $('#treePhoneGroup').tree('reload');
+                                    parent.callback(isOk);
+                                });
+                            }
+                            else {
+                                console.log(result);
+                                $.messager.alert('提示', '删除失败');
+                            }
+                        }
+                    });
+                }
+            });
+        }
+    }
+    //回调
+    function callback(isOk) {
+        $("#win").window('close');
+        if (isOk) {
+            Search();
+            $('#treePhoneGroup').tree('reload');
+            parent.callback(isOk);
+        }
+    }
+
+
+</script>
+<div id="win"></div>
+
+<div class="content_grid_rt content_grid">
+    <div class="StTitle" id="ToolBar">
+        <div class="sipac_rtsearchbar">
+            <div class="s_s_mBox">
+                <a title="点击下拉内容较多搜索" class="s_s_morebtn" href="#">
+                    <i class="fa fa-chevron-down"></i>
+                </a>
+            </div>
+        </div>
+        <div class="sipac_searchBox sipac_form" id="queryTab">
+
+            <table>
+                <tbody>
+                    <tr>
+
+                        <th>姓名</th>
+                        <td width="35%">
+                            <input type="hidden" id="hfGroupID" name="GroupID" />
+                            <input class="easyui-textbox" name="Like_PersonName">
+                        </td>
+
+                        <th>是否有效</th>
+                        <td>
+                            <input class="easyui-combobox Dict_Enabled defaultAll" name="Enabled" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="s_s_bar"><button class="StBtn StBtn_submit" onclick="Search()">搜索</button></div>
+            <div class="s_s_close"><a href="javascript:void(0);" title="点击收起"><i class="fa fa-chevron-up"></i></a></div>
+        </div>
+        <div class="sipac_table_menu">
+            <a href="javascript:void(0);" onclick="Add()">新增</a><em></em>
+            <a href="javascript:void(0);" onclick="Edit()">修改</a><em></em>
+            <a href="javascript:void(0);" onclick="Del()">删除</a><em></em>
+            <a href="javascript:void(0);" onclick="Refresh()">刷新</a><em></em>
+        </div>
+    </div>
+
+    <table id="gd_url">
+        <thead>
+            <tr>
+                <th data-options="field:'PersonName',width:20">姓名</th>
+                <th data-options="field:'Phone',width:20">号码</th>
+                <th data-options="field:'Enabled',width:20,align:'center',formatter:formatter_valid">是否有效</th>
+                <th data-options="field:'Note',width:40">备注</th>
+            </tr>
+        </thead>
+    </table>
+</div>

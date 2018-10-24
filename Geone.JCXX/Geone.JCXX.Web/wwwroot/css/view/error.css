@@ -1,0 +1,33 @@
+html {
+    background: #f5fdff;
+}
+
+body {
+    background: url(../../images/404.jpg)no-repeat;
+    height: 80%;
+    width: 100%;
+    background-size: 100% 100%;
+    padding:0;
+    margin:0;
+}
+
+.bottom {
+    position: absolute;
+    bottom: 50px;
+    width: 100%;
+    text-align: center;
+    font-size: 1.5em;
+    color: #9d9d9d;
+}
+
+    .bottom a {
+        display: inline-block;
+        color: white;
+        background: #4e93c0;
+        cursor: pointer;
+        padding: 0.5em 3em;
+    }
+
+        .bottom a:hover {
+            background: #4281ab;
+        }

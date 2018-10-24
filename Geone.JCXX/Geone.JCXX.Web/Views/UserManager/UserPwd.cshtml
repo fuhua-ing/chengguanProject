@@ -1,0 +1,64 @@
+﻿@{
+    ViewBag.Title = "密码重置";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script>
+    $(function () {
+        var ID = getQueryString("ID");
+        $("#hfID").val(ID);
+    })
+    //保存
+    function Save() {
+        if ($("#fmInfo").form('validate'))
+            $.DoAjax({
+                needWaiting: true,
+                url: "/UserManager/PwdReset",
+                dataParams: { info: $("#fmInfo").getJsonValues().jsonStr },
+                successFunc: function (result) {
+                    if (result.StatusCode == "200") {
+                        $.messager.alert('提示', '保存成功', 'info', function () {
+                            parent.callback(true);
+                        });
+
+                    }
+                    else {
+                        console.log(result);
+                        $.messager.alert('提示', '保存失败');
+                        window.location.reload();
+                    }
+                }
+            });
+    }
+
+   
+    //取消
+    function Cancel() {
+        parent.callback(false);
+    }
+</script>
+
+
+<form id="fmInfo" autocomplete="off">
+    <input id="hfID" type="hidden" name="ID" />
+    <div class="easyui-from-row">
+        <label class="easyui-form-label">*新设密码：</label>
+        <div class="easyui-from-row-item">
+            <input type="password" class="easyui-textbox" name="Pwd" autocomplete="off" data-options="required:true" style="width:100%" />
+        </div>
+    </div>
+    <div class="easyui-from-row">
+        <label class="easyui-form-label">*确认密码：</label>
+        <div class="easyui-from-row-item">
+            <input type="password" class="easyui-textbox" name="PwdAgain" autocomplete="off" data-options="required:true,validType:'equals[\'input[name=Pwd]\']'" style="width:100%" />
+        </div>
+    </div>
+    <div class="easyui-from-row">
+        <label class="easyui-form-label"></label>
+        <div class="easyui-from-row-item">
+            <button class="StBtn StBtn_submit" onclick="Save()">保存</button>
+            <button class="StBtn StBtn_cancel" onclick="Cancel()">取消</button>
+        </div>
+    </div>
+</form>
+
+

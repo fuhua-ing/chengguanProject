@@ -1,0 +1,73 @@
+﻿@{
+    ViewBag.Title = "节假日编辑";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<script>
+    $(function () {
+        var ID = getQueryString("ID");
+
+        //编辑
+        if (ID != null && ID != "")
+            $.DoAjax({
+                url: "/HolidayManager/GetInfo",
+                dataParams: { ID: ID },
+                successFunc: function (result) {
+                    $("#fmInfo").form("load", result);
+                }
+            });
+    })
+    //保存
+    function Save() {
+        if ($("#fmInfo").form('validate'))
+            $.DoAjax({
+                needWaiting: true,
+                url: "/HolidayManager/PostInfo",
+                dataParams: { info: $("#fmInfo").getJsonValues().jsonStr },
+                successFunc: function (result) {
+                    if (result.StatusCode == "200") {
+                        $.messager.alert('提示', '保存成功', 'info', function () {
+                            parent.callback(true);
+                        });
+                    }
+                    else {
+                        console.log(result);
+                        $.messager.alert('提示', '保存失败');
+                        window.location.reload();
+                    }
+                }
+            });
+    }
+
+    //取消
+    function Cancel() {
+        parent.callback(false);
+    }
+</script>
+
+<form id="fmInfo" style="overflow: hidden;">
+    <input name="ID" type="hidden" />
+    <div class="easyui-from-row">
+        <label class="easyui-form-label">*日期：</label>
+        <div class="easyui-from-row-item">
+            <input class="easyui-datebox" name="Holiday" data-options="required:true" style="width:100%" />
+        </div>
+    </div>
+
+    <div class="easyui-from-row">
+        <label class="easyui-form-label">*备注：</label>
+        <div class="easyui-from-row-item">
+            <input class="easyui-textbox" name="Note" data-options="required:true" style="width:100%" />
+        </div>
+    </div>
+    <div class="easyui-from-row">
+        <label class="easyui-form-label">&nbsp;</label>
+        <div class="easyui-from-row-item">
+            <input type="button" class="StBtn StBtn_submit" onclick="Save()" value="保存" />
+            <input type="button" class="StBtn StBtn_cancel" onclick="Cancel()" value="取消" />
+        </div>
+    </div>
+</form>
+
+

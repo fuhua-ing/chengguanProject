@@ -1,0 +1,259 @@
+﻿@{
+    ViewBag.Title = "案件权属管理";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string Dict_CaseType = ConstHelper.Dict_CaseType;//数据字典-案件类型
+    string Dict_CaseClassI = ConstHelper.Dict_CaseClassI;//数据字典-案件大类
+    string Dict_CaseClassII = ConstHelper.Dict_CaseClassII;//数据字典-案件小类
+    string Dict_CaseClassIII = ConstHelper.Dict_CaseClassIII;//数据字典-案件子类
+    string Dict_CaseClassQSType = ConstHelper.Dict_CaseClassQSType;//数据字典-案件权属类型
+}
+
+<script>
+
+    $(function () {
+
+
+        //初始化表格
+        $('#gd_url').InitGird({ url: "../CaseClassManager/GetGrid" });
+
+        InitSize();
+        InitCombo();
+        //搜索栏切换显示
+        $(".StTitle .s_s_morebtn,.s_s_close a").click(function () {
+            $(".sipac_rtsearchbar").toggle();
+            $(".sipac_searchBox").toggle();
+            InitSize();
+        });
+
+        $(window).resize(function () {
+            InitSize();
+        });
+
+        $('#CaseType').combobox({
+            onChange: function (newValue, oldValue) {
+               
+                if (newValue == "") {
+                   
+                    clearCombobox(3);
+                }
+                else {
+                    $('#CaseClassI').InitDictCombobox({ url: '@Dict_CaseClassI', parantID: newValue });
+                }
+            }
+        });
+        $('#CaseClassI').combobox({
+            onChange: function (newValue, oldValue) {
+               
+                if (newValue == "") {
+                   
+                    clearCombobox(2);
+                }
+                else {
+                    $('#CaseClassII').InitDictCombobox({ url: '@Dict_CaseClassII', parantID: newValue });
+                }
+            }
+        });
+        $('#CaseClassII').combobox({
+            onChange: function (newValue, oldValue) {
+               
+                if (newValue == "") {
+                   
+                    clearCombobox(1);
+                }
+                else {
+                    $('#CaseClassIII').InitDictCombobox({ url: '@Dict_CaseClassIII', parantID: newValue });
+                }
+            }
+        });
+
+
+    })
+    function InitCombo() {
+        var Dict_CaseType = '@Dict_CaseType';
+       
+        var Dict_CaseClassQSType = '@Dict_CaseClassQSType';
+        $('#CaseType').InitDictCombobox({ url: Dict_CaseType });
+        $('#RoleType').InitDictCombobox({ url: Dict_CaseClassQSType });
+    }
+    function clearCombobox(level) {
+        if (level > 0) {
+            $('#CaseClassIII').combobox('loadData', []);
+            $('#CaseClassIII').combobox('setValue', '');
+        }
+        if (level > 1) {
+            $('#CaseClassII').combobox('loadData', []);
+            $('#CaseClassII').combobox('setValue', '');
+        }
+        if (level > 2) {
+          
+            $('#CaseClassI').combobox('loadData', []);
+            $('#CaseClassI').combobox('setValue', '');
+        }
+       
+        
+    }
+    //初始化尺寸
+    function InitSize() {
+        $(".content_grid_lft").height($(window).height() - 20);
+        $('#gd_url').datagrid('resize', {
+            width: $(window).width() -100,
+            height: $(window).height() - 20
+        });
+    }
+    //查询
+    function Search() {
+        var param = $("#queryTab").getJsonValues().jsonData;
+        $('#gd_url').datagrid("load", param);
+    }
+    //刷新
+    function Refresh() {
+        $("#queryTab .easyui-textbox").textbox('clear');
+        $("#queryTab .easyui-combobox").combobox('setValue', '');
+        Search();
+    }
+
+    //角色案件设置
+    function OpenGroupRole() {
+        if ($('#gd_url').datagrid('IsSelectedRow')) {
+            var row = $('#gd_url').datagrid('getSelected');
+            $("#win").OpenWin({ title: "案件权属角色", url: "../CaseClassManager/RoleCaseForm?CaseClassID=" + row.ID, width: 800, height: 500 });
+        }
+    }
+
+    //新增
+    function Add() {
+
+        $("#win").OpenWin({ title: "案件权属-新增", url: "../CaseClassManager/CaseClassForm" , width: 800, height: 450 });
+    }
+    //修改
+    function Edit() {
+        if ($('#gd_url').datagrid('IsSelectedRow')) {
+            var row = $('#gd_url').datagrid('getSelected');
+            $("#win").OpenWin({ title: "案件权属-编辑", url: "../CaseClassManager/CaseClassForm?ID=" + row.ID, width: 800, height: 450 });
+        }
+    }
+    //删除
+    function Del() {
+        if ($('#gd_url').datagrid('IsSelectedRow')) {
+            $.messager.confirm('确认', '确认删除？', function (r) {
+                if (r) {
+                    var row = $('#gd_url').datagrid('getSelected');
+                    $.DoAjax({
+                        needWaiting: true,
+                        url: "/CaseClassManager/DelInfo",
+                        dataParams: { ID: row.ID },
+                        successFunc: function (result) {
+                            if (result.StatusCode == "200") {
+                                $.messager.alert('提示', '删除成功', 'info', function () {
+                                    Search();
+
+                                });
+                            }
+                            else {
+                                console.log(result);
+                                $.messager.alert('提示', '删除失败');
+                            }
+                        }
+                    });
+                }
+            });
+        }
+    }
+    //导入
+    function Import() {
+        $("#win").OpenWin({ title: "案件权属-批量导入", url: "../CaseClassManager/CaseClassImport", width: 700, height: 350 });
+    }
+    //导出
+    function Export() {
+        var param = $("#queryTab").getJsonValues().jsonData;
+        window.location.href = "DownloadFile";
+    }
+    //回调
+    function callback(isOk) {
+
+        $("#win").window('close');
+
+        if (isOk) {
+            Search();
+
+        }
+    }
+
+
+</script>
+<div id="win"></div>
+
+
+<div class="content_grid_rt content_grid">
+    <div class="StTitle" id="ToolBar">
+        <div class="sipac_rtsearchbar">
+            <div class="s_s_mBox">
+                <a title="点击下拉内容较多搜索" class="s_s_morebtn" href="#">
+                    <i class="fa fa-chevron-down"></i>
+                </a>
+            </div>
+        </div>
+        <div class="sipac_searchBox sipac_form" id="queryTab">
+            <input type="hidden" id="hfParentID" name="ParentID" />
+            <table>
+                <tbody>
+                    <tr>
+                        <th>类型</th>
+                        <td width="25%">
+                            <input class="easyui-combobox defaultAll" id="CaseType" name="CaseType" />
+                        </td>
+                        <th>大类</th>
+                        <td width="25%">
+                            <input class="easyui-combobox defaultAll" id="CaseClassI" name="CaseClassI" />
+                        </td>
+                        <th>小类</th>
+                        <td width="25%">
+                            <input class="easyui-combobox defaultAll" id="CaseClassII" name="CaseClassII" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>子类</th>
+                        <td width="25%">
+                            <input class="easyui-combobox defaultAll" id="CaseClassIII" name="CaseClassIII" />
+                        </td>
+                        <th>权属类型</th>
+                        <td width="25%">
+                            <input class="easyui-combobox defaultAll" id="RoleType" name="RoleType" />
+                        </td>
+
+                        <th>是否有效</th>
+                        <td>
+                            <input class="easyui-combobox Dict_Enabled defaultAll" name="Enabled" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="s_s_bar"><button class="StBtn StBtn_submit" onclick="Search()">搜索</button></div>
+            <div class="s_s_close"><a href="javascript:void(0);" title="点击收起"><i class="fa fa-chevron-up"></i></a></div>
+        </div>
+        <div class="sipac_table_menu">
+            <a href="javascript:void(0);" onclick="Add()">新增</a><em></em>
+            <a href="javascript:void(0);" onclick="Edit()">修改</a><em></em>
+            <a href="javascript:void(0);" onclick="Del()">删除</a><em></em>
+            <a href="javascript:void(0);" onclick="OpenGroupRole()">角色设置</a><em></em>
+            <a href="javascript:void(0);" onclick="Import()">导入</a><em></em>
+            <a href="javascript:void(0);" onclick="Export()">导出</a><em></em>
+            <a href="javascript:void(0);" onclick="Refresh()">刷新</a><em></em>
+        </div>
+    </div>
+
+    <table id="gd_url">
+        <thead>
+            <tr>
+                <th data-options="field:'CaseTypeDesc',width:10">类型</th>
+                <th data-options="field:'CaseClassIDesc',width:15">大类</th>
+                <th data-options="field:'CaseClassIIDesc',width:15">小类</th>
+                <th data-options="field:'CaseClassIIIDesc',width:15">子类</th>
+                <th data-options="field:'RoleCount',width:10,align:'center',formatter:formatter_count">角色(个)</th>
+                <th data-options="field:'RoleTypeDesc',width:10">案件权属类型</th>
+                <th data-options="field:'NeedGrid',width:10,align:'center',formatter:formatter_YesOrNo">是否需要配置网格</th>
+                <th data-options="field:'Enabled',width:10,align:'center',formatter:formatter_valid">是否有效</th>
+            </tr>
+        </thead>
+    </table>
+</div>

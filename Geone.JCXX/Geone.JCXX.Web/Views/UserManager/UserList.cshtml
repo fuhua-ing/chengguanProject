@@ -1,0 +1,187 @@
+﻿@{
+    ViewBag.Title = "人员管理";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script>
+
+    $(function () {
+        //初始化左侧部门树
+        $('#treeDept').tree({
+            method: "post",
+            url: "../DeptManager/GetEasyuiTreeList",
+            queryParams: $("#queryTab").getJsonValues().jsonData,
+            onDblClick: function (node) {
+                //取消选择
+                $('#treeDept').find('.tree-node-selected').removeClass('tree-node-selected');
+                $("#hfParentID").val('');
+                Search();
+            },
+            onClick: function (note) {
+                $("#hfParentID").val(note.id);
+                Search();
+            }
+        });
+
+        //初始化表格
+        $('#gd_url').InitGird({ url: "../UserManager/GetGrid" });
+
+        InitSize();
+
+        //搜索栏切换显示
+        $(".StTitle .s_s_morebtn,.s_s_close a").click(function () {
+            $(".sipac_rtsearchbar").toggle();
+            $(".sipac_searchBox").toggle();
+            InitSize();
+        });
+
+        $(window).resize(function () {
+            InitSize();
+        });
+    })
+
+    //初始化尺寸
+    function InitSize() {
+        $(".content_grid_lft").height($(window).height() - 50);
+        $('#gd_url').datagrid('resize', {
+            width: $(window).width() - 300,
+            height: $(window).height() - 50
+        });
+    }
+
+    //新增
+    function Add() {
+        var parentID = $("#hfParentID").val();
+        $("#win").OpenWin({ title: "人员-新增", url: "../UserManager/UserForm?DeptID=" + parentID, width: 800, height: 500 });
+    }
+
+    //修改
+    function Edit() {
+        if ($('#gd_url').datagrid('IsSelectedRow')) {
+            var row = $('#gd_url').datagrid('getSelected');
+            $("#win").OpenWin({ title: "人员-编辑", url: "../UserManager/UserForm?ID=" + row.ID, width: 800, height: 500 });
+        }
+    }
+
+    //删除
+    function Del() {
+        if ($('#gd_url').datagrid('IsSelectedRow')) {
+            $.messager.confirm('确认', '确认删除？', function (r) {
+                if (r) {
+                    var row = $('#gd_url').datagrid('getSelected');
+                    $.DoAjax({
+                        needWaiting:true,
+                        url: "/UserManager/DelInfo",
+                        dataParams: { ID: row.ID },
+                        successFunc: function (result) {
+                            if (result.StatusCode == "200") {
+                                $.messager.alert('提示', '删除成功', 'info', function () {
+                                    Search();
+                                });
+
+                            }
+                            else {
+                                console.log(result);
+                                $.messager.alert('提示', '删除失败');
+                            }
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+    //查询
+    function Search() {
+        var param = $("#queryTab").getJsonValues().jsonData;
+        $('#gd_url').datagrid("load", param);
+    }
+
+    //刷新
+    function Refresh() {
+        $("#queryTab .easyui-textbox").textbox('clear');
+        $("#queryTab .easyui-combobox").combobox('setValue', '');
+        Search();
+    }
+
+    //密码重置
+    function PwdReset() {
+        if ($('#gd_url').datagrid('IsSelectedRow')) {
+            var row = $('#gd_url').datagrid('getSelected');
+            $("#win").OpenWin({ title: "人员-密码重置", url: "../UserManager/UserPwd?ID=" + row.ID, width: 550, height: 250 });
+        }
+    }
+
+    //回调
+    function callback(isOk) {
+        $("#win").window('close');
+        if (isOk) {
+            Search();
+            $('#treeDept').tree('reload');
+        }
+    }
+</script>
+
+<div id="win"></div>
+<div class="content_grid_lft">
+    <ul id="treeDept"></ul>
+</div>
+<div class="content_grid_rt content_grid">
+    <div class="StTitle" id="ToolBar">
+        <div class="sipac_rtsearchbar">
+            <div class="s_s_mBox">
+                <a title="点击下拉内容较多搜索" class="s_s_morebtn" href="#">
+                    <i class="fa fa-chevron-down"></i>
+                </a>
+            </div>
+        </div>
+        <div class="sipac_searchBox sipac_form" id="queryTab">
+            <input type="hidden" id="hfParentID" name="DeptParentID" />
+            <table>
+                <tbody>
+                    <tr>
+                        <th>人员账号</th>
+                        <td width="35%">
+                            <input class="easyui-textbox" name="Like_Account" >
+                        </td>
+                        <th>人员姓名</th>
+                        <td width="35%">
+                            <input class="easyui-textbox" name="Like_UserName">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>是否有效</th>
+                        <td colspan="3">
+                            <input class="easyui-combobox Dict_Enabled defaultAll" name="Enabled" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="s_s_bar"><button class="StBtn StBtn_submit" onclick="Search()">搜索</button></div>
+            <div class="s_s_close"><a href="#" title="点击收起"><i class="fa fa-chevron-up"></i></a></div>
+        </div>
+        <div class="sipac_table_menu">
+            <a href="javascript:void(0);" onclick="Add()">新增</a><em></em>
+            <a href="javascript:void(0);" onclick="Edit()">修改</a><em></em>
+            <a href="javascript:void(0);" onclick="Del()">删除</a><em></em>
+            <a href="javascript:void(0);" onclick="Refresh()">刷新</a><em></em>
+            <a href="javascript:void(0);" onclick="PwdReset()">密码重置</a><em></em>
+        </div>
+    </div>
+
+    <table id="gd_url">
+        <thead>
+            <tr>
+                <th data-options="field:'DeptName',width:150">所属部门</th>
+                <th data-options="field:'UserCode',width:150">人员编号</th>
+                <th data-options="field:'Account',width:150">登录账号</th>
+                <th data-options="field:'UserName',width:150">人员姓名</th>
+                <th data-options="field:'Gender',width:100">性别</th>
+                <th data-options="field:'IDNumber',width:200">身份证号</th>
+                <th data-options="field:'Mobile',width:200">联系方式</th>
+                <th data-options="field:'Email',width:200">邮箱地址</th>
+                <th data-options="field:'Note',width:400">备注</th>
+                <th data-options="field:'Enabled',width:100,align:'center',formatter:formatter_valid">是否有效</th>
+            </tr>
+        </thead>
+    </table>
+</div>

@@ -1,0 +1,31 @@
+﻿@{
+    Layout = null;
+}
+<link href="~/css/view/error.css" rel="stylesheet" />
+<script src="~/js/tool.js"></script>
+<script>
+    //得到根窗口对象
+    function getWindow() {
+        var w = window;
+        while (w.parent.location.href != w.location.href) { w = w.parent; }
+        return w;
+    }
+    function Login() {
+        getWindow().location.href = "Login";
+    }
+</script>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>错误</title>
+</head>
+<body>
+    <div class="top"></div>
+    <div class="bottom">
+        <a onclick="Login()">点击返回登录</a>
+    </div>
+</body>
+</html>

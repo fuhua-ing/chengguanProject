@@ -1,0 +1,177 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<link href="~/css/view/index.css" rel="stylesheet" />
+<style>
+    .fi-li i {
+        font-size: 28px;
+        color: white;
+        display: inline-block;
+        width: 100%;
+        text-align: center;
+        margin-top: 12px;
+    }
+</style>
+<script>
+    $(function () {
+        $("#cc-c").width($(window).width() - 60);
+
+        $.getJSON(getRootPath() + "/json/menu.json", function (result) {
+            LoadMenu(".index_menu", result);
+        });
+
+        $(".more,.dropdown_nav").mouseover(function () {
+            $(".dropdown_nav").show();
+        });
+        $(".more,.dropdown_nav").mouseout(function () {
+            $(".dropdown_nav").hide();
+        });
+    });
+
+    //注销
+    function Logout() {
+        $.messager.confirm("提示", "确认注销登录吗？", function (r) {
+            if (r) {
+                var url = getRootPath() + "/Home/Logout";
+                window.location.href = url;
+            }
+        });
+
+    }
+
+
+
+    //加载菜单
+    function LoadMenu(menuobj, menu) {
+        let _html = '<ul class="fi-ul">';
+        $.each(menu, function (idx, item) {
+            if (item.children.length == 0) {
+                _html += '<li class="fi-li" dd-id="' + item.id + '" dd-name="' + item.name + '" dd-url="' + item.url
+                    + '"><i class="fa ' + item.icon + '" ></i><ul class="sec-ul">'
+                    + '<li class="sec-li" dd-id="' + item.id + '" dd-name="' + item.name + '" dd-url="' + item.url + '"><a>' + item.name + '</a></li></ul></li>';
+            }
+            else {
+                _html += '<li class="fi-li"><i class="fa ' + item.icon + '" ></i><ul class="sec-ul">';
+                $.each(item.children, function (idx2, item2) {
+                    _html += '<li class="sec-li" dd-id="' + item2.id + '" dd-name="' + item2.name + '" dd-url="' + item2.url + '"><a>' + item2.name + '</a></li>';
+                });
+                _html += '</ul>';
+            }
+        });
+        _html += '</ul>';
+        $(menuobj).html(_html);
+        if ($('.fi-li .sec-ul:eq(0) li').length == 1)
+            $('.fi-li .sec-ul:eq(0)').remove();
+        //目录事件
+        $('.fi-li,.sec-li').on('click', function () {
+            var id = $(this).attr("dd-id");
+            if (id != undefined && id != null) {
+                var title = $(this).attr("dd-name");
+                var url = $(this).attr("dd-url");
+                $(".fi-ul li").removeClass("on");
+                $(this).addClass("on");
+                addTab(id, title, url);
+            }
+        });
+        //添加固定首页
+        $(menuobj + " li").eq(0).click();
+    }
+    //添加tab窗口
+    function addTab(menuid, menutext, url, _closable) {
+        if (url == "" || url == "#")
+            return;
+        url = ".." + url;
+        _closable = (_closable == undefined || null) & menuid != "index" ? true : _closable;
+        //url = getRootPath() + url;
+        var isexist = $('#mainTabs').tabs('existsById', menuid)
+        if (isexist)
+            $('#mainTabs').tabs("selectById", menuid);
+        else {
+            $('#mainTabs').tabs('add', {
+                id: menuid,
+                title: menutext,
+                loadingMessage: "正在加载数据...",
+                cache: false,
+                content: "<iframe id='icontent' marginheight='0' marginwidth='0' frameborder='0' scrolling='auto' width='100%' height='98%' src='" + url + "'/>",
+                closable: _closable
+            });
+        }
+
+    }
+    //刷新tab
+    function refeshTab(menuid, _closable) {
+        _closable = _closable == undefined || null ? true : _closable;
+        var tabPanel = $('#mainTabs');
+        var currentTab = tabPanel.tabs('getSelected');//当前tab
+        var refeshTab = tabPanel.tabs("getTabById", menuid);//需要刷新的tab
+        if (currentTab.panel('options').id != menuid) {
+            //如果两个tab不同，需要先选中要刷新的tab
+            tabPanel.tabs("select", menuid);
+        }
+        var url = $(refeshTab.panel('options').content).attr('src');//获取需要刷新的tab的url
+        tabPanel.tabs('update', {
+            tab: refeshTab,
+            options: {
+                id: menuid,
+                //title: menutext,
+                loadingMessage: "正在加载数据...",
+                cache: false,
+                content: "<iframe id='icontent' marginheight='0' marginwidth='0' frameborder='0' scrolling='auto' width='100%' height='100%' src='" + url + "'/>",
+                closable: true
+            }
+        });
+        //返回选中之前的tab
+        tabPanel.tabs("selectById", currentTab.panel('options').id);
+    };
+    //选中tab
+    function selectTab(menuid) {
+        $('#mainTabs').tabs("select", menuid);
+    }
+    //关闭tab
+    function closeTab(menuid) {
+        var tabPanel = $('#mainTabs');
+        var tab = tabPanel.tabs("getTabById", menuid);
+        var index = tabPanel.tabs('getTabIndex', tab);
+        tabPanel.tabs('close', index);
+    }
+
+</script>
+
+
+
+<div class="easyui-layout" id="cc-c" data-options="fit:true" style="margin: 0 0 0 60px;">
+    <div class="index_menu">
+
+    </div>
+    <div data-options="region:'north'" class="index_top">
+        <div class="lft_title">基础信息管理系统</div>
+
+        <div class="rt_box">
+            <div class="TopTip">
+                <i class="fa fa-bell-o "></i>
+                <span class="badge-dot"></span>
+            </div>
+            <div class="avatar">&nbsp;</div>
+            <div id="MenuUserName" class="username" title="xxxx">
+                管理员
+            </div>
+            <div class="more">
+                <i class=" fa fa-ellipsis-v"></i>
+            </div>
+        </div>
+
+    </div>
+    <div data-options="region:'center'" class="index_center" style="margin-left:5px">
+        <div id="mainTabs" class="easyui-tabs" data-options="fit:true,border:false"></div>
+    </div>
+</div>
+<div class="dropdown_nav">
+    <em></em>
+    <ul>
+        <li class=""><a href="javascript:void(0);">操作手册</a></li>
+        <li class=""><a href="javascript:void(0);">系统帮助</a></li>
+        <li class=""><a href="javascript:void(0);">系统日志</a></li>
+        <li class=""><a href="javascript:void(0);">个人中心</a></li>
+        <li class=""><a href="javascript:Logout()">退出</a></li>
+    </ul>
+</div>

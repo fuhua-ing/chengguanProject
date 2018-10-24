@@ -1,0 +1,146 @@
+﻿@{
+    ViewBag.Title = "菜单编辑";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script>
+    var ID = getQueryString("ID");
+    var AppID = getQueryString("AppID");
+    var ParentID = getQueryString("ParentID");
+    $(function () {
+        //编辑
+        if (ID != null && ID != "") {
+            $.DoAjax({
+                url: "/AppMenuManager/GetInfo",
+                dataParams: { ID: ID },
+                successFunc: function (result) {
+                    $("#fmInfo").form("load", result);
+                    AppID = result.AppID;
+                    ParentID = result.ParentID;
+                    BindParentMenu();
+                }
+            });
+        } else {
+            $("#AppID").val(AppID);
+            BindParentMenu();
+        }
+    });
+
+
+    function BindParentMenu() {
+        //初始化树形选择框
+        $('#ParentID').combotree({
+            method: "post",
+            url: "../AppMenuManager/GetEasyuiTreeList",
+            queryParams: { AppID: AppID },
+            loadFilter: function (data, parent) {
+                data.unshift({ id: "0", text: "——清除选中——" });
+                return data;
+            },
+            onBeforeSelect: function (node, checked) {
+                //不能选择自己
+                if (node.id == $(":input[name='ID']").val())
+                    return false;
+            },
+            onSelect: function (node) {
+                //清除选中
+                if (0 == node.id)
+                    $('#ParentID').combotree('clear');
+            },
+            onLoadSuccess: function (node, data) {
+                if (ParentID != "") {
+                    $('#ParentID').combotree('setValue', ParentID);
+                }
+            }
+        });
+    }
+
+    //保存
+    function Save() {
+        if ($("#fmInfo").form('validate'))
+            $.DoAjax({
+                needWaiting:true,
+                url: "/AppMenuManager/PostInfo",
+                dataParams: { info: $("#fmInfo").getJsonValues().jsonStr },
+                successFunc: function (result) {
+                    if (result.StatusCode == "200") {
+                        $.messager.alert('提示', '保存成功', 'info', function () {
+                            parent.callback(true);
+                        });
+
+                    }
+                    else {
+                        console.log(result);
+                        $.messager.alert('提示', '保存失败');
+                        window.location.reload();
+                    }
+                }
+            });
+    }
+
+    //取消
+    function Cancel() {
+        parent.callback(false);
+    }
+</script>
+<form id="fmInfo">
+    <input type="hidden" name="ID" />
+    <input type="hidden" name="AppID" id="AppID" />
+    <div class="easyui-from-row">
+        <div class="easyui-from-row-col6">
+            <label class="easyui-form-label">上级菜单：</label>
+            <div class="easyui-from-row-item">
+                <input class="easyui-combotree" name="ParentID" id="ParentID" style="width:100%" />
+            </div>
+        </div>
+    </div>
+    <div class="easyui-from-row">
+        <div class="easyui-from-row-col6">
+            <label class="easyui-form-label">*菜单编号：</label>
+            <div class="easyui-from-row-item">
+                <input class="easyui-textbox" name="MenuCode" data-options="required:true" style="width:100%" />
+            </div>
+        </div>
+        <div class="easyui-from-row-col6">
+            <label class="easyui-form-label">*菜单名称：</label>
+            <div class="easyui-from-row-item">
+                <input class="easyui-textbox" name="MenuName" data-options="required:true" style="width:100%" />
+            </div>
+        </div>
+    </div>
+    <div class="easyui-from-row">
+        <div class="easyui-from-row-col6">
+            <label class="easyui-form-label">菜单路径：</label>
+            <div class="easyui-from-row-item">
+                <input class="easyui-textbox" name="MenuUrl" style="width:100%" />
+            </div>
+        </div>
+        <div class="easyui-from-row-col6">
+            <label class="easyui-form-label">菜单图标：</label>
+            <div class="easyui-from-row-item">
+                <input class="easyui-textbox" name="Icon" style="width:100%" />
+            </div>
+        </div>
+    </div>
+    <div class="easyui-from-row">
+        <label class="easyui-form-label">备注：</label>
+        <div class="easyui-from-row-item">
+            <input class="easyui-textbox" name="Note" data-options="multiline:true" style="width:100%;height:80px" />
+        </div>
+    </div>
+    <div class="easyui-from-row">
+        <div class="easyui-from-row-col6">
+            <label class="easyui-form-label">*是否有效：</label>
+            <div class="easyui-from-row-item">
+                <input class="easyui-combobox Dict_Enabled" name="Enabled" value="1" />
+            </div>
+        </div>
+    </div>
+</form>
+<div class="easyui-from-row">
+    <label class="easyui-form-label"></label>
+    <div class="easyui-from-row-item">
+        <button class="StBtn StBtn_submit" onclick="Save()">保存</button>
+        <button class="StBtn StBtn_cancel" onclick="Cancel()">取消</button>
+    </div>
+</div>
+

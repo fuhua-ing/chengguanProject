@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>基础信息管理系统 - @ViewData["Title"]</title>
+
+    <link href="~/lib/jquery-easyui-1.5/themes/bootstrap/easyui.css" rel="stylesheet" />
+    <link href="~/lib/jquery-easyui-1.5/themes/icon.css" rel="stylesheet" />
+    <link href="~/css/font-awesome/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/css/re_easyui.css" rel="stylesheet" />
+    <link href="~/css/view/common.css" rel="stylesheet" />
+
+    <script src="~/lib/jquery/jquery-1.10.2.min.js"></script>
+    <script src="~/lib/jquery-easyui-1.5/jquery.easyui.min.js"></script>
+    <script src="~/lib/jquery-easyui-1.5/easyui-extend.js"></script>
+    <script src="~/lib/jquery-easyui-1.5/easyui-lang-zh_CN.js"></script>
+    <script src="~/lib/jquery-easyui-1.5/validateextend.js"></script>
+    <script src="~/js/tool.js"></script>
+
+
+    <environment include="Development">
+
+    </environment>
+    <environment exclude="Development">
+
+    </environment>
+
+    <style>
+        #win {
+            margin: auto;
+        }
+
+        .content_grid_top {
+            padding: 5px 10px;
+            border-bottom: 1px solid #e6e6e6;
+        }
+
+        .content_grid_lft .sipac_table_menu {
+            border-bottom: 1px solid #e6e6e6;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        .easyui-from-row {
+            margin-bottom: 15px;
+            clear: both;
+        }
+
+        .easyui-from-row-col6 {
+            width: 50%;
+            float: left;
+            margin-bottom: 15px;
+        }
+
+        .easyui-form-label {
+            float: left;
+            display: block;
+            padding: 4px 15px;
+            width: 100px;
+            font-weight: 400;
+            line-height: 20px;
+            text-align: right;
+        }
+
+        .easyui-from-row-item {
+            margin-left: 130px;
+            /*margin-right: 130px;*/
+            position: relative;
+        }
+    </style>
+    <script>
+        $(function () {
+            //数据字典-有效性
+            $('.Dict_Enabled').InitDictCombobox({ url: '@ConstHelper.Dict_Enabled' });
+        });
+    </script>
+
+</head>
+<body>
+    @RenderBody()
+</body>
+</html>

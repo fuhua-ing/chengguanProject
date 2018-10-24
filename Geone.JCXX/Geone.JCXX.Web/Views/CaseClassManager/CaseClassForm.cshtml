@@ -1,0 +1,166 @@
+﻿@{
+    ViewBag.Title = "案件权属编辑";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string Dict_CaseType = ConstHelper.Dict_CaseType;//数据字典-案件类型
+    string Dict_CaseClassI = ConstHelper.Dict_CaseClassI;//数据字典-案件大类
+    string Dict_CaseClassII = ConstHelper.Dict_CaseClassII;//数据字典-案件小类
+    string Dict_CaseClassIII = ConstHelper.Dict_CaseClassIII;//数据字典-案件子类
+    string Dict_CaseClassQSType = ConstHelper.Dict_CaseClassQSType;//数据字典-案件权属类型
+}
+
+<script>
+
+    $(function () {
+        var ID = getQueryString("ID");
+        InitCombo();
+        //编辑
+        if (ID != null && ID != "") {
+            $.DoAjax({
+                url: "/CaseClassManager/GetInfo",
+                dataParams: { ID: ID },
+                successFunc: function (result) {
+                    $("#fmInfo").form("load", result);
+
+                }
+            });
+        }
+        $('#CaseType').combobox({
+            onChange: function (newValue, oldValue) {
+
+
+                    $('#CaseClassI').InitDictCombobox({ url: '@Dict_CaseClassI', parantID: newValue });
+                    clearCombobox(3);
+
+            }
+        });
+        $('#CaseClassI').combobox({
+            onChange: function (newValue, oldValue) {
+
+                    $('#CaseClassII').InitDictCombobox({ url: '@Dict_CaseClassII', parantID: newValue });
+                    clearCombobox(2);
+
+            }
+        });
+        $('#CaseClassII').combobox({
+            onChange: function (newValue, oldValue) {
+
+               
+                    $('#CaseClassIII').InitDictCombobox({ url: '@Dict_CaseClassIII', parantID: newValue });
+                    clearCombobox(1);
+               
+            }
+        });
+    });
+    function InitCombo() {
+        var Dict_CaseType = '@Dict_CaseType';
+
+        var Dict_CaseClassQSType = '@Dict_CaseClassQSType';
+        $('#CaseType').InitDictCombobox({ url: Dict_CaseType });
+        $('#RoleType').InitDictCombobox({ url: Dict_CaseClassQSType });
+    }
+    function clearCombobox(level) {
+
+
+        if (level > 2) {
+
+            $('#CaseClassI').combobox('loadData', []);
+            $('#CaseClassI').combobox('setValue', '');
+        }
+        if (level > 1) {
+            $('#CaseClassII').combobox('loadData', []);
+            $('#CaseClassII').combobox('setValue', '');
+        }
+        if (level > 0) {
+
+            $('#CaseClassIII').combobox('loadData', []);
+            $('#CaseClassIII').combobox('setValue', '');
+        }
+
+    }
+    //保存
+    function Save() {
+        if ($("#fmInfo").form('validate'))
+            $.DoAjax({
+                needWaiting: true,
+                url: "/CaseClassManager/PostInfo",
+                dataParams: { info: $("#fmInfo").getJsonValues().jsonStr },
+                successFunc: function (result) {
+                    if (result.StatusCode == "200") {
+                        $.messager.alert('提示', '保存成功', 'info', function () {
+                            parent.callback(true);
+                        });
+                    }
+                    else {
+                        console.log(result);
+                        $.messager.alert('提示', '保存失败');
+                        window.location.reload();
+                    }
+                }
+            });
+    }
+
+    //取消
+    function Cancel() {
+        parent.callback(false);
+    }
+</script>
+
+
+<form id="fmInfo">
+    <input type="hidden" name="ID" />
+    <div class="easyui-from-row">
+
+        <div class="easyui-from-row-col6">
+            <label class="easyui-form-label">*类型：</label>
+            <div class="easyui-from-row-item">
+                <input class="easyui-combobox" id="CaseType" name="CaseType" data-options="required:true" style="width:100%" />
+            </div>
+        </div>
+
+        <div class="easyui-from-row-col6">
+            <label class="easyui-form-label">*大类：</label>
+            <div class="easyui-from-row-item">
+                <input class="easyui-combobox" id="CaseClassI" name="CaseClassI" data-options="required:true" style="width:100%" />
+            </div>
+        </div>
+    </div>
+    <div class="easyui-from-row">
+        <div class="easyui-from-row-col6">
+            <label class="easyui-form-label">*小类：</label>
+            <div class="easyui-from-row-item">
+                <input class="easyui-combobox" id="CaseClassII" name="CaseClassII" data-options="required:true" style="width:100%" />
+            </div>
+        </div>
+
+        <div class="easyui-from-row-col6">
+            <label class="easyui-form-label">*子类：</label>
+            <div class="easyui-from-row-item">
+                <input class="easyui-combobox" id="CaseClassIII" name="CaseClassIII" data-options="required:true" style="width:100%" />
+            </div>
+        </div>
+    </div>
+    <div class="easyui-from-row">
+        <div class="easyui-from-row-col6">
+            <label class="easyui-form-label">*权属类型：</label>
+            <div class="easyui-from-row-item">
+                <input class="easyui-combobox" id="RoleType" name="RoleType" data-options="required:true" style="width:100%" />
+            </div>
+        </div>
+        <div class="easyui-from-row-col6">
+            <label class="easyui-form-label">*是否有效：</label>
+            <div class="easyui-from-row-item">
+                <input class="easyui-combobox Dict_Enabled" name="Enabled" value="1" />
+            </div>
+        </div>
+    </div>
+    <div class="easyui-from-row">
+        <label class="easyui-form-label">&nbsp;</label>
+        <div class="easyui-from-row-item">
+            <input type="button" class="StBtn StBtn_submit" onclick="Save()" value="保存" />
+            <input type="button" class="StBtn StBtn_cancel" onclick="Cancel()" value="取消" />
+        </div>
+    </div>
+</form>
+
+
+

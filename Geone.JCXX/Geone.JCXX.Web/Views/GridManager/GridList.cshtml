@@ -1,0 +1,177 @@
+﻿@{
+    ViewBag.Title = "网格管理";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string Dict_GridType = ConstHelper.Dict_GridType;//数据字典-网格类型
+}
+
+
+<script>
+    var Dict_GridType = '@Dict_GridType';
+
+    $(function () {
+        //初始化表格
+        $('#gd_url').InitGird({ url: "../GridManager/GetGrid" });
+        //初始化数据字典
+        $('#GridType').InitDictCombobox({ url: Dict_GridType });
+        InitSize();
+
+        //搜索栏切换显示
+        $(".StTitle .s_s_morebtn,.s_s_close a").click(function () {
+            $(".sipac_rtsearchbar").toggle();
+            $(".sipac_searchBox").toggle();
+            InitSize();
+        });
+        $(window).resize(function () {
+            InitSize();
+        });
+    })
+
+    //初始化尺寸
+    function InitSize() {
+        $('#gd_url').datagrid('resize', {
+            width: $(window).width() - 100,
+            height: $(window).height() - 20
+        });
+    }
+
+    //查询
+    function Search() {
+        var param = $("#queryTab").getJsonValues().jsonData;
+        $('#gd_url').datagrid("load", param);
+    }
+    //刷新
+    function Refresh() {
+        $("#queryTab .easyui-textbox").textbox('clear');
+        $("#queryTab .easyui-combobox").combobox('setValue', '');
+        Search();
+    }
+    //新增
+    function Add() {
+        $("#win").OpenWin({ title: "网格-新增", url: "../GridManager/GridForm", width: 800, height: 550 });
+    }
+    //修改
+    function Edit() {
+        if ($('#gd_url').datagrid('IsSelectedRow')) {
+            var row = $('#gd_url').datagrid('getSelected');
+            $("#win").OpenWin({ title: "网格-编辑", url: "../GridManager/GridForm?ID=" + row.ID, width: 800, height: 550 });
+        }
+    }
+    //删除
+    function Del() {
+        if ($('#gd_url').datagrid('IsSelectedRow')) {
+            $.messager.confirm('确认', '确认删除？', function (r) {
+                if (r) {
+                    var row = $('#gd_url').datagrid('getSelected');
+                    $.DoAjax({
+                        needWaiting: true,
+                        url: "/GridManager/DelInfo",
+                        dataParams: { ID: row.ID },
+                        successFunc: function (result) {
+                            if (result.StatusCode == "200") {
+                                $.messager.alert('提示', '删除成功', 'info', function () {
+                                    Search();
+                                });
+                            }
+                            else {
+                                console.log(result);
+                                $.messager.alert('提示', '删除失败');
+                            }
+                        }
+                    });
+                }
+            });
+        }
+    }
+    //网格权属角色设置
+    function OpenGroupRole() {
+        if ($('#gd_url').datagrid('IsSelectedRow')) {
+            var row = $('#gd_url').datagrid('getSelected');
+            $("#win").OpenWin({ title: "网格权属角色", url: "../GridManager/RoleGridForm?ID=" + row.ID, width: 800, height: 500 });
+        }
+    }
+    //导入
+    function Import() {
+        $("#win").OpenWin({ title: "网格-批量导入", url: "../GridManager/GridImport", width: 700, height: 350 });
+    }
+    //导出
+    function Export() { 
+        var param = $("#queryTab").getJsonValues().jsonData;
+        window.location.href = "DownloadFile";
+    }
+    //回调
+    function callback(isOk) {
+        $("#win").window('close');
+        if (isOk)
+            Search();
+    }
+
+
+</script>
+
+<div id="win">
+
+</div>
+
+
+<div class="content_grid">
+    <div class="StTitle" id="ToolBar">
+        <div class="sipac_rtsearchbar">
+            @*<input class="s_s_text" type="text" value="当前栏目搜索">
+                <input class="StBtn_submit" type="submit" value="查询">*@
+            <div class="s_s_mBox">
+                <a title="点击下拉内容较多搜索" class="s_s_morebtn" href="#">
+                    <i class="fa fa-chevron-down"></i>
+                </a>
+            </div>
+        </div>
+        <div class="sipac_searchBox sipac_form" id="queryTab">
+            <table>
+                <tbody>
+                    <tr>
+                        <th>网格编号</th>
+                        <td width="35%"><input class="easyui-textbox" name="Like_GridCode"></td>
+                        <th>网格名称</th>
+                        <td width="35%"><input class="easyui-textbox" name="Like_GridName"></td>
+                    </tr>
+                    <tr>
+                        <th>网格类型</th>
+                        <td width="35%"><input class="easyui-combobox defaultAll" name="GridType" id="GridType"></td>
+                        <th>是否有效</th>
+                        <td width="35%">
+                            <input class="easyui-combobox Dict_Enabled defaultAll" name="Enabled" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="s_s_bar"><button class="StBtn StBtn_submit" onclick="Search()">搜索</button></div>
+            <div class="s_s_close"><a href="javascript:void(0);" title="点击收起"><i class="fa fa-chevron-up"></i></a></div>
+        </div>
+        <div class="sipac_table_menu">
+            <a href="javascript:void(0);" onclick="Add()">新增</a><em></em>
+            <a href="javascript:void(0);" onclick="Edit()">修改</a><em></em>
+            <a href="javascript:void(0);" onclick="Del()">删除</a><em></em>
+            <a href="javascript:void(0);" onclick="OpenGroupRole()">角色设置</a><em></em>
+            <a href="javascript:void(0);" onclick="Import()">导入</a><em></em>
+            <a href="javascript:void(0);" onclick="Export()">导出</a><em></em>
+            <a href="javascript:void(0);" onclick="Refresh()">刷新</a><em></em>
+        </div>
+    </div>
+
+    <table id="gd_url">
+        <thead>
+            <tr>
+                <th data-options="field:'GridTypeDesc',width:200">网格类型</th>
+                <th data-options="field:'GridCode',width:200">网格编号</th>
+                <th data-options="field:'GridName',width:200">网格名称</th>
+                <th data-options="field:'ShowName',width:200">显示名称</th>
+                <th data-options="field:'GridArea',width:200">网格面积(平方米)</th>
+                <th data-options="field:'RoleCount',width:200,align:'center',formatter:formatter_count">权属角色(个)</th>
+                <th data-options="field:'Note',width:400">备注</th>
+                <th data-options="field:'Enabled',width:100,align:'center',formatter:formatter_valid">是否有效</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+
+

@@ -1,0 +1,67 @@
+﻿@{
+    ViewBag.Title = "案件权属导入";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<script>
+    //保存
+    function Save() {
+        if ($("#fmInfo").form('validate')) {
+            $('#fmInfo').form('submit', {
+                url: "UploadFile",
+                success: function (data) {
+                    var result = JSON.parse(data);
+                    if (result.StatusCode == "200") {
+                        $.messager.alert('提示', '导入成功', 'info', function () {
+                            parent.callback(true);
+                        });
+                    }
+                    else {
+                        console.log(result);
+                        $.messager.alert('提示', '导入失败，原因：' + result.Message);
+                    }
+                }
+            });
+        }
+    }
+    
+
+    //取消
+    function Cancel() {
+        parent.callback(false);
+    }
+</script>
+
+
+<form id="fmInfo" enctype="multipart/form-data" method="post" action="UploadFile">
+   
+    <div class="easyui-from-row">
+        <label class="easyui-form-label">*选择文件：</label>
+        <div class="easyui-from-row-item">
+            <input class="easyui-filebox" id="upload" name="uploadfile" data-options="buttonText: '选择文件',
+        accept: 'application/json'" style="width:100%">
+
+            @*<input class="easyui-filebox" id="upload" name="uploadfile" data-options="buttonText: '选择文件',
+        accept: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel'" style="width:100%">*@
+        </div>
+    </div>
+
+    <div class="easyui-from-row">
+        <label class="easyui-form-label">&nbsp;</label>
+        <div class="easyui-from-row-item">
+            <input type="button" class="StBtn StBtn_submit" onclick="Save()" value="保存" />
+            <input type="button" class="StBtn StBtn_cancel" onclick="Cancel()" value="取消" />
+        </div>
+    </div>
+    <div class="easyui-from-row" style="color:#AAA;padding:0 10px">
+        格式说明：<br>
+        1.当前只支持Json文件的导入；<br>
+        2.Json文件的内容就是网格的Json数据，<a href="DownloadDemo?FilePath=json/CaseClassList.json">点击示例下载</a>；
+        @*1.系统只会读取工作簿的第一个工作表；<br>
+        2.工作表内容必须包含列“类型”、“大类”、“小类”、“子类”、“权属类型”且顺序不可变；*@
+    </div>
+</form>
+
+
+

@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Geone.JCXX.Meta\Geone.JCXX.Meta.csproj" />
+    <ProjectReference Include="..\..\Src\Util\Geone.Utiliy.Database\Geone.Utiliy.Database.csproj" />
+    <ProjectReference Include="..\Geone.JCXX.WebService.Meta\Geone.JCXX.WebService.Meta.csproj" />
+  </ItemGroup>
+
+</Project>

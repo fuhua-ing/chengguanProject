@@ -1,0 +1,124 @@
+﻿@{
+    ViewBag.Title = "网格编辑";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string Dict_GridType = ConstHelper.Dict_GridType;//数据字典-网格类型
+}
+<script>
+    var Dict_GridType = '@Dict_GridType';
+
+    $(function () {
+        var ID = getQueryString("ID");
+
+        //初始化数据字典
+        $('#GridType').InitDictCombobox({ url: Dict_GridType, required: true });
+
+        //编辑
+        if (ID != null && ID != "") {
+            $.DoAjax({
+                url: "/GridManager/GetInfo",
+                dataParams: { ID: ID },
+                successFunc: function (result) {
+                    $("#fmInfo").form("load", result);
+                }
+            });
+        } 
+    })
+
+    //保存
+    function Save() {
+        if ($("#fmInfo").form('validate'))
+            $.DoAjax({
+                url: "/GridManager/PostInfo",
+                dataParams: { info: $("#fmInfo").getJsonValues().jsonStr },
+                successFunc: function (result) {
+                    if (result.StatusCode == "200") {
+                        $.messager.alert('提示', '保存成功', 'info', function () {
+                            parent.callback(true);
+                        });
+                    }
+                    else {
+                        console.log(result);
+                        $.messager.alert('提示', '保存失败', 'info', function () {
+                            window.location.reload();
+                        });
+                    }
+                }
+            });
+    }
+
+    //取消
+    function Cancel() {
+        parent.callback(false);
+    }
+</script>
+
+
+<form id="fmInfo">
+    <input type="hidden" name="ID" />
+    <div class="easyui-from-row">
+        <div class="easyui-from-row-col6">
+            <label class="easyui-form-label">*网格类型：</label>
+            <div class="easyui-from-row-item">
+                <input class="easyui-combobox" name="GridType" id="GridType" style="width:100%" />
+            </div>
+        </div>
+        <div class="easyui-from-row-col6">
+            <label class="easyui-form-label">*网格编号：</label>
+            <div class="easyui-from-row-item">
+                <input class="easyui-textbox" name="GridCode" data-options="required:true" style="width:100%" />
+            </div>
+        </div>
+    </div>
+    <div class="easyui-from-row">
+        <div class="easyui-from-row-col6">
+            <label class="easyui-form-label">*网格名称：</label>
+            <div class="easyui-from-row-item">
+                <input class="easyui-textbox" name="GridName" data-options="required:true" style="width:100%" />
+            </div>
+        </div>
+        <div class="easyui-from-row-col6">
+            <label class="easyui-form-label">*显示名称：</label>
+            <div class="easyui-from-row-item">
+                <input class="easyui-textbox" name="ShowName" data-options="required:true" style="width:100%" />
+            </div>
+        </div>
+    </div>
+    <div class="easyui-from-row">
+        <div class="easyui-from-row-col6">
+            <label class="easyui-form-label">面积：</label>
+            <div class="easyui-from-row-item">
+                <input class="easyui-numberbox" name="GridArea" data-options="precision:4,min:0" style="width:100%" />
+            </div>
+        </div>
+    </div>
+    <div class="easyui-from-row">
+        <label class="easyui-form-label">*Shape：</label>
+        <div class="easyui-from-row-item">
+            <input class="easyui-textbox" name="Shape" data-options="multiline:true,required:true" style="width:100%;height:100px" />
+        </div>
+    </div>
+    <div class="easyui-from-row">
+        <label class="easyui-form-label">备注：</label>
+        <div class="easyui-from-row-item">
+            <input class="easyui-textbox" name="Note" data-options="multiline:true" style="width:100%;height:80px" />
+        </div>
+    </div>
+    <div class="easyui-from-row">
+        <div class="easyui-from-row-col6">
+            <label class="easyui-form-label">*是否有效：</label>
+            <div class="easyui-from-row-item">
+                <input class="easyui-combobox Dict_Enabled" name="Enabled" value="1" />
+            </div>
+        </div>
+    </div>
+    <div class="easyui-from-row">
+        <label class="easyui-form-label">&nbsp;</label>
+        <div class="easyui-from-row-item">
+            <input type="button" class="StBtn StBtn_submit" onclick="Save()" value="保存" />
+            <input type="button" class="StBtn StBtn_cancel" onclick="Cancel()" value="取消" />
+        </div>
+    </div>
+</form>
+
+
+

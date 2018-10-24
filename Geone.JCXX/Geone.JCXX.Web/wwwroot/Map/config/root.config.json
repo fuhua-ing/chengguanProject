@@ -1,0 +1,63 @@
+﻿{
+    "basemap": {
+        "url": "http://58.210.9.131/sipsd/rest/services/PUBLIC/Public_PC/MapServer",
+        "token":true,
+        "tokenid": "token_local"
+    },
+    "baseimg": {
+        "url": "http://58.210.9.131/sipsd/rest/services/SIPIMG/sip2017img/MapServer",
+        "token": true,
+        "tokenid": "token_local"
+    },
+    "initextent": {
+        "xmin": 57235.644737956158,
+        "ymin": 42551.117602235208,
+        "xmax": 65744.661755990179,
+        "ymax": 47308.335450004241
+    },
+    "services": {
+        "token_local": {
+            "id": "token_local",
+            "des": "获取地图Token",
+            "url": "http://58.210.9.131/DataCenter/token.ashx?f=58"
+        },
+        "token_scm": {
+            "id": "token_scm",
+            "des": "平台Token",
+            "url": "OkCLBm6MI8rVXFRVM495f4yNWUSgoI/Ot77AHGjV8Au9Oo1lRfCj+uJ1Em//qswnqoSGQgCJ3F+wzojayhrn2rBPkm8aHs0PldZA0olCHcAH+XQHYqmKWQ=="
+        },
+        "iquery": {
+            "des": "i查询",
+            "url": "http://58.210.9.131/DataCenter/iQuery.ashx?DBTag=sbczapp&method=point&radom=#radom#&x=58154.3383710078&y=45663.8828691412&layerIds=ba6bb56e-933e-4ab4-a493-5e7d456830d7"
+        }
+    },
+    "maptool": [{
+        "id": "btn_fullmap",
+        "label": "全图",
+        "img": "images/maptool/icon_btn_fullMap.png"
+    }, {
+        "id": "btn_basemap",
+        "label": "地图",
+        "img": "images/maptool/icon_satemode_map.png"
+    }, {
+        "id": "btn_imgmap",
+        "label": "影像",
+        "img": "images/maptool/icon_satemode_image.png"
+    }, {
+        "id": "btn_iquery",
+        "label": "I查询",
+        "img": "images/maptool/icon_btn_iquery.png"
+    }, {
+        "id": "btn_zoomin",
+        "label": "放大",
+        "img": "images/maptool/icon_btn_zoomIn.png"
+    }, {
+        "id": "btn_zoomout",
+        "label": "缩小",
+        "img": "images/maptool/icon_btn_zoomOut.png"
+    }, {
+        "id": "btn_clear",
+        "label": "清除",
+        "img": "images/maptool/icon_btn_clear.png"
+    }]
+}

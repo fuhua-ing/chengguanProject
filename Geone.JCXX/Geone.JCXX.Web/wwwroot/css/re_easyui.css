@@ -1,0 +1,304 @@
+﻿.tabs-header, .tabs-tool {
+    background: none;
+}
+
+    .tabs-header .tabs {
+        height: 40px !important
+    }
+
+        .tabs-header .tabs li {
+            height: 38px;
+        }
+
+.tabs li {
+    display: list-item;
+    min-width: 0;
+    line-height: 40px;
+    max-width: 160px;
+    text-overflow: ellipsis;
+    padding: 0 10px;
+    overflow: hidden;
+    border-right: 2px solid #f6f6f6;
+    vertical-align: top;
+    margin: 0 1px -1px 0;
+    border-top: 2px solid transparent;
+}
+
+    .tabs li.tabs-selected a.tabs-inner {
+        background: none;
+    }
+
+    .tabs li.tabs-selected {
+        background-color: #f6f6f6;
+        border-top: 2px solid #2c6f9b;
+    }
+
+        .tabs li.tabs-selected a.tabs-inner {
+            border: none;
+            color: #000;
+        }
+
+    .tabs li:hover {
+        background: #f6f6f6;
+        cursor: hand;
+        cursor: pointer;
+    }
+
+    .tabs li a.tabs-inner {
+        color: #666;
+        cursor: pointer;
+    }
+
+        .tabs li a.tabs-inner:hover {
+            background: none;
+            color: #000;
+        }
+/**************************************窗体样式 begin**************************************/
+.window-shadow {
+    display: none !important;
+}
+
+
+.window {
+    background: none !important;
+    border: none !important;
+    border-radius: 2px !important;
+    box-shadow: 1px 1px 50px rgba(0,0,0,.3);
+    padding: 0 !important;
+}
+
+
+    .window .window-header {
+        height: 30px !important;
+        color: #333;
+        background-color: #F8F8F8;
+    }
+
+        .window .window-header .panel-title {
+            margin-left: 20px !important;
+            text-align: left !important;
+            font-size: 14px !important;
+            color: inherit;
+            line-height: 30px !important;
+        }
+
+        .window .window-header .panel-tool {
+            height: 18px;
+        }
+
+        .window .window-header .panel-tool-close::before {
+            content: "\2716";
+        }
+
+        .window .window-header .panel-tool-close {
+            background: none !important;
+            font-size: 18px;
+            line-height: 20px;
+            margin-right: 10px;
+            text-align: center;
+            opacity: 1 !important;
+        }
+
+            .window .window-header .panel-tool-close:hover {
+                background: none !important;
+                color: #666;
+            }
+
+    .window .window-body {
+        text-align: center;
+    }
+
+    .window .messager-icon {
+        display: none;
+    }
+
+    .window .dialog-toolbar, .window .dialog-button {
+        background: #fff;
+        border-top: none;
+        padding: 0 5px 15px;
+        border-bottom: none;
+    }
+
+    .window .l-btn {
+        border-color: #1E9FFF;
+        background: #1E9FFF !important;
+        color: #fff;
+        height: 28px;
+        line-height: 28px;
+        margin: 5px 5px 0;
+        padding: 0 15px;
+        border: 1px solid #dedede;
+        background-color: #fff;
+        border-radius: 2px;
+        font-weight: 400;
+        cursor: pointer;
+        text-decoration: none;
+    }
+/**************************************窗体样式 end**************************************/
+/**************************************表格datagrid样式 begin**************************************/
+.datagrid-toolbar {
+    background: #fff !important;
+}
+
+.datagrid .panel-body {
+    border: none !important;
+}
+
+.datagrid-toolbar {
+    background: #fff !important;
+}
+
+.datagrid-cell, .datagrid-cell-group, .datagrid-header-rownumber, .datagrid-cell-rownumber {
+    padding: 10px 4px;
+}
+
+.datagrid-header, .datagrid-td-rownumber {
+    background: none;
+}
+
+.datagrid-header-rownumber, .datagrid-cell-rownumber {
+    padding: 10px 0;
+}
+
+.datagrid-row-alt {
+    background: inherit;
+}
+
+.datagrid-row-selected {
+    background: #509ecf;
+    color: #fff;
+}
+
+    .datagrid-row-selected .datagrid-cell-rownumber {
+        color: #fff;
+    }
+
+.label {
+    display: inline;
+    padding: .2em .6em .3em;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25em;
+}
+
+.label-success {
+    background-color: #5cb85c
+}
+
+    .label-success[href]:focus, .label-success[href]:hover {
+        background-color: #449d44
+    }
+
+.label-info {
+    background-color: #5bc0de
+}
+
+    .label-info[href]:focus, .label-info[href]:hover {
+        background-color: #31b0d5
+    }
+
+.label-warning {
+    background-color: #f0ad4e
+}
+
+    .label-warning[href]:focus, .label-warning[href]:hover {
+        background-color: #ec971f
+    }
+
+.label-danger {
+    background-color: #d9534f
+}
+
+    .label-danger[href]:focus, .label-danger[href]:hover {
+        background-color: #c9302c
+    }
+/**************************************表格datagrid样式 end**************************************/
+/**************************************分页pagination样式 begin**************************************/
+.pagination {
+    /* border-bottom: 2px dashed #DDDDDD; */
+    border-top: 2px dashed #DDDDDD;
+}
+
+.datagrid-pager {
+    background: none;
+    margin-top: -10px;
+}
+
+.pagination-info {
+    float: left;
+    margin-left: 20px;
+    height: 37px;
+    line-height: 37px;
+}
+
+.pagination-page-list, .pagination .pagination-num {
+    height: 35px;
+}
+
+/**************************************分页pagination样式 begin**************************************/
+
+
+/**************************************树tree样式 begin**************************************/
+.tree-title {
+    /*font-size: 14px;*/
+    /*color: #666;*/
+}
+
+.tree-node {
+    height: 18px;
+    white-space: nowrap;
+    cursor: pointer;
+    padding: 5px 0 5px 15px;
+}
+
+.tree-folder {
+    background: none;
+    width: 0;
+}
+
+.tree-folder-open {
+    background: none;
+    width: 0;
+}
+
+.tree-file {
+    background: none;
+    width: 0;
+}
+
+.tree-node-selected {
+    background: #27a9e3;
+    color: #fff;
+}
+
+    .tree-node-selected .tree-title {
+        color: #fff;
+    }
+/**************************************树tree样式 end**************************************/
+
+
+/**************************************input输入框样式 start**************************************/
+input.textbox-text {
+    height: 25px !important;
+}
+
+input.textbox-icon {
+    height: 25px !important;
+}
+/**************************************input输入框样式 end**************************************/
+
+
+
+/**************************************日历输入框样式 start**************************************/
+.calendar-header {
+    height: 28px;
+}
+
+.datebox-calendar-inner {
+    height: 255px;
+}
+/**************************************日历输入框样式 end**************************************/
