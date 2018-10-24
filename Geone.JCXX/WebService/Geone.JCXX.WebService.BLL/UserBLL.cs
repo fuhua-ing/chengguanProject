@@ -155,7 +155,34 @@ namespace Geone.JCXX.WebService.BLL
                 return RepModel.Error();
             }
         }
-
+        /// <summary>
+        /// 用户获取角色
+        /// </summary>
+        /// <param name="idt"></param>
+        /// <returns></returns>
+        public RepModel GetUserRole(AppIdentity idt)
+        {
+            try
+            {
+                var list = Respostry_VARU.Select().WhereAnd(t => t.UserID.Eq(idt.User.i),
+                  t => t.RoleEnabled.Eq(1),
+                  t => t.UserEnabled.Eq(1)
+                   ).QueryList(); ;
+                var result = list.GroupBy(p => new { p.RoleID, p.RoleName, p.RoleCode })
+                      .Select(m => new
+                      {
+                          ID = m.Key.RoleID,
+                          RoleName = m.Key.RoleName,
+                          RoleCode = m.Key.RoleCode
+                      });
+                return RepModel.Success(result);
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(null, ex);
+                return RepModel.Error();
+            }
+        }
         /// <summary>
         /// 用户获取
         /// </summary>

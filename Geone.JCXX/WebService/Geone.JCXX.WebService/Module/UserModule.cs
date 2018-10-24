@@ -30,6 +30,12 @@ namespace Geone.JCXX.WebService
                 var rep = ss.GetMenu(Idty);
                 return Response.AsJson(rep);
             });
+            //获取用户的角色
+            Get("/UserRole", parameter =>
+            {
+                var rep = ss.GetUserRole(Idty);
+                return Response.AsJson(rep);
+            });
             //获取用户的权属角色
             Get("/QsRole", parameter =>
             {

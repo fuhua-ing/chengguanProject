@@ -26,7 +26,12 @@ namespace Geone.JCXX.WebService.Meta.Interface
         /// <param name="query"></param>
         /// <returns></returns>
         RepModel GetMenu(AppIdentity query);
-
+        /// <summary>
+        /// 获取用户角色
+        /// </summary>
+        /// <param name="UserID"></param>
+        /// <returns></returns>
+        RepModel GetUserRole(AppIdentity query);
         /// <summary>
         /// 获取用户权属角色
         /// </summary>
