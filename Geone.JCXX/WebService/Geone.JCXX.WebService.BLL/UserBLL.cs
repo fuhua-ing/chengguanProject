@@ -16,11 +16,11 @@ namespace Geone.JCXX.WebService.BLL
         private IDbEntity<View_AppRoleUser> Respostry_VRU;
         private IDbEntity<View_AppRoleMenu> Respostry_VRM;
         private IDbEntity<View_QSRoleUser> Respostry_VQSRU;
-
+        private IDbEntity<View_AppRoleUser> Respostry_VARU;
         LogWriter log = new LogWriter(new FileLogRecord());
 
         public UserBLLL(IDbEntity<JCXX_User> _Respostry_User, IDbEntity<View_AppRoleUser> _Respostry_VRU,
-            IDbEntity<View_AppRoleMenu> _Respostry_VRM, IDbEntity<View_QSRoleUser> _Respostry_VQSRU)
+            IDbEntity<View_AppRoleMenu> _Respostry_VRM, IDbEntity<View_QSRoleUser> _Respostry_VQSRU, IDbEntity<View_AppRoleUser> _Respostry_VARU)
         {
             Respostry_VRU = _Respostry_VRU;
             Respostry_VRU.SetTable(View_AppRoleUser.GetTbName());
@@ -33,8 +33,9 @@ namespace Geone.JCXX.WebService.BLL
 
             Respostry_VQSRU = _Respostry_VQSRU;
             Respostry_VQSRU.SetTable(View_QSRoleUser.GetTbName());
+            Respostry_VARU = _Respostry_VARU;
+            Respostry_VARU.SetTable(View_AppRoleUser.GetTbName());
         }
-
         /// <summary>
         /// 用户登录 
         /// </summary>
@@ -137,7 +138,7 @@ namespace Geone.JCXX.WebService.BLL
                   t => t.AppEnabled.Eq(1),
                    t => t.MenuEnabled.Eq(1)
                    ).QueryList();
-                var result = list.GroupBy(p => new { p.MenuID, p.MenuParentID, p.MenuName, p.MenuCode, p.MenuIcon, p.MenuUrl })
+                var result = list.OrderBy(p=>p.MenuCode).GroupBy(p => new { p.MenuID, p.MenuParentID, p.MenuName, p.MenuCode, p.MenuIcon, p.MenuUrl })
                    .Select(m => new
                    {
                        ID = m.Key.MenuID,
@@ -155,7 +156,34 @@ namespace Geone.JCXX.WebService.BLL
                 return RepModel.Error();
             }
         }
-
+        /// <summary>
+        /// 用户获取角色
+        /// </summary>
+        /// <param name="idt"></param>
+        /// <returns></returns>
+        public RepModel GetUserRole(AppIdentity idt)
+        {
+            try
+            {
+                var list = Respostry_VARU.Select().WhereAnd(t => t.UserID.Eq(idt.User.i),
+                  t => t.RoleEnabled.Eq(1),
+                  t => t.UserEnabled.Eq(1)
+                   ).QueryList(); ;
+                var result = list.GroupBy(p => new { p.RoleID, p.RoleName, p.RoleCode })
+                      .Select(m => new
+                      {
+                          ID = m.Key.RoleID,
+                          RoleName = m.Key.RoleName,
+                          RoleCode = m.Key.RoleCode
+                      });
+                return RepModel.Success(result);
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(null, ex);
+                return RepModel.Error();
+            }
+        }
         /// <summary>
         /// 用户获取
         /// </summary>
