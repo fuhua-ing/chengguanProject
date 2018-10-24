@@ -16,11 +16,11 @@ namespace Geone.JCXX.WebService.BLL
         private IDbEntity<View_AppRoleUser> Respostry_VRU;
         private IDbEntity<View_AppRoleMenu> Respostry_VRM;
         private IDbEntity<View_QSRoleUser> Respostry_VQSRU;
-
+        private IDbEntity<View_AppRoleUser> Respostry_VARU;
         LogWriter log = new LogWriter(new FileLogRecord());
 
         public UserBLLL(IDbEntity<JCXX_User> _Respostry_User, IDbEntity<View_AppRoleUser> _Respostry_VRU,
-            IDbEntity<View_AppRoleMenu> _Respostry_VRM, IDbEntity<View_QSRoleUser> _Respostry_VQSRU)
+            IDbEntity<View_AppRoleMenu> _Respostry_VRM, IDbEntity<View_QSRoleUser> _Respostry_VQSRU, IDbEntity<View_AppRoleUser> _Respostry_VARU)
         {
             Respostry_VRU = _Respostry_VRU;
             Respostry_VRU.SetTable(View_AppRoleUser.GetTbName());
@@ -33,8 +33,9 @@ namespace Geone.JCXX.WebService.BLL
 
             Respostry_VQSRU = _Respostry_VQSRU;
             Respostry_VQSRU.SetTable(View_QSRoleUser.GetTbName());
+            Respostry_VARU = _Respostry_VARU;
+            Respostry_VARU.SetTable(View_AppRoleUser.GetTbName());
         }
-
         /// <summary>
         /// 用户登录 
         /// </summary>
