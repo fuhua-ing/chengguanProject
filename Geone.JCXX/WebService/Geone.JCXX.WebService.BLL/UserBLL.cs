@@ -137,7 +137,7 @@ namespace Geone.JCXX.WebService.BLL
                   t => t.AppEnabled.Eq(1),
                    t => t.MenuEnabled.Eq(1)
                    ).QueryList();
-                var result = list.GroupBy(p => new { p.MenuID, p.MenuParentID, p.MenuName, p.MenuCode, p.MenuIcon, p.MenuUrl })
+                var result = list.OrderBy(p=>p.MenuCode).GroupBy(p => new { p.MenuID, p.MenuParentID, p.MenuName, p.MenuCode, p.MenuIcon, p.MenuUrl })
                    .Select(m => new
                    {
                        ID = m.Key.MenuID,
