@@ -63,7 +63,7 @@ namespace Geone.JCXX.WebService
         {
             ContractResolver = new DefaultContractResolver();//不更改元数据的key的大小写
             DateFormatHandling = DateFormatHandling.IsoDateFormat;
-            DateFormatString = "yyyy-MM-dd ";
+            DateFormatString = "yyyy-MM-dd";
             //NullValueHandling = NullValueHandling.Ignore;//不包含属性的默认值序列化
             //ReferenceLoopHandling = ReferenceLoopHandling.Ignore;//忽略循环引用
         }
