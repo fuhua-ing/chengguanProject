@@ -43,7 +43,7 @@ namespace Geone.Utiliy.Database
             return final;
         }
 
-        public static string[] Isnull(this object source)
+        public static string[] IsNull(this object source)
         {
             string[] final = new string[]
             {
@@ -54,12 +54,34 @@ namespace Geone.Utiliy.Database
             return final;
         }
 
-        public static string[] Isnotnull(this object source)
+        public static string[] IsNotNull(this object source)
         {
             string[] final = new string[]
             {
                 Convert.ToString(source),
                 Convert.ToString("")
+            };
+
+            return final;
+        }
+
+        public static string[] IsContains(this object source, dynamic value)
+        {
+            string[] final = new string[]
+            {
+                Convert.ToString(source),
+                Convert.ToString(value)
+            };
+
+            return final;
+        }
+
+        public static string[] IsNotContains(this object source, dynamic value)
+        {
+            string[] final = new string[]
+            {
+                Convert.ToString(source),
+                Convert.ToString(value)
             };
 
             return final;

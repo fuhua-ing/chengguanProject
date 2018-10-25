@@ -14,6 +14,8 @@ namespace Geone.Utiliy.Database
 
         IDbLambda<TParam> SetParam(TParam param);
 
+        IDbLambda<TParam> SetSrid(int srid);
+
         IDbLambda<TParam> End();
 
         IDbLambda<TParam> Count(Expression<Func<TParam, dynamic>> fun = null, bool isDistinct = false);

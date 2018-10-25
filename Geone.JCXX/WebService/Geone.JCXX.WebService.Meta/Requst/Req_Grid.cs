@@ -17,9 +17,13 @@ namespace Geone.JCXX.WebService.Meta.QueryEntity
         /// </summary>
         public string Like_GridName { get; set; }
         /// <summary>
+        /// 
+        /// </summary>
+        public string Point { get; set; }
+        /// <summary>
         /// 网格有效性 0无效/1有效
         /// </summary>
         public int? Enabled { get; set; }
-
+        
     }
 }

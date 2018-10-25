@@ -20,5 +20,9 @@ namespace Geone.JCXX.WebService.Meta.QueryEntity
         /// 字典明细有效 0无效/1有效
         /// </summary>
         public int? ItemEnabled { get; set; }
+        /// <summary>
+        ///此处代表父级CODE
+        /// </summary>
+        public string Note{ get; set; }
     }
 }

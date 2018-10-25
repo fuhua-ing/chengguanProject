@@ -22,6 +22,9 @@ namespace Geone.Utiliy.Database
         //表名/资源名
         public string DbTable { get; set; }
 
+        //空间统一标识符
+        public int GeoSrid { get; set; }
+
         //参数模型
         public TParam DbParam { get; set; }
 
@@ -37,6 +40,7 @@ namespace Geone.Utiliy.Database
 
             DbName = "Default";
             DbTable = string.Empty;
+            GeoSrid = 0;
             DbSql = string.Empty;
             DbSqls = new string[] { };
 
@@ -70,6 +74,13 @@ namespace Geone.Utiliy.Database
             if (param != null)
                 DbParam = param;
 
+            return this;
+        }
+
+        //设置设置空间统一标识
+        public IDbLambda<TParam> SetSrid(int srid)
+        {
+            GeoSrid = srid;
             return this;
         }
 
@@ -205,7 +216,7 @@ namespace Geone.Utiliy.Database
             {
                 if (body.Contains(".Sub("))
                 {
-                    if (body.Contains(".Val(") || body.Contains(".Eq(") || body.Contains(".Ne(") || body.Contains(".Lt(") || body.Contains(".Le(") || body.Contains(".Gt(") || body.Contains(".Ge(") || body.Contains(".Like(") || body.Contains(".Between(") || body.Contains(".In(") || body.Contains(".Isnull(") || body.Contains(".Isnotnull("))
+                    if (body.Contains(".Val(") || body.Contains(".Eq(") || body.Contains(".Ne(") || body.Contains(".Lt(") || body.Contains(".Le(") || body.Contains(".Gt(") || body.Contains(".Ge(") || body.Contains(".Like(") || body.Contains(".Between(") || body.Contains(".In(") || body.Contains(".IsNull(") || body.Contains(".IsNotNull(") || body.Contains(".IsContains(") || body.Contains(".IsNotContains("))
                     {
                         return 0;
                     }
@@ -216,7 +227,7 @@ namespace Geone.Utiliy.Database
                 }
                 else
                 {
-                    if (body.Contains(".Val(") || body.Contains(".Eq(") || body.Contains(".Ne(") || body.Contains(".Lt(") || body.Contains(".Le(") || body.Contains(".Gt(") || body.Contains(".Ge(") || body.Contains(".Like(") || body.Contains(".Between(") || body.Contains(".In(") || body.Contains(".Isnull(") || body.Contains(".Isnotnull("))
+                    if (body.Contains(".Val(") || body.Contains(".Eq(") || body.Contains(".Ne(") || body.Contains(".Lt(") || body.Contains(".Le(") || body.Contains(".Gt(") || body.Contains(".Ge(") || body.Contains(".Like(") || body.Contains(".Between(") || body.Contains(".In(") || body.Contains(".IsNull(") || body.Contains(".IsNotNull(") || body.Contains(".IsContains(") || body.Contains(".IsNotContains("))
                     {
                         return 2;
                     }
@@ -230,7 +241,7 @@ namespace Geone.Utiliy.Database
             {
                 if (body.Contains(".Sub("))
                 {
-                    if (body.Contains(".Val(") || body.Contains(".Eq(") || body.Contains(".Ne(") || body.Contains(".Lt(") || body.Contains(".Le(") || body.Contains(".Gt(") || body.Contains(".Ge(") || body.Contains(".Like(") || body.Contains(".Between(") || body.Contains(".In(") || body.Contains(".Isnull(") || body.Contains(".Isnotnull("))
+                    if (body.Contains(".Val(") || body.Contains(".Eq(") || body.Contains(".Ne(") || body.Contains(".Lt(") || body.Contains(".Le(") || body.Contains(".Gt(") || body.Contains(".Ge(") || body.Contains(".Like(") || body.Contains(".Between(") || body.Contains(".In(") || body.Contains(".IsNull(") || body.Contains(".IsNotNull(") || body.Contains(".IsContains(") || body.Contains(".IsNotContains("))
                     {
                         return 0;
                     }
@@ -241,7 +252,7 @@ namespace Geone.Utiliy.Database
                 }
                 else
                 {
-                    if (body.Contains(".Val(") || body.Contains(".Eq(") || body.Contains(".Ne(") || body.Contains(".Lt(") || body.Contains(".Le(") || body.Contains(".Gt(") || body.Contains(".Ge(") || body.Contains(".Like(") || body.Contains(".Between(") || body.Contains(".In(") || body.Contains(".Isnull(") || body.Contains(".Isnotnull("))
+                    if (body.Contains(".Val(") || body.Contains(".Eq(") || body.Contains(".Ne(") || body.Contains(".Lt(") || body.Contains(".Le(") || body.Contains(".Gt(") || body.Contains(".Ge(") || body.Contains(".Like(") || body.Contains(".Between(") || body.Contains(".In(") || body.Contains(".IsNull(") || body.Contains(".IsNotNull(") || body.Contains(".IsContains(") || body.Contains(".IsNotContains("))
                     {
                         return 5;
                     }
@@ -285,11 +296,11 @@ namespace Geone.Utiliy.Database
             {
                 return "LIKE";
             }
-            else if (body.Contains(".Isnull"))
+            else if (body.Contains(".IsNull"))
             {
                 return "IS NULL";
             }
-            else if (body.Contains(".Isnotnull"))
+            else if (body.Contains(".IsNotNull"))
             {
                 return "IS NOT NULL";
             }
@@ -486,13 +497,13 @@ namespace Geone.Utiliy.Database
             {
                 if (symbol != null)
                 {
-                    if (symbol != "IS NULL" && symbol != "IS NOT NULL")
+                    if (symbol == "IS NULL" || symbol == "IS NOT NULL")
                     {
-                        value = $"{name} {symbol} '{final[0]}' ";
+                        value = $"{name} {symbol} ";
                     }
                     else
                     {
-                        value = $"{name} {symbol} ";
+                        value = $"{name} {symbol} '{final[0]}' ";
                     }
                 }
                 else
@@ -500,6 +511,14 @@ namespace Geone.Utiliy.Database
                     if (body.Contains(".Sub("))
                     {
                         value = $"({final[0]}) AS {name} ";
+                    }
+                    else if (body.Contains(".IsContains"))
+                    {
+                        value = $"{name}.STContains(GEOMETRY::STGeomFromText('{final[0]}',{GeoSrid}))=1 ";
+                    }
+                    else if (body.Contains(".IsNotContains"))
+                    {
+                        value = $"{name}.STContains(GEOMETRY::STGeomFromText('{final[0]}',{GeoSrid}))<>1 ";
                     }
                     else if (body.Contains(".Between("))
                     {

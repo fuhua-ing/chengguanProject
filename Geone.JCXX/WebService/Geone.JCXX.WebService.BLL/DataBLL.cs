@@ -50,12 +50,16 @@ namespace Geone.JCXX.WebService.BLL
                 var q = Respostry_DictItem.Select().Where("1=1");
                 if (!string.IsNullOrEmpty(query.AppID))
                     q.And(t => t.AppID.Eq(query.AppID));
+                if (!string.IsNullOrEmpty(query.Note))
+                    q.And(t => t.Note.Eq(query.Note));
                 if (!string.IsNullOrEmpty(query.CategoryCode))
                     q.And(t => t.CategoryCode.Eq(query.CategoryCode));
                 if (query.CategoryEnabled != null)
                     q.And(t => t.CategoryEnabled.Eq(query.CategoryEnabled));
                 if (query.ItemEnabled != null)
                     q.And(t => t.Enabled.Eq(query.ItemEnabled));
+
+                
                 var list = q.QueryList().Select(m => new
                 {
                     ID = m.ID,
@@ -128,6 +132,8 @@ namespace Geone.JCXX.WebService.BLL
                     q.And(t => t.GridCode.Like("%" + query.Like_GridCode + "%"));
                 if (!string.IsNullOrEmpty(query.Like_GridName))
                     q.And(t => t.GridName.Like("%" + query.Like_GridName + "%"));
+                if (!string.IsNullOrEmpty(query.Point))
+                    q.And(t => t.Shape.IsContains(query.Point));
                 if (query.Enabled != null)
                     q.And(t => t.Enabled.Eq(query.Enabled));
                 var list = q.QueryList().Select(m => new

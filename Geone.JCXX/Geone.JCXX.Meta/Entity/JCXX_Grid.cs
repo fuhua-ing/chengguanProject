@@ -49,6 +49,7 @@ namespace Geone.JCXX.Meta
         ///// <summary>
         ///// 图层WKT
         ///// </summary>
+        [GeoAttribute]
         public string Shape
         {
             get;

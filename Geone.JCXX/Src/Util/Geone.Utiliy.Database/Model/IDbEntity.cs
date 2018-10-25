@@ -15,6 +15,8 @@ namespace Geone.Utiliy.Database
 
         IDbEntity<TEntity> SetParam(TEntity param);
 
+        IDbEntity<TEntity> SetSrid(int srid);
+
         IDbEntity<TEntity> End();
 
         IDbEntity<TEntity> Empty();
