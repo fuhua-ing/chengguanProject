@@ -45,7 +45,7 @@ namespace Geone.JCXX.Meta
             set;
         }
 
-        
+
         ///// <summary>
         ///// 图层WKT
         ///// </summary>

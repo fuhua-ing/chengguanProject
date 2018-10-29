@@ -1,5 +1,4 @@
-﻿using Geone.JCXX.WebService.Meta.Interface;
-using Geone.JCXX.WebService.Meta.QueryEntity;
+﻿using Geone.JCXX.WebService.Meta.QueryEntity;
 using Geone.Utiliy.Library;
 using Nancy;
 using Nancy.ModelBinding;
@@ -12,11 +11,9 @@ namespace Geone.JCXX.WebService
 {
     public class UserModule : BaseModule
     {
-        IUserService ss;
 
-        public UserModule(IUserService _ss) : base("/api/User")
+        public UserModule(IUserService ss) : base("/api/User")
         {
-            ss = _ss;
             //修改密码
             Put("/Pwd", parameter =>
             {

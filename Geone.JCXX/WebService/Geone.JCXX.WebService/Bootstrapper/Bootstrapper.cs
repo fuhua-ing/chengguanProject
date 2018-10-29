@@ -3,7 +3,6 @@ using Geone.Utiliy.Library;
 using Geone.Utiliy.Build;
 using Nancy.Bootstrapper;
 using Nancy.Bootstrappers.Autofac;
-using Geone.JCXX.WebService.Meta.Interface;
 using Nancy;
 using Nancy.Responses.Negotiation;
 using System.Collections.Generic;
@@ -12,7 +11,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
 using Nancy.TinyIoc;
-using Geone.JCXX.WebService.BLL;
 
 namespace Geone.JCXX.WebService
 {
@@ -43,6 +41,7 @@ namespace Geone.JCXX.WebService
         protected override void ConfigureApplicationContainer(ILifetimeScope existingContainer)
         {
             var builder = new ContainerBuilder();
+
             //业务逻辑注入
             builder.RegisterType<UserBLLL>().As<IUserService>().SingleInstance();
             builder.RegisterType<DataBLL>().As<IDataService>().SingleInstance();

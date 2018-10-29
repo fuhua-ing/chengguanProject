@@ -1,5 +1,4 @@
-﻿using Geone.JCXX.WebService.Meta.Interface;
-using Geone.JCXX.WebService.Meta.QueryEntity;
+﻿using Geone.JCXX.WebService.Meta.QueryEntity;
 using Geone.Utiliy.Library;
 using Nancy;
 using Nancy.ModelBinding;
@@ -12,11 +11,9 @@ namespace Geone.JCXX.WebService
 {
     public class DataModule : BaseModule
     {
-        IDataService ss;
 
-        public DataModule(IDataService _ss) : base("/api")
+        public DataModule(IDataService ss) : base("/api")
         {
-            ss = _ss;
             //字典明细列表
             Get("/DictCategory/ItemList", parameter =>
             {

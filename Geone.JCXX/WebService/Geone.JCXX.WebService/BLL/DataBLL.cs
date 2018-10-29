@@ -1,5 +1,4 @@
 ﻿using System;
-using Geone.JCXX.WebService.Meta.Interface;
 using Geone.JCXX.WebService.Meta.QueryEntity;
 using Geone.Utiliy.Library;
 using Geone.Utiliy.Database;
@@ -7,10 +6,14 @@ using Geone.JCXX.Meta;
 using Geone.JCXX.WebService.Meta.Response;
 using System.Linq;
 using System.Collections.Generic;
-namespace Geone.JCXX.WebService.BLL
+using Autofac;
+using Geone.Utiliy.Build;
+
+namespace Geone.JCXX.WebService
 {
     public class DataBLL : IDataService
     {
+        private static IContainer container = AutofacSettings.Build();
         private IDbEntity<View_DictItem> Respostry_DictItem;
         private IDbEntity<JCXX_QSRole> Respostry_QSRole;
         private IDbEntity<JCXX_Grid> Respostry_Grid;
@@ -19,25 +22,26 @@ namespace Geone.JCXX.WebService.BLL
         private IDbEntity<JCXX_CaseLATJ> Respostry_LATJ;
         LogWriter log = new LogWriter(new FileLogRecord());
 
-        public DataBLL(IDbEntity<View_DictItem> _Respostry_DictItem, IDbEntity<JCXX_QSRole> _Respostry_QSRole,
-            IDbEntity<View_Grid> _Respostry_VGrid, IDbEntity<JCXX_Dept> _Respostry_Dept, IDbEntity<JCXX_CaseLATJ> _Respostry_LATJ)
+        public DataBLL()
         {
-            Respostry_DictItem = _Respostry_DictItem;
+            Respostry_DictItem = container.Resolve<IDbEntity<View_DictItem>>();
             Respostry_DictItem.SetTable(View_DictItem.GetTbName());
 
-            Respostry_QSRole = _Respostry_QSRole;
+            Respostry_QSRole = container.Resolve<IDbEntity<JCXX_QSRole>>();
             Respostry_QSRole.SetTable(JCXX_QSRole.GetTbName());
 
-            Respostry_VGrid = _Respostry_VGrid;
+            Respostry_Grid = container.Resolve<IDbEntity<JCXX_Grid>>();
+            Respostry_Grid.SetTable(JCXX_Grid.GetTbName());
+
+            Respostry_VGrid = container.Resolve<IDbEntity<View_Grid>>();
             Respostry_VGrid.SetTable(View_Grid.GetTbName());
 
-            Respostry_Dept = _Respostry_Dept;
+            Respostry_Dept = container.Resolve<IDbEntity<JCXX_Dept>>();
             Respostry_Dept.SetTable(JCXX_Dept.GetTbName());
 
-            Respostry_LATJ = _Respostry_LATJ;
+            Respostry_LATJ = container.Resolve<IDbEntity<JCXX_CaseLATJ>>();
             Respostry_LATJ.SetTable(JCXX_CaseLATJ.GetTbName());
         }
-
         /// <summary>
         /// 查询数据字典明细列表
         /// </summary>

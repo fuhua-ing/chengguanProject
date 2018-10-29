@@ -2,7 +2,7 @@
 using Geone.Utiliy.Library;
 using Geone.JCXX.WebService.Meta.QueryEntity;
 
-namespace Geone.JCXX.WebService.Meta.Interface
+namespace Geone.JCXX.WebService
 {
     public interface IUserService
     {
