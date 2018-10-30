@@ -3,7 +3,7 @@
   "Name": "CG_JCXX",
   "Desc": "基础信息平台",
   "Key": "geone123",
-  "Host": "192.168.34.*",
+  "Host": "192.168.34.31",
   "Port": 80,
   "Sql": {
     "Default": "Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=JCXX_CG_TEST;Data Source=192.168.34.147,8033"

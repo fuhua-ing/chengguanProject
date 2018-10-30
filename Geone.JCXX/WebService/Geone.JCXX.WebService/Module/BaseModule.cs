@@ -1,5 +1,4 @@
-﻿using Geone.JCXX.WebService.Meta.Interface;
-using Geone.JCXX.WebService.Meta.QueryEntity;
+﻿using Geone.JCXX.WebService.Meta.QueryEntity;
 using Geone.Utiliy.Library;
 using Nancy;
 using Nancy.ModelBinding;

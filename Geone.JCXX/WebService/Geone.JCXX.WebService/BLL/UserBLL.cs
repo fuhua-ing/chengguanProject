@@ -1,5 +1,4 @@
 ﻿using System;
-using Geone.JCXX.WebService.Meta.Interface;
 using Geone.JCXX.WebService.Meta.QueryEntity;
 using Geone.Utiliy.Library;
 using Geone.Utiliy.Database;
@@ -7,11 +6,14 @@ using Geone.JCXX.Meta;
 using Geone.JCXX.WebService.Meta.Response;
 using System.Linq;
 using System.Collections.Generic;
+using Autofac;
+using Geone.Utiliy.Build;
 
-namespace Geone.JCXX.WebService.BLL
+namespace Geone.JCXX.WebService
 {
     public class UserBLLL : IUserService
     {
+        private static IContainer container = AutofacSettings.Build();
         private IDbEntity<JCXX_User> Respostry_User;
         private IDbEntity<View_AppRoleUser> Respostry_VRU;
         private IDbEntity<View_AppRoleMenu> Respostry_VRM;
@@ -19,23 +21,24 @@ namespace Geone.JCXX.WebService.BLL
         private IDbEntity<View_AppRoleUser> Respostry_VARU;
         LogWriter log = new LogWriter(new FileLogRecord());
 
-        public UserBLLL(IDbEntity<JCXX_User> _Respostry_User, IDbEntity<View_AppRoleUser> _Respostry_VRU,
-            IDbEntity<View_AppRoleMenu> _Respostry_VRM, IDbEntity<View_QSRoleUser> _Respostry_VQSRU, IDbEntity<View_AppRoleUser> _Respostry_VARU)
-        {
-            Respostry_VRU = _Respostry_VRU;
-            Respostry_VRU.SetTable(View_AppRoleUser.GetTbName());
-
-            Respostry_User = _Respostry_User;
+        public UserBLLL() {
+            Respostry_User = container.Resolve<IDbEntity<JCXX_User>>();
             Respostry_User.SetTable(JCXX_User.GetTbName());
 
-            Respostry_VRM = _Respostry_VRM;
+            Respostry_VRU = container.Resolve<IDbEntity<View_AppRoleUser>>();
+            Respostry_VRU.SetTable(View_AppRoleUser.GetTbName());
+
+            Respostry_VRM = container.Resolve<IDbEntity<View_AppRoleMenu>>();
             Respostry_VRM.SetTable(View_AppRoleMenu.GetTbName());
 
-            Respostry_VQSRU = _Respostry_VQSRU;
+            Respostry_VQSRU = container.Resolve<IDbEntity<View_QSRoleUser>>();
             Respostry_VQSRU.SetTable(View_QSRoleUser.GetTbName());
-            Respostry_VARU = _Respostry_VARU;
+
+            Respostry_VARU = container.Resolve<IDbEntity<View_AppRoleUser>>();
             Respostry_VARU.SetTable(View_AppRoleUser.GetTbName());
         }
+
+
         /// <summary>
         /// 用户登录 
         /// </summary>

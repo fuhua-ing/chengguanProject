@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Geone.JCXX.WebService.Meta.Interface
+namespace Geone.JCXX.WebService
 {
     public interface IDataService
     {

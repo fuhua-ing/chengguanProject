@@ -7,6 +7,10 @@ namespace Geone.JCXX.Meta
     ///</summary>
     public class JCXX_Holiday : BaseEntity
     {
+        public new static string GetTbName()
+        {
+            return "JCXX_Holiday";
+        }
         ///// <summary>
         ///// 年份
         ///// </summary>

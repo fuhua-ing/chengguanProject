@@ -91,6 +91,9 @@ namespace Geone.JCXX.WebService
             //token验证
             app.UseTokenIdentity(log);
 
+            //启用Rpc
+            app.UseRpc(access, log);
+
             if (env.IsDevelopment())
             {
                 app.UseBrowserLink();
