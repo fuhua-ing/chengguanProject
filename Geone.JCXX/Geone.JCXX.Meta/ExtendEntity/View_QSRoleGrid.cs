@@ -12,8 +12,21 @@ namespace Geone.JCXX.Meta
     public class View_QSRoleGrid : JCXX_QSRole_Grid
     {
 
-      
+        public  static string GetTbName()
+        {
+            return "View_QSRoleGrid";
+        }
         public string RoleName
+        {
+            get;
+            set;
+        }
+        [GeoAttribute]
+        public string Shape {
+            get;
+            set;
+        }
+        public string RoleType
         {
             get;
             set;

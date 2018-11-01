@@ -20,6 +20,7 @@ namespace Geone.JCXX.WebService
         private IDbEntity<View_Grid> Respostry_VGrid;
         private IDbEntity<JCXX_Dept> Respostry_Dept;
         private IDbEntity<JCXX_CaseLATJ> Respostry_LATJ;
+        private IDbEntity<View_QSRoleGrid> Respostry_QSRG;
         LogWriter log = new LogWriter(new FileLogRecord());
 
         public DataBLL()
@@ -41,6 +42,9 @@ namespace Geone.JCXX.WebService
 
             Respostry_LATJ = container.Resolve<IDbEntity<JCXX_CaseLATJ>>();
             Respostry_LATJ.SetTable(JCXX_CaseLATJ.GetTbName());
+
+            Respostry_QSRG = container.Resolve<IDbEntity<View_QSRoleGrid>>();
+            Respostry_QSRG.SetTable(View_QSRoleGrid.GetTbName());
         }
         /// <summary>
         /// 查询数据字典明细列表
@@ -110,6 +114,32 @@ namespace Geone.JCXX.WebService
                     RoleName = m.RoleName,
                     Note = m.Note,
                     Enabled = m.Enabled
+                });
+                return RepModel.Success(list);
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(null, ex);
+                return RepModel.Error();
+            }
+        }
+        /// <summary>
+        /// 根据网格点位获取到对应的网格权属角色
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public RepModel GetQSRoleGridList(Req_Grid query)
+        {
+            try
+            {
+                var q = Respostry_QSRG.Select().Where("1=1");
+                if (!string.IsNullOrEmpty(query.Point))
+                    q.And(t => t.Shape.IsContains(query.Point));
+                var list = q.QueryList().Select(m => new
+                {
+                    ID = m.RoleID,
+                    RoleType = m.RoleType,
+                    RoleName = m.RoleName
                 });
                 return RepModel.Success(list);
             }
