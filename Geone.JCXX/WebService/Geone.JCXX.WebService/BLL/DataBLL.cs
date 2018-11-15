@@ -1,13 +1,11 @@
-﻿using System;
-using Geone.JCXX.WebService.Meta.QueryEntity;
-using Geone.Utiliy.Library;
-using Geone.Utiliy.Database;
+﻿using Autofac;
 using Geone.JCXX.Meta;
-using Geone.JCXX.WebService.Meta.Response;
-using System.Linq;
-using System.Collections.Generic;
-using Autofac;
+using Geone.JCXX.WebService.Meta.QueryEntity;
 using Geone.Utiliy.Build;
+using Geone.Utiliy.Database;
+using Geone.Utiliy.Library;
+using System;
+using System.Linq;
 
 namespace Geone.JCXX.WebService
 {
@@ -16,12 +14,14 @@ namespace Geone.JCXX.WebService
         private static IContainer container = AutofacSettings.Build();
         private IDbEntity<View_DictItem> Respostry_DictItem;
         private IDbEntity<JCXX_QSRole> Respostry_QSRole;
+        private IDbEntity<View_QSRoleUser> Respostry_QSRoleUser;
+
         private IDbEntity<JCXX_Grid> Respostry_Grid;
         private IDbEntity<View_Grid> Respostry_VGrid;
         private IDbEntity<JCXX_Dept> Respostry_Dept;
         private IDbEntity<JCXX_CaseLATJ> Respostry_LATJ;
         private IDbEntity<View_QSRoleGrid> Respostry_QSRG;
-        LogWriter log = new LogWriter(new FileLogRecord());
+        private LogWriter log = new LogWriter(new FileLogRecord());
 
         public DataBLL()
         {
@@ -45,7 +45,11 @@ namespace Geone.JCXX.WebService
 
             Respostry_QSRG = container.Resolve<IDbEntity<View_QSRoleGrid>>();
             Respostry_QSRG.SetTable(View_QSRoleGrid.GetTbName());
+
+            Respostry_QSRoleUser = container.Resolve<IDbEntity<View_QSRoleUser>>();
+            Respostry_QSRoleUser.SetTable(View_QSRoleUser.GetTbName());
         }
+
         /// <summary>
         /// 查询数据字典明细列表
         /// </summary>
@@ -67,7 +71,6 @@ namespace Geone.JCXX.WebService
                 if (query.ItemEnabled != null)
                     q.And(t => t.Enabled.Eq(query.ItemEnabled));
 
-                
                 var list = q.QueryList().Select(m => new
                 {
                     ID = m.ID,
@@ -78,7 +81,7 @@ namespace Geone.JCXX.WebService
                     ItemCode = m.ItemCode,
                     ItemName = m.ItemName,
                     Enabled = m.Enabled,
-                    Note=m.Note
+                    Note = m.Note
                 });
                 return RepModel.Success(list);
             }
@@ -88,6 +91,36 @@ namespace Geone.JCXX.WebService
                 return RepModel.Error();
             }
         }
+
+        ///// <summary>
+        ///// 根据用户ID获取当前权属信息
+        ///// </summary>
+        ///// <param name="UserID"></param>
+        ///// <returns></returns>
+        //public UnaryResult<RepModel> GetQSRoleListByUserID(string UserID)
+        //{
+        //    return null;
+        //    //try
+        //    //{
+        //    //    var q = Respostry_QSRoleUser.Select().Where("1=1");
+        //    //    if (!string.IsNullOrEmpty(UserID))
+        //    //        q.And(t => t.UserID.Eq(UserID));
+
+        //    //    var list = q.QueryList().Select(m => new
+        //    //    {
+        //    //        ID = m.ID,
+        //    //        RoleType = m.RoleType,
+        //    //        RoleCode = m.RoleCode,
+        //    //        RoleName = m.RoleName
+        //    //    });
+        //    //    return UnaryResult(RepModel.Success(JsonConvert.SerializeObject(list)));
+        //    //}
+        //    //catch (Exception ex)
+        //    //{
+        //    //    log.WriteException(null, ex);
+        //    //    return UnaryResult(RepModel.Error());
+        //    //}
+        //}
         /// <summary>
         /// 查询权属角色列表
         /// </summary>
@@ -123,6 +156,7 @@ namespace Geone.JCXX.WebService
                 return RepModel.Error();
             }
         }
+
         /// <summary>
         /// 根据网格点位获取到对应的网格权属角色
         /// </summary>
@@ -176,9 +210,10 @@ namespace Geone.JCXX.WebService
                     GridType = m.GridType,
                     GridCode = m.GridCode,
                     GridName = m.GridName,
-                    ShowName=m.ShowName,
-                    Shape=m.Shape,
-                    GridArea= m.GridArea,
+                    ShowCode = m.GridCode,
+                    ShowName = m.ShowName,
+                    Shape = m.Shape,
+                    GridArea = m.GridArea,
                     Note = m.Note,
                     Enabled = m.Enabled
                 });
@@ -224,6 +259,7 @@ namespace Geone.JCXX.WebService
                 return RepModel.Error();
             }
         }
+
         /// <summary>
         /// 查询部门列表
         /// </summary>
@@ -252,8 +288,8 @@ namespace Geone.JCXX.WebService
                     DeptType = m.DeptType,
                     Contact = m.Contact,
                     ContactTel = m.ContactTel,
-                    ContactEmail=m.ContactEmail,
-                    Note=m.Note,
+                    ContactEmail = m.ContactEmail,
+                    Note = m.Note,
                     Enabled = m.Enabled
                 });
                 return RepModel.Success(list);
@@ -264,10 +300,5 @@ namespace Geone.JCXX.WebService
                 return RepModel.Error();
             }
         }
-
-
-
-      
-       
     }
 }

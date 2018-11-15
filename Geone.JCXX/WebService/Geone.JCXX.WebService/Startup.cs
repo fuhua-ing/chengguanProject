@@ -25,8 +25,6 @@ namespace Geone.JCXX.WebService
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-
-
             //services.AddOptions();
             ////使用IMvcBuilder 配置Json序列化处理
             //services.AddMvc()
@@ -66,8 +64,6 @@ namespace Geone.JCXX.WebService
             return new AutofacServiceProvider(container);
 
             #endregion 添加依赖注入的第三方支持--Autofac
-
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -90,6 +86,7 @@ namespace Geone.JCXX.WebService
 
             //token验证
             app.UseTokenIdentity(log);
+            app.UseUserIdentity(_signin, _register, log);
 
             //启用Rpc
             app.UseRpc(access, log);

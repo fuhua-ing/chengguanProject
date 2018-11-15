@@ -1,17 +1,11 @@
 ﻿using Geone.JCXX.WebService.Meta.QueryEntity;
-using Geone.Utiliy.Library;
 using Nancy;
 using Nancy.ModelBinding;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Geone.JCXX.WebService
 {
     public class DataModule : BaseModule
     {
-
         public DataModule(IDataService ss) : base("/api")
         {
             //字典明细列表
