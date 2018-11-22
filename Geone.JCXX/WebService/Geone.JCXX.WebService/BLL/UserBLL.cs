@@ -85,7 +85,7 @@ namespace Geone.JCXX.WebService
 
                 #region 根据AppID查找用户角色信息
 
-                var listVRU = Respostry_VRU.Select().WhereAnd(t => t.AppID.Eq(query.AppID),
+                var listVRU = Respostry_VRU.Select().WhereAnd(t => t.AppID.Eq(query.AppId),
                     t => t.UserID.Eq(userList[0].ID),
                     t => t.AppEnabled.Eq(1),
                     t => t.RoleEnabled.Eq(1)
@@ -102,7 +102,7 @@ namespace Geone.JCXX.WebService
                     a = Userinfo.Account
                 });
                 var token_role = JsonHelper.JsonDllSerialize<string[]>(listVRU.Select(t => t.RoleID).ToArray());
-                result.Token = Token.DistributeARToken(key, query.AppID, token_user, token_role);
+                result.Token = Token.DistributeARToken(key, query.AppId, token_user, token_role);
 
                 #endregion 创建tokne
 

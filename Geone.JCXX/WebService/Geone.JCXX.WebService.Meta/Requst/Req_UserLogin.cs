@@ -5,7 +5,7 @@
         /// <summary>
         /// 应用ID
         /// </summary>
-        public string AppID { get; set; }
+        public string AppId { get; set; }
 
         /// <summary>
         /// 账号
