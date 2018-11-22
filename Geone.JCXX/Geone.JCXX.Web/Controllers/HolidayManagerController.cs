@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Geone.JCXX.BLL;
+﻿using Geone.JCXX.BLL;
 using Geone.JCXX.Meta;
-
-using Microsoft.AspNetCore.Mvc;
 using Geone.Utiliy.Library;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Geone.JCXX.Web.Controllers
 {
@@ -28,10 +23,6 @@ namespace Geone.JCXX.Web.Controllers
         {
             return View();
         }
-
-
-
-
 
         /// <summary>
         /// 获取列表
@@ -75,7 +66,5 @@ namespace Geone.JCXX.Web.Controllers
             RepModel result = bll.Del(ID);
             return Json(result);
         }
-
-
     }
 }

@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Geone.JCXX.Meta;
+﻿using Geone.JCXX.Meta;
 using Geone.Utiliy.Database;
 using Geone.Utiliy.Library;
-
+using Geone.Utiliy.Logger;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Geone.JCXX.BLL
 {
@@ -13,18 +12,21 @@ namespace Geone.JCXX.BLL
     {
         private IDbEntity<JCXX_User> Respostry;
         private IDbEntity<JCXX_Dept> Respostry_D;
-        LogWriter log = new LogWriter(new FileLogRecord());
+        private ILogWriter log;
+
         /// <summary>
         /// 构造函数注入
         /// </summary>
         /// <param name="_t"></param>
-        public UserBLL(IDbEntity<JCXX_User> _t, IDbEntity<JCXX_Dept> _d)
+        public UserBLL(IDbEntity<JCXX_User> _t, IDbEntity<JCXX_Dept> _d, ILogWriter logWriter)
         {
             Respostry = _t;
             Respostry.SetTable("JCXX_User");
 
             Respostry_D = _d;
             Respostry_D.SetTable("JCXX_Dept");
+
+            log = logWriter;
         }
 
         /// <summary>
@@ -47,13 +49,13 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 result.total = 0;
                 result.rows = new List<JCXX_UserExtend>();
-
             }
             return result;
         }
+
         /// <summary>
         /// 反射
         /// </summary>
@@ -91,8 +93,6 @@ namespace Geone.JCXX.BLL
             return extendList;
         }
 
-
-
         /// <summary>
         /// 获取列表
         /// </summary>
@@ -108,6 +108,7 @@ namespace Geone.JCXX.BLL
                     case "Account":
                         list = query.order == "asc" ? list.OrderBy(t => t.Account).ToList() : list.OrderByDescending(t => t.Account).ToList();
                         break;
+
                     default:
                         list = list.OrderByDescending(t => t.CREATED).ToList();
                         break;
@@ -116,7 +117,7 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return new List<JCXX_User>();
             }
         }
@@ -142,20 +143,21 @@ namespace Geone.JCXX.BLL
             if (!string.IsNullOrEmpty(query.Like_AccountOrName))
             {
                 list = list.And();
-                list = list.Or(t => t.Account.Like("%"+ query.Like_AccountOrName + "%"), t => t.UserName.Like("%" + query.Like_AccountOrName + "%"));
+                list = list.Or(t => t.Account.Like("%" + query.Like_AccountOrName + "%"), t => t.UserName.Like("%" + query.Like_AccountOrName + "%"));
             }
             if (query.Enabled != null)
                 list = list.And(t => t.Enabled.Eq((int)query.Enabled));
             var result = list.QueryList();
             if (!string.IsNullOrEmpty(query.DeptParentID))
             {
-                var listDept = Respostry_D.Select().WhereAnd( t => t.IsDelete.Eq(0));
+                var listDept = Respostry_D.Select().WhereAnd(t => t.IsDelete.Eq(0));
                 listDept.And();
-                List<JCXX_Dept> deptList  = listDept.Or(t => t.ParentID.Eq(query.DeptParentID), t => t.ID.Eq(query.DeptParentID)).QueryList();
+                List<JCXX_Dept> deptList = listDept.Or(t => t.ParentID.Eq(query.DeptParentID), t => t.ID.Eq(query.DeptParentID)).QueryList();
                 result = GetChildList(result, deptList);
             }
             return result;
         }
+
         /// <summary>
         /// 递归本级和下级人员
         /// </summary>
@@ -210,7 +212,7 @@ namespace Geone.JCXX.BLL
                 JCXX_User oldEntity = GetByID(entity.ID);
                 if (oldEntity.Account != entity.Account)
                 {
-                    var accountInfo = Respostry.Select().WhereAnd((t => t.Account.Eq(entity.Account)), 
+                    var accountInfo = Respostry.Select().WhereAnd((t => t.Account.Eq(entity.Account)),
                         (t => t.IsDelete.Eq(0))).QueryList();
                     if (accountInfo.Count() > 0)
                     {
@@ -243,7 +245,6 @@ namespace Geone.JCXX.BLL
             return Respostry.UpdateByPKey(oldEntity).ExecModify() ? RepModel.Success("更新成功") : RepModel.Error("更新失败");
         }
 
-
         public JCXX_User GetByID(string ID)
         {
             try
@@ -257,11 +258,10 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return new JCXX_User();
             }
         }
-
 
         public RepModel Del(string ID)
         {
@@ -275,7 +275,7 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return RepModel.Error(ex.Message);
             }
         }

@@ -15,8 +15,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Geone.JCXX.Meta\Geone.JCXX.Meta.csproj" />
-    <ProjectReference Include="..\..\Src\Util\Geone.Utiliy.Build\Geone.Utiliy.Build.csproj" />
-    <ProjectReference Include="..\..\Src\Util\Geone.Utiliy.Library\Geone.Utiliy.Library.csproj" />
     <ProjectReference Include="..\Geone.JCXX.WebService.Meta\Geone.JCXX.WebService.Meta.csproj" />
   </ItemGroup>
 
@@ -24,6 +22,10 @@
     <Content Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
   </ItemGroup>
 
 </Project>

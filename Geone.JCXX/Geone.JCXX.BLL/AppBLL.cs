@@ -1,28 +1,27 @@
 ﻿using Geone.JCXX.Meta;
+using Geone.Utiliy.Database;
 using Geone.Utiliy.Library;
+using Geone.Utiliy.Logger;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Geone.Utiliy.Database;
 
 namespace Geone.JCXX.BLL
 {
     public class AppBLL : IAppBLL
     {
         private IDbEntity<JCXX_App> Respostry;
-        LogWriter log = new LogWriter(new FileLogRecord());
+        private ILogWriter log;
 
         /// <summary>
         /// 构造函数注入
         /// </summary>
         /// <param name="_t"></param>
-        public AppBLL(IDbEntity<JCXX_App> _t)
+        public AppBLL(IDbEntity<JCXX_App> _t, ILogWriter logWriter)
         {
             Respostry = _t;
             Respostry.SetTable("JCXX_App");
+            log = logWriter;
         }
-
 
         /// <summary>
         /// 分页获取列表
@@ -52,13 +51,14 @@ namespace Geone.JCXX.BLL
             {
                 var list = Respostry.Select();
                 SetQuery(list, query);
-               
+
                 switch (query.sort)
                 {
                     case "AppCode":
 
                         list = query.order == "asc" ? list.OrderBy(t => t.AppCode) : list.OrderByDesc(t => t.AppCode);
                         break;
+
                     default:
                         list = list.OrderByDesc(t => t.CREATED);
                         break;
@@ -67,7 +67,7 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return new List<JCXX_App>();
             }
         }
@@ -85,10 +85,9 @@ namespace Geone.JCXX.BLL
             if (!string.IsNullOrEmpty(query.Like_AppName))
                 list = list.And(t => t.AppName.Like("%" + query.Like_AppName + "%"));
             if (!string.IsNullOrEmpty(query.Like_AppCode))
-                list = list.And(t => t.AppCode.Like("%"+query.Like_AppCode + "%"));
+                list = list.And(t => t.AppCode.Like("%" + query.Like_AppCode + "%"));
             if (query.Enabled != null)
                 list = list.And(t => t.Enabled.Eq((int)query.Enabled));
-
         }
 
         public List<JCXX_App> GetAll()
@@ -109,7 +108,7 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return new JCXX_App();
             }
         }
@@ -131,17 +130,16 @@ namespace Geone.JCXX.BLL
                 {
                     entity.UPDATED = DateTime.Now;
                     entity.UPDATED_MAN = entity.UPDATED_MAN;
-                    return Respostry.Minus(t => t.CREATED, t => t.CREATED_MAN,t=>t.IsDelete).
+                    return Respostry.Minus(t => t.CREATED, t => t.CREATED_MAN, t => t.IsDelete).
                        UpdateByPKey(entity).ExecModify() ? RepModel.Success("更新成功") : RepModel.Error("更新失败");
                 }
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return RepModel.Error(ex.Message);
             }
         }
-
 
         public RepModel Del(string ID)
         {
@@ -155,7 +153,7 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return RepModel.Error(ex.Message);
             }
         }

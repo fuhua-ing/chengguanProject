@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Geone.Utiliy.Library;
 using Microsoft.AspNetCore.Mvc;
-using Geone.JCXX.Web.Models;
-using Geone.Utiliy.Library;
 
 namespace Geone.JCXX.Web.Controllers
 {
@@ -19,7 +13,6 @@ namespace Geone.JCXX.Web.Controllers
         [LoginFilter.NoRequired]
         public ActionResult Login()
         {
-            
             return View();
         }
 
@@ -28,7 +21,6 @@ namespace Geone.JCXX.Web.Controllers
         {
             return View();
         }
-
 
         [LoginFilter.NoRequired]
         public string Submit_Login(string Account, string Pwd)
@@ -40,6 +32,7 @@ namespace Geone.JCXX.Web.Controllers
             LoginHelp.SetLoginInfo(AppConfigurtaionServices.AdminConfig);
             return string.Empty;
         }
+
         [LoginFilter.NoRequired]
         public ActionResult Logout()
         {

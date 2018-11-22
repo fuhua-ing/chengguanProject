@@ -1,13 +1,7 @@
-﻿using Geone.Utiliy.Database;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-
-namespace Geone.JCXX.Meta
+﻿namespace Geone.JCXX.Meta
 {
     ///<summary>
-    /// 
+    ///
     ///</summary>
     public class View_QSRolePhoneGroup : JCXX_QSRole_PhoneGroup
     {

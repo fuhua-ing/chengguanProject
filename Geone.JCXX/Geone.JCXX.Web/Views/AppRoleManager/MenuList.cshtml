@@ -3,7 +3,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
 <script>
     var RoleID = getQueryString("RoleID");
 
@@ -16,7 +15,6 @@
             idField: 'id',
             treeField: 'text'
         });
-
 
         InitSize();
 
@@ -80,7 +78,7 @@
     }
 
     //保存
-    function Save() { 
+    function Save() {
         var ids = "";
         $("input[type='checkbox'][name=DataGridCheckbox]:checked").each(function () {
             if ($(this).prop("checked")) {
@@ -104,9 +102,6 @@
         });
     }
 </script>
-
-
-
 
 <div class="content_grid">
     <div class="StTitle" id="ToolBar">

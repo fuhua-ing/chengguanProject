@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Geone.Utiliy.Library;
 using Microsoft.AspNetCore.Http;
-using Geone.Utiliy.Library;
 using Microsoft.Extensions.Options;
 
 namespace Geone.JCXX.Web
@@ -47,8 +43,10 @@ namespace Geone.JCXX.Web
     {
         //管理员账号
         public string Account { get; set; }
+
         //管理员密码
         public string Password { get; set; }
+
         //管理员名字
         public string UserName { get; set; }
     }

@@ -1,5 +1,4 @@
 ﻿using Geone.Utiliy.Database;
-using System;
 
 namespace Geone.JCXX.Meta
 {
@@ -12,6 +11,7 @@ namespace Geone.JCXX.Meta
         {
             return "JCXX_Grid";
         }
+
         ///// <summary>
         ///// 网格类型
         ///// </summary>
@@ -20,6 +20,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 网格编号
         ///// </summary>
@@ -28,6 +29,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 网格名称
         ///// </summary>
@@ -36,6 +38,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 网格别名
         ///// </summary>
@@ -45,16 +48,16 @@ namespace Geone.JCXX.Meta
             set;
         }
 
-
         ///// <summary>
         ///// 图层WKT
         ///// </summary>
-        [GeoAttribute]
+        [Geo]
         public string Shape
         {
             get;
             set;
         }
+
         ///// <summary>
         ///// 网格面积
         ///// </summary>
@@ -63,6 +66,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 备注
         ///// </summary>

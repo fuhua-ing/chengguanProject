@@ -14,12 +14,11 @@
                 dataParams: { ID: ID },
                 successFunc: function (result) {
                     $("#fmInfo").form("load", result);
-                
+
                 }
             });
         }
     });
-    
 
     //保存
     function Save() {
@@ -49,7 +48,6 @@
     }
 </script>
 
-
 <form id="fmInfo">
     <input type="hidden" name="ID" />
     <div class="easyui-from-row">
@@ -74,7 +72,7 @@
             <input class="easyui-textbox" name="Note" data-options="multiline:true" style="width:100%;height:80px" />
         </div>
     </div>
-   
+
     <div class="easyui-from-row">
         <label class="easyui-form-label">&nbsp;</label>
         <div class="easyui-from-row-item">
@@ -83,6 +81,3 @@
         </div>
     </div>
 </form>
-
-
-

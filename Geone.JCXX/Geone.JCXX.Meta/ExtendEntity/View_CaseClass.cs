@@ -1,10 +1,4 @@
-﻿using Geone.Utiliy.Database;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-
-namespace Geone.JCXX.Meta
+﻿namespace Geone.JCXX.Meta
 {
     ///<summary>
     /// 有效案件权属视图
@@ -19,6 +13,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 类型
         ///// </summary>
@@ -27,6 +22,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 大类
         ///// </summary>
@@ -35,6 +31,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 小类
         ///// </summary>
@@ -43,6 +40,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 子类
         ///// </summary>
@@ -51,6 +49,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 所属类型
         ///// </summary>

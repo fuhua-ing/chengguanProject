@@ -50,7 +50,6 @@
                 outline: none;
             }
 
-
             #userList li.selected a {
                 border: 1px solid #2c6f9b;
                 padding: 0 0px;
@@ -69,13 +68,12 @@
             }
 </style>
 
-
 <script>
-  
+
     var RoleID = getQueryString("RoleID");
 
     $(function () {
-        
+
         //初始化左侧部门树
         $('#treeDept').tree({
             method: "post",
@@ -116,7 +114,6 @@
                     _html += '</li>';
                 });
                 $("#userList").html(_html);
-                
 
                 //获取角色用户
                 $.DoAjax({
@@ -154,7 +151,6 @@
         $('.content_grid_rt').width($(window).width() - 270);
     }
 
-
     //根据部门、姓名查找
     //IsNeedName 是否需要用户姓名参数（只有点击查询才需要，部门树联动不需要）
     function Search(IsNeedName) {
@@ -187,7 +183,7 @@
         $("#userList li.selected").each(function (index, item) {
             ids += $(this).attr("id") + ",";
         });
-     
+
         $.DoAjax({
             needWaiting:true,
             url: "/QSRoleManager/PostRoleUser",
@@ -208,10 +204,6 @@
     }
 </script>
 
-
-
-
-
 <div class="content_grid_lft">
     <ul id="treeDept"></ul>
 </div>
@@ -229,4 +221,3 @@
     </div>
     <ul id="userList"></ul>
 </div>
-

@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Text.RegularExpressions;
-using Geone.JCXX.BLL;
+﻿using Geone.JCXX.BLL;
 using Geone.JCXX.Meta;
-
+using Geone.Utiliy.Library;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using NPOI.SS.UserModel;
-using Geone.Utiliy.Library;
+using System;
+using System.IO;
+using System.Text;
 
 namespace Geone.JCXX.Web.Controllers
 {
@@ -27,19 +21,21 @@ namespace Geone.JCXX.Web.Controllers
             hostingEnv = _hostingEnv;
         }
 
-
         public ActionResult GridList()
         {
             return View();
         }
+
         public ActionResult GridForm()
         {
             return View();
         }
+
         public ActionResult GridImport()
         {
             return View();
         }
+
         public ActionResult RoleGridForm()
         {
             return View();
@@ -53,7 +49,7 @@ namespace Geone.JCXX.Web.Controllers
         {
             return Content(JsonHelper.JsonDllSerialize<GridData>(bll.GetGrid(query), JsonDateTimeFormat.DateTime));
         }
-       
+
         /// <summary>
         /// 获取
         /// </summary>
@@ -112,7 +108,7 @@ namespace Geone.JCXX.Web.Controllers
                     fs.Flush();
                 }
                 string json = string.Empty;
-                using (FileStream fs = new FileStream(tmpfile.ToString(), FileMode.Open,FileAccess.Read, FileShare.ReadWrite))
+                using (FileStream fs = new FileStream(tmpfile.ToString(), FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                 {
                     using (StreamReader sr = new StreamReader(fs))
                     {
@@ -131,6 +127,7 @@ namespace Geone.JCXX.Web.Controllers
                 tmpfile.Delete();
             }
         }
+
         ///// <summary>
         ///// Excel上传导入
         ///// </summary>
@@ -182,6 +179,7 @@ namespace Geone.JCXX.Web.Controllers
             var buffer = Encoding.UTF8.GetBytes(JsonHelper.JsonDllSerializeList<View_Grid>(bll.GetList(query), JsonDateTimeFormat.DateTime));
             return File(buffer, "text/plain", "file.txt");
         }
+
         /// <summary>
         /// 示例文件下载
         /// </summary>
@@ -190,7 +188,7 @@ namespace Geone.JCXX.Web.Controllers
         {
             var FilePath = Request.Query["FilePath"];
             var tmpfile = new FileInfo(Path.Combine(hostingEnv.WebRootPath, FilePath));
-            return File(tmpfile.OpenRead(), "application/json",tmpfile.Name);
+            return File(tmpfile.OpenRead(), "application/json", tmpfile.Name);
         }
 
         #region 角色网格设置
@@ -212,6 +210,6 @@ namespace Geone.JCXX.Web.Controllers
             return Json(result);
         }
 
-        #endregion
+        #endregion 角色网格设置
     }
 }

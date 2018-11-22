@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Geone.JCXX.Meta;
+﻿using Geone.JCXX.Meta;
 using Geone.Utiliy.Database;
 using Geone.Utiliy.Library;
+using Geone.Utiliy.Logger;
+using System;
+using System.Collections.Generic;
 
 namespace Geone.JCXX.BLL
 {
@@ -12,21 +11,22 @@ namespace Geone.JCXX.BLL
     {
         private IDbEntity<JCXX_DictItem> Respostry;
         private IDbEntity<View_DictItem> Respostry_V;
-        LogWriter log = new LogWriter(new FileLogRecord());
+        private ILogWriter log;
 
         /// <summary>
         /// 构造函数注入
         /// </summary>
         /// <param name="_t"></param>
-        public DictItemBLL(IDbEntity<JCXX_DictItem> _t, IDbEntity<View_DictItem> _tv)
+        public DictItemBLL(IDbEntity<JCXX_DictItem> _t, IDbEntity<View_DictItem> _tv, ILogWriter logWriter)
         {
             Respostry = _t;
             Respostry.SetTable("JCXX_DictItem");
 
             Respostry_V = _tv;
             Respostry_V.SetTable("View_DictItem");
-        }
 
+            log = logWriter;
+        }
 
         /// <summary>
         /// 获取列表
@@ -67,6 +67,7 @@ namespace Geone.JCXX.BLL
                     case "ItemCode":
                         list = query.order == "asc" ? list.OrderBy(t => t.ItemCode) : list.OrderByDesc(t => t.ItemCode);
                         break;
+
                     default:
                         list = list.OrderByDesc(t => t.CREATED);
                         break;
@@ -75,10 +76,11 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return new List<JCXX_DictItem>();
             }
         }
+
         /// <summary>
         /// 获取列表
         /// </summary>
@@ -95,6 +97,7 @@ namespace Geone.JCXX.BLL
                     case "ItemCode":
                         list = query.order == "desc" ? list.OrderByDesc(t => t.ItemCode) : list.OrderByDesc(t => t.ItemCode);
                         break;
+
                     default:
                         list = list.OrderByDesc(t => t.CREATED);
                         break;
@@ -103,7 +106,7 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return new List<View_DictItem>();
             }
         }
@@ -130,7 +133,6 @@ namespace Geone.JCXX.BLL
                 list = list.And(t => t.ItemName.Like("%" + query.Like_ItemName + "%"));
             if (query.Enabled != null)
                 list = list.And(t => t.Enabled.Eq((int)query.Enabled));
-
         }
 
         public JCXX_DictItem GetByID(string ID)
@@ -146,7 +148,7 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return new JCXX_DictItem();
             }
         }
@@ -174,7 +176,7 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return RepModel.Error(ex.Message);
             }
         }
@@ -191,7 +193,7 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return RepModel.Error(ex.Message);
             }
         }

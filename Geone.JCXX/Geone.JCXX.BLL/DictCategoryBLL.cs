@@ -1,31 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Geone.JCXX.Meta;
+﻿using Geone.JCXX.Meta;
 using Geone.Utiliy.Database;
 using Geone.Utiliy.Library;
+using Geone.Utiliy.Logger;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Geone.JCXX.BLL
 {
     public class DictCategoryBLL : IDictCategoryBLL
     {
         private IDbEntity<JCXX_DictCategory> Respostry;
-        private AppBLL appBLL;
-        LogWriter log = new LogWriter(new FileLogRecord());
+        private IAppBLL appBLL;
+        private ILogWriter log;
 
         /// <summary>
         /// 构造函数注入
         /// </summary>
         /// <param name="_t"></param>
         public DictCategoryBLL(IDbEntity<JCXX_DictCategory> _t,
-             IDbEntity<JCXX_App> _tapp)
+             IDbEntity<JCXX_App> _tapp,
+             IAppBLL _appBLL, ILogWriter logWriter)
         {
             Respostry = _t;
             Respostry.SetTable("JCXX_DictCategory");
 
-            appBLL = new AppBLL(_tapp);
+            appBLL = _appBLL;
+            log = logWriter;
         }
+
         /// <summary>
         /// 分页获取列表
         /// </summary>
@@ -60,6 +63,7 @@ namespace Geone.JCXX.BLL
 
                         list = query.order == "asc" ? list.OrderBy(t => t.CategoryCode) : list.OrderByDesc(t => t.CategoryCode);
                         break;
+
                     default:
                         list = list.OrderByDesc(t => t.CREATED);
                         break;
@@ -68,12 +72,10 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return new List<JCXX_DictCategory>();
             }
-
         }
-
 
         /// <summary>
         /// 查询条件筛选
@@ -93,7 +95,6 @@ namespace Geone.JCXX.BLL
                 list = list.And(t => t.CategoryCode.Eq(query.CategoryCode));
             if (query.Enabled != null)
                 list = list.And(t => t.Enabled.Eq((int)query.Enabled));
-
         }
 
         /// <summary>
@@ -136,10 +137,9 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return new List<JCXX_DictCategoryExtend>();
             }
-
         }
 
         /// <summary>
@@ -160,10 +160,11 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return new JCXX_DictCategory();
             }
         }
+
         /// <summary>
         /// 保存数据
         /// </summary>
@@ -188,12 +189,11 @@ namespace Geone.JCXX.BLL
                     entity.UPDATED_MAN = entity.UPDATED_MAN;
                     return Respostry.Minus(t => t.CREATED, t => t.CREATED_MAN, t => t.IsDelete).
                        UpdateByPKey(entity).ExecModify() ? RepModel.Success("更新成功") : RepModel.Error("更新失败");
-
                 }
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return RepModel.Error(ex.Message);
             }
         }
@@ -215,10 +215,9 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return RepModel.Error(ex.Message);
             }
         }
-
     }
 }

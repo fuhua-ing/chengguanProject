@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Geone.JCXX.Meta;
+﻿using Geone.JCXX.Meta;
 using Geone.Utiliy.Database;
 using Geone.Utiliy.Library;
+using Geone.Utiliy.Logger;
+using System;
+using System.Collections.Generic;
 
 namespace Geone.JCXX.BLL
 {
@@ -14,14 +13,15 @@ namespace Geone.JCXX.BLL
         private IDbEntity<View_Grid> Respostry_V;
         private IDbEntity<JCXX_QSRole_Grid> Respostry_RG;
         private IDbEntity<View_QSRoleGrid> Respostry_VRG;
-        LogWriter log = new LogWriter(new FileLogRecord());
+        private ILogWriter log;
 
         /// <summary>
         /// 构造函数注入
         /// </summary>
         /// <param name="_t"></param>
         public GridBLL(IDbEntity<JCXX_Grid> _t, IDbEntity<JCXX_QSRole_Grid> _trg,
-            IDbEntity<View_Grid> _tv, IDbEntity<View_QSRoleGrid> _tvrg)
+            IDbEntity<View_Grid> _tv, IDbEntity<View_QSRoleGrid> _tvrg,
+            ILogWriter logWriter)
         {
             Respostry = _t;
             Respostry.SetTable("JCXX_Grid");
@@ -34,8 +34,9 @@ namespace Geone.JCXX.BLL
 
             Respostry_VRG = _tvrg;
             Respostry_VRG.SetTable("View_QSRoleGrid");
-        }
 
+            log = logWriter;
+        }
 
         /// <summary>
         /// 分页获取列表
@@ -71,6 +72,7 @@ namespace Geone.JCXX.BLL
 
                         list = query.order == "asc" ? list.OrderBy(t => t.GridCode) : list.OrderByDesc(t => t.GridCode);
                         break;
+
                     default:
                         list = list.OrderByDesc(t => t.CREATED);
                         break;
@@ -79,7 +81,7 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return new List<View_Grid>();
             }
         }
@@ -102,9 +104,7 @@ namespace Geone.JCXX.BLL
                 list = list.And(t => t.GridName.Like("%" + query.Like_GridName + "%"));
             if (query.Enabled != null)
                 list = list.And(t => t.Enabled.Eq((int)query.Enabled));
-
         }
-
 
         public View_Grid GetByID(string ID)
         {
@@ -119,7 +119,7 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return new View_Grid();
             }
         }
@@ -147,7 +147,7 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return RepModel.Error(ex.Message);
             }
         }
@@ -160,7 +160,7 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return RepModel.Error(ex.Message);
             }
         }
@@ -188,11 +188,10 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return RepModel.Error(ex.Message);
             }
         }
-
 
         #region 权属角色网格设置
 
@@ -203,7 +202,6 @@ namespace Geone.JCXX.BLL
         /// <returns></returns>
         public List<View_QSRoleGrid> GetRoleGridList(Query_Grid query)
         {
-
             var list = Respostry_VRG.Select();
             if (!string.IsNullOrEmpty(query.ID))
                 list = list.Where(t => t.GridID.Eq(query.ID));
@@ -240,14 +238,14 @@ namespace Geone.JCXX.BLL
                     });
                 }
                 return listNew.Count == 0 || Respostry_RG.Insert(listNew).ExecInsertBatch() ? RepModel.Success("操作成功") : RepModel.Error("操作失败");
-
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return RepModel.Error(ex.Message);
             }
         }
-        #endregion
+
+        #endregion 权属角色网格设置
     }
 }

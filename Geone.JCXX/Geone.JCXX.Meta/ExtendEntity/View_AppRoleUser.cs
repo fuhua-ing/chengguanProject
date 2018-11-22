@@ -1,8 +1,4 @@
 ﻿using Geone.Utiliy.Database;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 
 namespace Geone.JCXX.Meta
 {
@@ -25,6 +21,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 用户是否有效
         ///// </summary>
@@ -33,6 +30,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 用户ID
         ///// </summary>
@@ -41,6 +39,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 用户姓名
         ///// </summary>
@@ -49,6 +48,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 用户编号
         ///// </summary>
@@ -57,6 +57,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 用户账号
         ///// </summary>
@@ -65,6 +66,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 用户密码
         ///// </summary>
@@ -73,6 +75,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 性别
         ///// </summary>
@@ -81,6 +84,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 用户身份证号
         ///// </summary>
@@ -89,6 +93,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 用户手机号
         ///// </summary>
@@ -97,6 +102,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 用户邮箱
         ///// </summary>
@@ -105,6 +111,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 角色是否有效
         ///// </summary>
@@ -113,6 +120,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 角色ID
         ///// </summary>
@@ -121,6 +129,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 角色编号
         ///// </summary>
@@ -129,6 +138,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 角色名称
         ///// </summary>
@@ -137,6 +147,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 部门是否有效
         ///// </summary>
@@ -145,6 +156,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 部门ID
         ///// </summary>
@@ -153,6 +165,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 部门编号
         ///// </summary>
@@ -161,6 +174,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 部门名称
         ///// </summary>
@@ -169,6 +183,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 部门简称
         ///// </summary>
@@ -177,6 +192,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 部门类别
         ///// </summary>
@@ -185,6 +201,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 部门类别
         ///// </summary>
@@ -193,7 +210,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
-        
+
         ///// <summary>
         ///// 应用是否有效
         ///// </summary>
@@ -202,6 +219,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 应用ID
         ///// </summary>
@@ -210,6 +228,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 应用编号
         ///// </summary>
@@ -218,6 +237,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 应用名称
         ///// </summary>

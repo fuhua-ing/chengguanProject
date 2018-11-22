@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Geone.JCXX.Meta
+﻿namespace Geone.JCXX.Meta
 {
     public class GridData
     {
@@ -10,6 +6,7 @@ namespace Geone.JCXX.Meta
         /// 行数
         /// </summary>
         public int total { get; set; }
+
         /// <summary>
         /// 数据
         /// </summary>

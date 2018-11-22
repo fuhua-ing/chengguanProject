@@ -6,12 +6,13 @@ namespace Geone.JCXX.Meta
     ///<summary>
     /// 立案条件
     ///</summary>
-    public class JCXX_CaseLATJ :IEntity
+    public class JCXX_CaseLATJ : IEntity
     {
         public static string GetTbName()
         {
             return "JCXX_CaseLATJ";
         }
+
         ///// <summary>
         ///// 主键ID
         ///// </summary>
@@ -21,6 +22,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 案件大类
         ///// </summary>
@@ -29,6 +31,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 案件小类
         ///// </summary>
@@ -37,6 +40,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 立案条件
         ///// </summary>
@@ -45,6 +49,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 立案条件描述
         ///// </summary>
@@ -53,6 +58,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 时限
         ///// </summary>
@@ -61,6 +67,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 时限描述
         ///// </summary>
@@ -69,6 +76,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 结案条件
         ///// </summary>
@@ -77,38 +85,41 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
-        ///// 
+        /////
         ///// </summary>
         public DateTime CREATED
         {
             get;
             set;
         }
+
         ///// <summary>
-        ///// 
+        /////
         ///// </summary>
         public DateTime UPDATED
         {
             get;
             set;
         }
+
         ///// <summary>
-        ///// 
+        /////
         ///// </summary>
         public string CREATED_MAN
         {
             get;
             set;
         }
+
         ///// <summary>
-        ///// 
+        /////
         ///// </summary>
         public string UPDATED_MAN
         {
             get;
             set;
         }
-
     }
 }

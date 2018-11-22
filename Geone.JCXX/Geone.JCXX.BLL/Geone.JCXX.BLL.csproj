@@ -6,9 +6,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Geone.JCXX.Meta\Geone.JCXX.Meta.csproj" />
-    <ProjectReference Include="..\Src\Util\Geone.Utiliy.Build\Geone.Utiliy.Build.csproj" />
-    <ProjectReference Include="..\Src\Util\Geone.Utiliy.Database\Geone.Utiliy.Database.csproj" />
-    <ProjectReference Include="..\Src\Util\Geone.Utiliy.Library\Geone.Utiliy.Library.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,26 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Geone.JCXX.Meta;
+﻿using Geone.JCXX.Meta;
 using Geone.Utiliy.Database;
 using Geone.Utiliy.Library;
+using Geone.Utiliy.Logger;
+using System;
+using System.Collections.Generic;
 
 namespace Geone.JCXX.BLL
 {
     public class MonitorBLL : IMonitorBLL
     {
         private IDbEntity<JCXX_Monitor> Respostry;
-        LogWriter log = new LogWriter(new FileLogRecord());
+        private ILogWriter log;
 
         /// <summary>
         /// 构造函数注入
         /// </summary>
         /// <param name="_t"></param>
-        public MonitorBLL(IDbEntity<JCXX_Monitor> _t)
+        public MonitorBLL(IDbEntity<JCXX_Monitor> _t, ILogWriter logWriter)
         {
             Respostry = _t;
             Respostry.SetTable("JCXX_Monitor");
+            log = logWriter;
         }
 
         /// <summary>
@@ -57,6 +57,7 @@ namespace Geone.JCXX.BLL
                         list = query.order == "asc" ? list.OrderBy(t => t.MonitorType)
                             : list.OrderByDesc(t => t.MonitorType);
                         break;
+
                     default:
                         list = list.OrderByDesc(t => t.CREATED);
                         break;
@@ -65,7 +66,7 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return new List<JCXX_Monitor>();
             }
         }
@@ -84,7 +85,6 @@ namespace Geone.JCXX.BLL
                 list = list.And(t => t.MonitorName.Like("%" + query.Like_MonitorName + "%"));
             if (query.Enabled != null)
                 list = list.And(t => t.Enabled.Eq((int)query.Enabled));
-
         }
 
         /// <summary>
@@ -115,11 +115,10 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return RepModel.Error(ex.Message);
             }
         }
-
 
         public JCXX_Monitor GetByID(string ID)
         {
@@ -134,7 +133,7 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return new JCXX_Monitor();
             }
         }
@@ -147,7 +146,7 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return RepModel.Error(ex.Message);
             }
         }

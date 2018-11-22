@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Geone.JCXX.WebService.Meta.QueryEntity
+﻿namespace Geone.JCXX.WebService.Meta.QueryEntity
 {
     public class Req_UserLogin
     {
@@ -8,10 +6,12 @@ namespace Geone.JCXX.WebService.Meta.QueryEntity
         /// 应用ID
         /// </summary>
         public string AppID { get; set; }
+
         /// <summary>
         /// 账号
         /// </summary>
         public string Account { get; set; }
+
         /// <summary>
         /// 密码
         /// </summary>

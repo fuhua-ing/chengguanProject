@@ -1,46 +1,54 @@
-﻿using System;
+﻿using Geone.JCXX.Meta;
 using Geone.JCXX.WebService.Meta.QueryEntity;
-using Geone.Utiliy.Library;
-using Geone.Utiliy.Database;
-using Geone.JCXX.Meta;
 using Geone.JCXX.WebService.Meta.Response;
-using System.Linq;
-using System.Collections.Generic;
-using Autofac;
 using Geone.Utiliy.Build;
+using Geone.Utiliy.Database;
+using Geone.Utiliy.Library;
+using Geone.Utiliy.Logger;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Geone.JCXX.WebService
 {
     public class UserBLLL : IUserService
     {
-        private static IContainer container = AutofacSettings.Build();
         private IDbEntity<JCXX_User> Respostry_User;
         private IDbEntity<View_AppRoleUser> Respostry_VRU;
         private IDbEntity<View_AppRoleMenu> Respostry_VRM;
         private IDbEntity<View_QSRoleUser> Respostry_VQSRU;
         private IDbEntity<View_AppRoleUser> Respostry_VARU;
-        LogWriter log = new LogWriter(new FileLogRecord());
+        private ILogWriter log;
+        private string key;
 
-        public UserBLLL() {
-            Respostry_User = container.Resolve<IDbEntity<JCXX_User>>();
+        public UserBLLL(IDbEntity<JCXX_User> _User,
+            IDbEntity<View_AppRoleUser> _VRU,
+            IDbEntity<View_AppRoleMenu> _VRM,
+            IDbEntity<View_QSRoleUser> _VQSRU,
+            IDbEntity<View_AppRoleUser> _VARU,
+            ILogWriter logWriter)
+        {
+            Respostry_User = _User;
             Respostry_User.SetTable(JCXX_User.GetTbName());
 
-            Respostry_VRU = container.Resolve<IDbEntity<View_AppRoleUser>>();
+            Respostry_VRU = _VRU;
             Respostry_VRU.SetTable(View_AppRoleUser.GetTbName());
 
-            Respostry_VRM = container.Resolve<IDbEntity<View_AppRoleMenu>>();
+            Respostry_VRM = _VRM;
             Respostry_VRM.SetTable(View_AppRoleMenu.GetTbName());
 
-            Respostry_VQSRU = container.Resolve<IDbEntity<View_QSRoleUser>>();
+            Respostry_VQSRU = _VQSRU;
             Respostry_VQSRU.SetTable(View_QSRoleUser.GetTbName());
 
-            Respostry_VARU = container.Resolve<IDbEntity<View_AppRoleUser>>();
+            Respostry_VARU = _VARU;
             Respostry_VARU.SetTable(View_AppRoleUser.GetTbName());
+
+            log = logWriter;
+            key = "geone123";
         }
 
-
         /// <summary>
-        /// 用户登录 
+        /// 用户登录
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
@@ -49,7 +57,9 @@ namespace Geone.JCXX.WebService
             try
             {
                 var result = new Rtn_UserLogin();
+
                 #region 查找用户
+
                 var userList = Respostry_User.Select().WhereAnd(t => t.Account.Eq(query.Account),
                     t => t.Enabled.Eq(1),
                     t => t.IsDelete.Eq(0)
@@ -70,34 +80,41 @@ namespace Geone.JCXX.WebService
                     Mobile = Userinfo.Mobile,
                     Email = Userinfo.Email
                 };
-                #endregion
+
+                #endregion 查找用户
+
                 #region 根据AppID查找用户角色信息
+
                 var listVRU = Respostry_VRU.Select().WhereAnd(t => t.AppID.Eq(query.AppID),
                     t => t.UserID.Eq(userList[0].ID),
                     t => t.AppEnabled.Eq(1),
                     t => t.RoleEnabled.Eq(1)
                     ).QueryList();
-                #endregion
+
+                #endregion 根据AppID查找用户角色信息
+
                 #region 创建tokne
-                var token_user = JsonHelper.JsonDllSerialize<AppUserResult>(new AppUserResult()
+
+                var token_user = JsonHelper.JsonDllSerialize(new AppUserResult()
                 {
                     i = Userinfo.ID,
                     n = Userinfo.UserName,
                     a = Userinfo.Account
                 });
                 var token_role = JsonHelper.JsonDllSerialize<string[]>(listVRU.Select(t => t.RoleID).ToArray());
-                result.Token = Token.DistributeARToken(AppConfig.Init.Key, query.AppID, token_user, token_role);
-                #endregion
-                return RepModel.Success(result);
+                result.Token = Token.DistributeARToken(key, query.AppID, token_user, token_role);
 
+                #endregion 创建tokne
+
+                return RepModel.Success(result);
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return RepModel.Error();
             }
-
         }
+
         /// <summary>
         /// 用户密码修改
         /// </summary>
@@ -118,7 +135,7 @@ namespace Geone.JCXX.WebService
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return RepModel.Error();
             }
         }
@@ -141,7 +158,7 @@ namespace Geone.JCXX.WebService
                   t => t.AppEnabled.Eq(1),
                    t => t.MenuEnabled.Eq(1)
                    ).QueryList();
-                var result = list.OrderBy(p=>p.MenuCode).GroupBy(p => new { p.MenuID, p.MenuParentID, p.MenuName, p.MenuCode, p.MenuIcon, p.MenuUrl })
+                var result = list.OrderBy(p => p.MenuCode).GroupBy(p => new { p.MenuID, p.MenuParentID, p.MenuName, p.MenuCode, p.MenuIcon, p.MenuUrl })
                    .Select(m => new
                    {
                        ID = m.Key.MenuID,
@@ -155,10 +172,11 @@ namespace Geone.JCXX.WebService
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return RepModel.Error();
             }
         }
+
         /// <summary>
         /// 用户获取角色
         /// </summary>
@@ -183,10 +201,11 @@ namespace Geone.JCXX.WebService
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return RepModel.Error();
             }
         }
+
         /// <summary>
         /// 用户获取
         /// </summary>
@@ -212,11 +231,9 @@ namespace Geone.JCXX.WebService
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return RepModel.Error();
             }
         }
-
-
     }
 }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Geone.JCXX.Meta
+﻿namespace Geone.JCXX.Meta
 {
     ///<summary>
     /// 应用菜单
@@ -17,6 +13,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 上级ID
         ///// </summary>
@@ -25,6 +22,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 菜单名称
         ///// </summary>
@@ -33,6 +31,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 菜单编号
         ///// </summary>
@@ -41,6 +40,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 路径地址
         ///// </summary>
@@ -49,6 +49,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 图标编号
         ///// </summary>
@@ -57,6 +58,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 备注
         ///// </summary>
@@ -65,6 +67,5 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
-
     }
 }

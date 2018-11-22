@@ -1,7 +1,4 @@
-﻿using Geone.Utiliy.Database;
-using System;
-
-namespace Geone.JCXX.Meta
+﻿namespace Geone.JCXX.Meta
 {
     ///<summary>
     /// 用户
@@ -21,6 +18,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 人员姓名
         ///// </summary>
@@ -29,6 +27,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 人员编号
         ///// </summary>
@@ -37,6 +36,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 登录账号
         ///// </summary>
@@ -45,6 +45,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 登录密码
         ///// </summary>
@@ -53,6 +54,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 性别
         ///// </summary>
@@ -61,6 +63,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 身份证号
         ///// </summary>
@@ -69,6 +72,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 联系电话
         ///// </summary>
@@ -77,6 +81,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 联系邮箱
         ///// </summary>
@@ -85,6 +90,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 备注
         ///// </summary>
@@ -94,5 +100,4 @@ namespace Geone.JCXX.Meta
             set;
         }
     }
-
 }

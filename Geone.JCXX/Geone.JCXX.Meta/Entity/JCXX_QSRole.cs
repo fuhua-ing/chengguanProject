@@ -1,5 +1,3 @@
-
-using System;
 namespace Geone.JCXX.Meta
 {
     ///<summary>
@@ -20,6 +18,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 角色编号
         ///// </summary>
@@ -28,6 +27,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 角色名称
         ///// </summary>
@@ -36,6 +36,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 备注
         ///// </summary>
@@ -44,8 +45,5 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
-      
-      
-
     }
 }

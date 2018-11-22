@@ -6,7 +6,6 @@
 <script>
 
     $(function () {
-       
 
         //初始化表格
         $('#gd_url').InitGird({ url: "../PhoneGroupManager/GetGrid" });
@@ -61,7 +60,7 @@
 
     //新增
     function Add() {
-      
+
         $("#win").OpenWin({ title: "短信号码组-新增", url: "../PhoneGroupManager/PhoneGroupForm" , width: 800, height: 450 });
     }
     //修改
@@ -85,7 +84,7 @@
                             if (result.StatusCode == "200") {
                                 $.messager.alert('提示', '删除成功', 'info', function () {
                                     Search();
-                                   
+
                                 });
                             }
                             else {
@@ -100,19 +99,16 @@
     }
     //回调
     function callback(isOk) {
-       
+
         $("#win").window('close');
-       
+
         if (isOk) {
             Search();
-            
+
         }
     }
-
-   
 </script>
 <div id="win"></div>
-
 
 <div class="content_grid_rt content_grid">
     <div class="StTitle" id="ToolBar">
@@ -130,9 +126,9 @@
                     <tr>
                         <th>组名称</th>
                         <td width="35%"><input class="easyui-textbox" name="Like_GroupName"></td>
-                       
+
                         <th>是否有效</th>
-                        <td >
+                        <td>
                             <input class="easyui-combobox Dict_Enabled defaultAll" name="Enabled" />
                         </td>
                     </tr>

@@ -1,9 +1,8 @@
-﻿using Autofac;
-using Geone.JCXX.Meta;
+﻿using Geone.JCXX.Meta;
 using Geone.JCXX.WebService.Meta.QueryEntity;
-using Geone.Utiliy.Build;
 using Geone.Utiliy.Database;
 using Geone.Utiliy.Library;
+using Geone.Utiliy.Logger;
 using System;
 using System.Linq;
 
@@ -11,43 +10,51 @@ namespace Geone.JCXX.WebService
 {
     public class DataBLL : IDataService
     {
-        private static IContainer container = AutofacSettings.Build();
         private IDbEntity<View_DictItem> Respostry_DictItem;
         private IDbEntity<JCXX_QSRole> Respostry_QSRole;
         private IDbEntity<View_QSRoleUser> Respostry_QSRoleUser;
-
         private IDbEntity<JCXX_Grid> Respostry_Grid;
         private IDbEntity<View_Grid> Respostry_VGrid;
         private IDbEntity<JCXX_Dept> Respostry_Dept;
         private IDbEntity<JCXX_CaseLATJ> Respostry_LATJ;
         private IDbEntity<View_QSRoleGrid> Respostry_QSRG;
-        private LogWriter log = new LogWriter(new FileLogRecord());
+        private ILogWriter log;
 
-        public DataBLL()
+        public DataBLL(IDbEntity<View_DictItem> _DictItem,
+            IDbEntity<JCXX_QSRole> _QSRole,
+            IDbEntity<View_QSRoleUser> _QSRoleUser,
+            IDbEntity<JCXX_Grid> _Grid,
+            IDbEntity<View_Grid> _VGrid,
+            IDbEntity<JCXX_Dept> _Dept,
+            IDbEntity<JCXX_CaseLATJ> _LATJ,
+            IDbEntity<View_QSRoleGrid> _QSRG,
+            ILogWriter logWriter)
         {
-            Respostry_DictItem = container.Resolve<IDbEntity<View_DictItem>>();
+            Respostry_DictItem = _DictItem;
             Respostry_DictItem.SetTable(View_DictItem.GetTbName());
 
-            Respostry_QSRole = container.Resolve<IDbEntity<JCXX_QSRole>>();
+            Respostry_QSRole = _QSRole;
             Respostry_QSRole.SetTable(JCXX_QSRole.GetTbName());
 
-            Respostry_Grid = container.Resolve<IDbEntity<JCXX_Grid>>();
+            Respostry_Grid = _Grid;
             Respostry_Grid.SetTable(JCXX_Grid.GetTbName());
 
-            Respostry_VGrid = container.Resolve<IDbEntity<View_Grid>>();
+            Respostry_VGrid = _VGrid;
             Respostry_VGrid.SetTable(View_Grid.GetTbName());
 
-            Respostry_Dept = container.Resolve<IDbEntity<JCXX_Dept>>();
+            Respostry_Dept = _Dept;
             Respostry_Dept.SetTable(JCXX_Dept.GetTbName());
 
-            Respostry_LATJ = container.Resolve<IDbEntity<JCXX_CaseLATJ>>();
+            Respostry_LATJ = _LATJ;
             Respostry_LATJ.SetTable(JCXX_CaseLATJ.GetTbName());
 
-            Respostry_QSRG = container.Resolve<IDbEntity<View_QSRoleGrid>>();
+            Respostry_QSRG = _QSRG;
             Respostry_QSRG.SetTable(View_QSRoleGrid.GetTbName());
 
-            Respostry_QSRoleUser = container.Resolve<IDbEntity<View_QSRoleUser>>();
+            Respostry_QSRoleUser = _QSRoleUser;
             Respostry_QSRoleUser.SetTable(View_QSRoleUser.GetTbName());
+
+            log = logWriter;
         }
 
         /// <summary>
@@ -87,7 +94,7 @@ namespace Geone.JCXX.WebService
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return RepModel.Error();
             }
         }
@@ -117,7 +124,7 @@ namespace Geone.JCXX.WebService
         //    //}
         //    //catch (Exception ex)
         //    //{
-        //    //    log.WriteException(null, ex);
+        //    //    log.WriteException(ex);
         //    //    return UnaryResult(RepModel.Error());
         //    //}
         //}
@@ -152,7 +159,7 @@ namespace Geone.JCXX.WebService
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return RepModel.Error();
             }
         }
@@ -179,7 +186,7 @@ namespace Geone.JCXX.WebService
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return RepModel.Error();
             }
         }
@@ -221,7 +228,7 @@ namespace Geone.JCXX.WebService
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return RepModel.Error();
             }
         }
@@ -255,7 +262,7 @@ namespace Geone.JCXX.WebService
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return RepModel.Error();
             }
         }
@@ -296,7 +303,7 @@ namespace Geone.JCXX.WebService
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return RepModel.Error();
             }
         }

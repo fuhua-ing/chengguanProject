@@ -39,8 +39,6 @@
 
     }
 
-
-
     //加载菜单
     function LoadMenu(menuobj, menu) {
         let _html = '<ul class="fi-ul">';
@@ -92,7 +90,7 @@
                 title: menutext,
                 loadingMessage: "正在加载数据...",
                 cache: false,
-                content: "<iframe id='icontent' marginheight='0' marginwidth='0' frameborder='0' scrolling='auto' width='100%' height='98%' src='" + url + "'/>",
+                content: "<iframe id='icontent' marginheight='0' marginwidth='0' frameborder='0' scrolling='auto' width='100%' height='98%' src='" + url + "' />",
                 closable: _closable
             });
         }
@@ -116,7 +114,7 @@
                 //title: menutext,
                 loadingMessage: "正在加载数据...",
                 cache: false,
-                content: "<iframe id='icontent' marginheight='0' marginwidth='0' frameborder='0' scrolling='auto' width='100%' height='100%' src='" + url + "'/>",
+                content: "<iframe id='icontent' marginheight='0' marginwidth='0' frameborder='0' scrolling='auto' width='100%' height='100%' src='" + url + "' />",
                 closable: true
             }
         });
@@ -134,14 +132,10 @@
         var index = tabPanel.tabs('getTabIndex', tab);
         tabPanel.tabs('close', index);
     }
-
 </script>
-
-
 
 <div class="easyui-layout" id="cc-c" data-options="fit:true" style="margin: 0 0 0 60px;">
     <div class="index_menu">
-
     </div>
     <div data-options="region:'north'" class="index_top">
         <div class="lft_title">基础信息管理系统</div>
@@ -159,7 +153,6 @@
                 <i class=" fa fa-ellipsis-v"></i>
             </div>
         </div>
-
     </div>
     <div data-options="region:'center'" class="index_center" style="margin-left:5px">
         <div id="mainTabs" class="easyui-tabs" data-options="fit:true,border:false"></div>

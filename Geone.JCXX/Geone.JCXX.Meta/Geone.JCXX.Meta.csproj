@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Src\Util\Geone.Utiliy.Database\Geone.Utiliy.Database.csproj" />
+    <PackageReference Include="Geone.Utiliy.Build" Version="1.0.0" />
   </ItemGroup>
 
 </Project>

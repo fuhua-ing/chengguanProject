@@ -50,7 +50,6 @@
                 outline: none;
             }
 
-
             #userList li.selected a {
                 border: 1px solid #2c6f9b;
                 padding: 0 0px;
@@ -68,7 +67,6 @@
                 z-index: 99;
             }
 </style>
-
 
 <script>
     var RoleID = getQueryString("RoleID");
@@ -113,7 +111,6 @@
                     _html += '</li>';
                 });
                 $("#userList").html(_html);
-                
 
                 //获取角色用户
                 $.DoAjax({
@@ -127,7 +124,7 @@
                             _selectHtml += $("#" + item.UserID).html();
                             _selectHtml += '</li>';
                             $("#" + item.UserID).remove();
-                           
+
                         });
                         $("#userList").prepend(_selectHtml);
                         $("#userList li").on("click", function () {
@@ -149,7 +146,6 @@
         $('.content_grid_rt').height($(window).height() - 50);
         $('.content_grid_rt').width($(window).width() - 250);
     }
-
 
     //根据部门、姓名查找
     //IsNeedName 是否需要用户姓名参数（只有点击查询才需要，部门树联动不需要）
@@ -203,10 +199,6 @@
     }
 </script>
 
-
-
-
-
 <div class="content_grid_lft">
     <ul id="treeDept"></ul>
 </div>
@@ -224,4 +216,3 @@
     </div>
     <ul id="userList"></ul>
 </div>
-

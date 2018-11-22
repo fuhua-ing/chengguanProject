@@ -1,11 +1,9 @@
 ﻿using MagicOnion;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Geone.JCXX.WebService
 {
-    public interface IHolidayService : IService<IHolidayService>
+    public interface IHoliday : IService<IHoliday>
     {
         /// <summary>
         /// 计算两个时间之间的工作时间差(单位：小时)
@@ -22,6 +20,5 @@ namespace Geone.JCXX.WebService
         /// <param name="time">需要加上的时间</param>
         /// <returns></returns>
         UnaryResult<DateTime> CalculateDueTime(DateTime dt, TimeSpan time);
-
     }
 }

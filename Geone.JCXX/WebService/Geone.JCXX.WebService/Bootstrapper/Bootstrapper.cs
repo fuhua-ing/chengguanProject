@@ -1,27 +1,29 @@
 ﻿using Autofac;
-using Geone.Utiliy.Library;
 using Geone.Utiliy.Build;
+using Geone.Utiliy.Library;
+using Geone.Utiliy.Logger;
+using Microsoft.Extensions.DependencyInjection;
+using Nancy;
 using Nancy.Bootstrapper;
 using Nancy.Bootstrappers.Autofac;
-using Nancy;
 using Nancy.Responses.Negotiation;
-using System.Collections.Generic;
-using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
-using Nancy.TinyIoc;
+using System.Collections.Generic;
+using System.IO;
 
 namespace Geone.JCXX.WebService
 {
     public class Bootstrapper : AutofacNancyBootstrapper
     {
-
         private readonly ILogWriter _log;
+        private readonly IServiceCollection _services;
 
-        public Bootstrapper(ILogWriter log)
+        public Bootstrapper(IServiceCollection services, ILogWriter log)
         {
             _log = log;
+            _services = services;
         }
 
         protected override void ApplicationStartup(ILifetimeScope container, IPipelines pipelines)
@@ -29,26 +31,69 @@ namespace Geone.JCXX.WebService
             base.ApplicationStartup(container, pipelines);
 
             //全局错误钩子
-            pipelines.OnError += (ctx, ex) => NancySettings.Error(ctx, ex, _log);
+            pipelines.OnError += (ctx, ex) => Error(ctx, ex);
 
             //响应拦截设置-BeforeRequest
-            pipelines.BeforeRequest.AddItemToStartOfPipeline(x => NancySettings.AddItemToStartOfPipeline(x));
+            pipelines.BeforeRequest.AddItemToStartOfPipeline(x => AddItemToStartOfPipeline(x));
 
             //响应拦截设置-AfterRequest
-            pipelines.AfterRequest.AddItemToEndOfPipeline(x => NancySettings.AddItemToEndOfPipeline(x));
+            pipelines.AfterRequest.AddItemToEndOfPipeline(x => AddItemToEndOfPipeline(x));
         }
+
+        #region //上下文设置
+
+        //全局前置钩子
+        public dynamic AddItemToStartOfPipeline(NancyContext context)
+        {
+            //do sth.
+            return context.Response;
+        }
+
+        //全局后置钩子
+        public dynamic AddItemToEndOfPipeline(NancyContext context)
+        {
+            //do sth.
+            AddHeaders(context);
+
+            return context.Response;
+        }
+
+        //全局异常信息 ErrorAssist HeaderAssist
+        public dynamic Error(NancyContext context, Exception ex)
+        {
+            context.Response = RepModel.ErrorAsJson(_log.WriteNancyException(ex, context, "发生内部错误，请查阅日志。"));
+            AddHeaders(context);
+
+            return context.Response;
+        }
+
+        //添加通用头部
+        public static void AddHeaders(NancyContext context)
+        {
+            #region 跨域
+
+            //context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
+            //context.Response.Headers.Add("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+            //context.Response.Headers.Add("Access-Control-Allow-Headers", "Origin, Accept, X-Requested-With, Content-Type, Authorization, Token, Ticket, AppId, Identity");
+
+            #endregion 跨域
+
+            context.Response.Headers.Add("Content-Type", "application/json; charset=utf-8");
+        }
+
+        #endregion //上下文设置
 
         protected override void ConfigureApplicationContainer(ILifetimeScope existingContainer)
         {
-            var builder = new ContainerBuilder();
+            var builder = InitBuilder.Builder(_services, (cbuilder) =>
+            {
+                cbuilder.RegisterType<IndIdentity>().As<IIndIdentity>().SingleInstance();
+                //业务逻辑注入
+                cbuilder.RegisterType<UserBLLL>().As<IUserService>().SingleInstance();
+                cbuilder.RegisterType<DataBLL>().As<IDataService>().SingleInstance();
+            });
 
-            //业务逻辑注入
-            builder.RegisterType<UserBLLL>().As<IUserService>().SingleInstance();
-            builder.RegisterType<DataBLL>().As<IDataService>().SingleInstance();
-
-            AutofacSettings.Add(builder);
             builder.Update(existingContainer.ComponentRegistry);
-
         }
     }
 
@@ -66,6 +111,7 @@ namespace Geone.JCXX.WebService
             //NullValueHandling = NullValueHandling.Ignore;//不包含属性的默认值序列化
             //ReferenceLoopHandling = ReferenceLoopHandling.Ignore;//忽略循环引用
         }
+
         public bool CanSerialize(MediaRange mediaRange)
         {
             return mediaRange.ToString().Equals("application/json", StringComparison.OrdinalIgnoreCase);//忽略大小写

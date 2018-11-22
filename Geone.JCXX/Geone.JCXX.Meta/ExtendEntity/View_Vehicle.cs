@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Geone.JCXX.Meta
+﻿namespace Geone.JCXX.Meta
 {
     ///<summary>
     /// 车辆信息
     ///</summary>
     public class View_Vehicle : JCXX_Vehicle
     {
-
         /// <summary>
         /// 部门名称
         /// </summary>
@@ -18,6 +13,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         /// <summary>
         /// 设备类型
         /// </summary>
@@ -26,6 +22,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         /// <summary>
         /// 车辆类型
         /// </summary>
@@ -34,6 +31,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         /// <summary>
         /// 部门父类ID
         /// </summary>

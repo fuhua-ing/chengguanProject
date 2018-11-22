@@ -1,9 +1,6 @@
-﻿using NPOI.SS.UserModel;
-using System;
+﻿using Geone.Utiliy.Library;
+using NPOI.SS.UserModel;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Geone.Utiliy.Library;
 
 namespace Geone.JCXX.Web
 {
@@ -50,17 +47,22 @@ namespace Geone.JCXX.Web
                 return null;
             switch (cell.CellType)
             {
-                case CellType.Blank: //BLANK:  
+                case CellType.Blank: //BLANK:
                     return null;
-                case CellType.Boolean: //BOOLEAN:  
+
+                case CellType.Boolean: //BOOLEAN:
                     return cell.BooleanCellValue;
-                case CellType.Numeric: //NUMERIC:  
+
+                case CellType.Numeric: //NUMERIC:
                     return cell.NumericCellValue;
-                case CellType.String: //STRING:  
+
+                case CellType.String: //STRING:
                     return cell.StringCellValue;
-                case CellType.Error: //ERROR:  
+
+                case CellType.Error: //ERROR:
                     return cell.ErrorCellValue;
-                case CellType.Formula: //FORMULA:  
+
+                case CellType.Formula: //FORMULA:
                 default:
                     return "=" + cell.CellFormula;
             }

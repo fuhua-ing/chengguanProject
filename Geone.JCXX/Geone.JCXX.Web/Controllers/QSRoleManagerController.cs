@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Geone.JCXX.BLL;
+﻿using Geone.JCXX.BLL;
 using Geone.JCXX.Meta;
-
-using Microsoft.AspNetCore.Mvc;
 using Geone.Utiliy.Library;
+using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace Geone.JCXX.Web.Controllers
 {
@@ -19,21 +15,20 @@ namespace Geone.JCXX.Web.Controllers
             bll = BLL;
         }
 
-
         public ActionResult QSRoleList()
         {
             return View();
         }
+
         public ActionResult RoleUserForm()
         {
             return View();
         }
+
         public ActionResult QSRoleForm()
         {
             return View();
         }
-
-
 
         /// <summary>
         /// 获取列表
@@ -87,7 +82,6 @@ namespace Geone.JCXX.Web.Controllers
 
         public ActionResult GetRoleUserList(Query_QSRoleUser query)
         {
-
             return Json(bll.GetRoleUserList(query));
         }
 
@@ -102,8 +96,7 @@ namespace Geone.JCXX.Web.Controllers
             RepModel result = bll.SaveRoleUser(RoleID, UserIDs, LoginHelp.GetLoginInfo().Account);
             return Json(result);
         }
-        #endregion
 
-
+        #endregion 角色用户设置
     }
 }

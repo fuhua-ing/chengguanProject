@@ -1,13 +1,11 @@
-﻿using System;
-
-using System.IO;
-using Geone.JCXX.BLL;
+﻿using Geone.JCXX.BLL;
 using Geone.JCXX.Meta;
-
+using Geone.Utiliy.Library;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Geone.Utiliy.Library;
+using System;
+using System.IO;
 
 namespace Geone.JCXX.Web.Controllers
 {
@@ -22,7 +20,6 @@ namespace Geone.JCXX.Web.Controllers
             hostingEnv = _hostingEnv;
         }
 
-
         public ActionResult CaseClassList()
         {
             return View();
@@ -32,15 +29,16 @@ namespace Geone.JCXX.Web.Controllers
         {
             return View();
         }
+
         public ActionResult RoleCaseForm()
         {
             return View();
         }
+
         public ActionResult CaseClassImport()
         {
             return View();
         }
-        
 
         /// <summary>
         /// 获取列表
@@ -113,7 +111,7 @@ namespace Geone.JCXX.Web.Controllers
             return Json(result);
         }
 
-        #endregion
+        #endregion 角色案件设置
 
         /// <summary>
         /// Json文件上传导入
@@ -157,11 +155,13 @@ namespace Geone.JCXX.Web.Controllers
                 tmpfile.Delete();
             }
         }
+
         public ActionResult DownloadFile(Query_CaseClass query)
         {
             var buffer = System.Text.Encoding.UTF8.GetBytes(JsonHelper.JsonDllSerializeList<View_CaseClass>(bll.GetList(query), JsonDateTimeFormat.DateTime));
             return File(buffer, "text/plain", "file.txt");
         }
+
         /// <summary>
         /// 示例文件下载
         /// </summary>

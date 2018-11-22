@@ -1,28 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Geone.JCXX.Meta;
+﻿using Geone.JCXX.Meta;
 using Geone.Utiliy.Database;
 using Geone.Utiliy.Library;
+using Geone.Utiliy.Logger;
+using System;
+using System.Collections.Generic;
 
 namespace Geone.JCXX.BLL
 {
     public class HolidayBLL : IHolidayBLL
     {
         private IDbEntity<JCXX_Holiday> Respostry;
-        LogWriter log = new LogWriter(new FileLogRecord());
+        private ILogWriter log;
 
         /// <summary>
         /// 构造函数注入
         /// </summary>
         /// <param name="_t"></param>
-        public HolidayBLL(IDbEntity<JCXX_Holiday> _t)
+        public HolidayBLL(IDbEntity<JCXX_Holiday> _t, ILogWriter logWriter)
         {
             Respostry = _t;
             Respostry.SetTable("JCXX_Holiday");
+            log = logWriter;
         }
-
 
         /// <summary>
         /// 获取列表
@@ -46,11 +45,10 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return new List<JCXX_Holiday>();
             }
         }
-
 
         /// <summary>
         /// 保存
@@ -82,7 +80,7 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return RepModel.Error(ex.Message);
             }
         }
@@ -100,7 +98,7 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return new JCXX_Holiday();
             }
         }
@@ -113,7 +111,7 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return RepModel.Error(ex.Message);
             }
         }

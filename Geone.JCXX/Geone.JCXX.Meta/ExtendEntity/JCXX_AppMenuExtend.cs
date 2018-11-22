@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Geone.JCXX.Meta
+﻿namespace Geone.JCXX.Meta
 {
     public class JCXX_AppMenuExtend : JCXX_AppMenu
     {
@@ -14,6 +10,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         /// <summary>
         /// 是否属于当前角色
         /// </summary>

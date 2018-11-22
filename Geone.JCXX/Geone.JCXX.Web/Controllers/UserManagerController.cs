@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Geone.JCXX.BLL;
+﻿using Geone.JCXX.BLL;
 using Geone.JCXX.Meta;
-
-using Microsoft.AspNetCore.Mvc;
 using Geone.Utiliy.Library;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Srv.Backstage.Controllers
 {
@@ -18,7 +13,6 @@ namespace Srv.Backstage.Controllers
         {
             bll = _BLL;
         }
-
 
         public ActionResult UserList()
         {
@@ -35,7 +29,6 @@ namespace Srv.Backstage.Controllers
             return View();
         }
 
-     
         /// <summary>
         /// 获取列表
         /// </summary>
@@ -44,6 +37,7 @@ namespace Srv.Backstage.Controllers
         {
             return Content(JsonHelper.JsonDllSerialize<GridData>(bll.GetGrid(query), JsonDateTimeFormat.DateTime));
         }
+
         /// <summary>
         /// 获取列表
         /// </summary>
@@ -53,6 +47,7 @@ namespace Srv.Backstage.Controllers
             var userList = bll.GetList(query);
             return Json(userList);
         }
+
         /// <summary>
         /// 获取
         /// </summary>

@@ -8,14 +8,14 @@
         },
         message: '请输入距当天之后的时间。'
     },
-    NumberChar: {//数字和字母组合 
+    NumberChar: {//数字和字母组合
         validator: function (value) {
             var patrn = /^[0-9a-zA-Z]*$/g;
             return patrn.test(value);
         },
         message: "该输入项只能由数字和字母组成。"
     },
-    OneOrTwo: {//只能输入0或1 
+    OneOrTwo: {//只能输入0或1
         validator: function (value) {
             var patrn = /^[01]$/;
             return patrn.test(value);
@@ -108,5 +108,4 @@
         },
         message: '请至少选择一项。'
     }
-  
 });

@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Geone.JCXX.Meta;
+﻿using Geone.JCXX.Meta;
 using Geone.Utiliy.Database;
 using Geone.Utiliy.Library;
+using Geone.Utiliy.Logger;
+using System;
+using System.Collections.Generic;
 
 namespace Geone.JCXX.BLL
 {
@@ -15,9 +14,9 @@ namespace Geone.JCXX.BLL
         private IDbEntity<JCXX_QSRole_PhoneGroup> Respostry_RP;
         private IDbEntity<View_QSRolePhoneGroup> Respostry_VRP;
 
-        private DictItemBLL dcbll;
-        private QSRoleBLL qsbll;
-        LogWriter log = new LogWriter(new FileLogRecord());
+        private IDictItemBLL dcbll;
+        private IQSRoleBLL qsbll;
+        private ILogWriter log;
 
         /// <summary>
         /// 构造函数注入
@@ -26,7 +25,8 @@ namespace Geone.JCXX.BLL
         public PhoneGroupBLL(IDbEntity<JCXX_PhoneGroup> _t, IDbEntity<View_PhoneGroup> _tv
             , IDbEntity<JCXX_DictItem> _tdc, IDbEntity<View_DictItem> _tvdc
             , IDbEntity<JCXX_QSRole> _tr, IDbEntity<JCXX_QSRole_PhoneGroup> _trp
-            , IDbEntity<View_QSRolePhoneGroup> _tvrp)
+            , IDbEntity<View_QSRolePhoneGroup> _tvrp
+            , IDictItemBLL dictItemBLL, IQSRoleBLL qSRoleBLL, ILogWriter logWriter)
         {
             Respostry = _t;
             Respostry.SetTable("JCXX_PhoneGroup");
@@ -40,12 +40,14 @@ namespace Geone.JCXX.BLL
             Respostry_VRP = _tvrp;
             Respostry_VRP.SetTable("View_QSRolePhoneGroup");
 
+            dcbll = dictItemBLL;
+            qsbll = qSRoleBLL;
 
-            dcbll = new DictItemBLL(_tdc, _tvdc);
-            qsbll = new QSRoleBLL(_tr);
+            log = logWriter;
         }
 
         #region 短信号码分组维护
+
         /// <summary>
         /// 分页获取列表
         /// </summary>
@@ -79,6 +81,7 @@ namespace Geone.JCXX.BLL
                     case "GroupName":
                         list = query.order == "asc" ? list.OrderBy(t => t.GroupName) : list.OrderByDesc(t => t.GroupName);
                         break;
+
                     default:
                         list = list.OrderByDesc(t => t.CREATED);
                         break;
@@ -87,7 +90,7 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return new List<View_PhoneGroup>();
             }
         }
@@ -101,11 +104,10 @@ namespace Geone.JCXX.BLL
         {
             list = list.Where(t => t.IsDelete.Eq(0));
             if (!string.IsNullOrEmpty(query.Like_GroupName))
-                list = list.And(t => t.GroupName.Eq("%"+query.Like_GroupName+"%"));
+                list = list.And(t => t.GroupName.Eq("%" + query.Like_GroupName + "%"));
             if (query.Enabled != null)
                 list = list.And(t => t.Enabled.Eq((int)query.Enabled));
         }
-
 
         public JCXX_PhoneGroup GetByID(string ID)
         {
@@ -120,7 +122,7 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return new JCXX_PhoneGroup();
             }
         }
@@ -148,7 +150,7 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return RepModel.Error(ex.Message);
             }
         }
@@ -165,12 +167,12 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return RepModel.Error(ex.Message);
             }
         }
 
-        #endregion
+        #endregion 短信号码分组维护
 
         #region 角色分组设置
 
@@ -221,11 +223,11 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return RepModel.Error(ex.Message);
             }
         }
 
-        #endregion
+        #endregion 角色分组设置
     }
 }

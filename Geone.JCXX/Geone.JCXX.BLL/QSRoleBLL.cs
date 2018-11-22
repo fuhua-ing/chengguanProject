@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Geone.JCXX.Meta;
+﻿using Geone.JCXX.Meta;
 using Geone.Utiliy.Database;
 using Geone.Utiliy.Library;
+using Geone.Utiliy.Logger;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Geone.JCXX.BLL
 {
@@ -14,8 +14,8 @@ namespace Geone.JCXX.BLL
         private IDbEntity<View_QSRole> Respostry_V;
         private IDbEntity<JCXX_QSRole_User> Respostry_RU;
         private IDbEntity<View_QSRoleUser> Respostry_VRU;
-        private DictItemBLL itemBLL;
-        LogWriter log = new LogWriter(new FileLogRecord());
+        private IDictItemBLL itemBLL;
+        private ILogWriter log;
 
         /// <summary>
         /// 构造函数注入
@@ -23,7 +23,7 @@ namespace Geone.JCXX.BLL
         /// <param name="_t"></param>
         public QSRoleBLL(IDbEntity<JCXX_QSRole> _t, IDbEntity<View_QSRole> _tV, IDbEntity<JCXX_QSRole_User> _tRU
             , IDbEntity<View_QSRoleUser> _tVRU, IDbEntity<JCXX_DictItem> _td
-            , IDbEntity<View_DictItem> _tvd)
+            , IDbEntity<View_DictItem> _tvd, IDictItemBLL _itemBLL, ILogWriter logWriter)
         {
             Respostry = _t;
             Respostry.SetTable("JCXX_QSRole");
@@ -36,9 +36,10 @@ namespace Geone.JCXX.BLL
             Respostry_VRU = _tVRU;
             Respostry_VRU.SetTable("View_QSRoleUser");
 
-            itemBLL = new DictItemBLL(_td, _tvd);
-
+            itemBLL = _itemBLL;
+            log = logWriter;
         }
+
         public QSRoleBLL(IDbEntity<JCXX_QSRole> _t)
         {
             Respostry = _t;
@@ -79,6 +80,7 @@ namespace Geone.JCXX.BLL
 
                         list = query.order == "asc" ? list.OrderBy(t => t.RoleCode) : list.OrderByDesc(t => t.RoleCode);
                         break;
+
                     default:
                         list = list.OrderByDesc(t => t.CREATED);
                         break;
@@ -87,7 +89,7 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return new List<View_QSRole>();
             }
         }
@@ -110,9 +112,7 @@ namespace Geone.JCXX.BLL
                 list = list.And(t => t.RoleCode.Like("%" + query.Like_RoleCode + "%"));
             if (query.Enabled != null)
                 list = list.And(t => t.Enabled.Eq((int)query.Enabled));
-
         }
-
 
         public List<JCXX_QSRole> GetAll()
         {
@@ -132,7 +132,7 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return new JCXX_QSRole();
             }
         }
@@ -160,7 +160,7 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return RepModel.Error(ex.Message);
             }
         }
@@ -177,11 +177,10 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return RepModel.Error(ex.Message);
             }
         }
-
 
         /// <summary>
         /// 获取Easyui树形结构
@@ -191,7 +190,6 @@ namespace Geone.JCXX.BLL
         public List<EasyuiTreeNode> GetTreeList(Query_QSRole query)
         {
             List<EasyuiTreeNode> listResut = new List<EasyuiTreeNode>();
-
 
             List<View_DictItem> listParent = itemBLL.GetExtList(new Query_DictItem()
             {
@@ -224,7 +222,8 @@ namespace Geone.JCXX.BLL
             firstListResut.Add(firstPparentNode);
             return firstListResut;
         }
-        void setSubTreeList(EasyuiTreeNode ParentNode, List<View_QSRole> listAll)
+
+        private void setSubTreeList(EasyuiTreeNode ParentNode, List<View_QSRole> listAll)
         {
             foreach (JCXX_QSRole child in listAll.Where(t => t.RoleType == ParentNode.id).OrderBy(t => t.RoleCode))
             {
@@ -233,7 +232,8 @@ namespace Geone.JCXX.BLL
                 ParentNode.children.Add(childNode);
             }
         }
-        #endregion
+
+        #endregion 权属角色维护
 
         #region 角色用户设置
 
@@ -287,13 +287,11 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return RepModel.Error(ex.Message);
             }
         }
 
-
-
-        #endregion
+        #endregion 角色用户设置
     }
 }

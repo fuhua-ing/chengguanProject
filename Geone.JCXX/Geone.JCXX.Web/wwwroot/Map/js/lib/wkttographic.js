@@ -1,4 +1,4 @@
- define(function () {
+define(function () {
     /**
      *wkt转化成arcgis的Polyline对象
      * @param wkt
@@ -26,7 +26,7 @@
                 'typeStr': /^\s*(\w+)\s*\s∗(.∗)\s∗\s*$/,
                 'spaces': /\s+/,
                 'parenComma': /\)\s*,\s*\(/,
-                'doubleParenComma': /\)\s*\)\s*,\s*\(\s*\(/,  // can't use {2} here  
+                'doubleParenComma': /\)\s*\)\s*,\s*\(\s*\(/,  // can't use {2} here
                 'trimParens': /^\s*?(.∗?)?\s*$/
             };
             for (var i in options) {
@@ -55,7 +55,7 @@
             var matches = wkt.split("(");
             if (matches) {
                 // type = matches[1].toLowerCase();
-                // str = matches[2];  
+                // str = matches[2];
                 type = matches[0].toLowerCase().replace(" ", "");
                 if (type === "polygon") {
                     if (matches.length === 3) {
@@ -70,7 +70,7 @@
                         }
                         wkts.push(matches[matches.length - 1].replace("))", ""));
                     }
-                    //逗号分隔                
+                    //逗号分隔
                 }
                 else {
                     str = matches[1].replace(")", "");
@@ -78,7 +78,7 @@
                 }
                 if (this.parse[type]) {
                     features = this.parse[type].apply(this, [wkts.join('@')]);
-                    //console.log(features);  
+                    //console.log(features);
                 }
             }
             return features;
@@ -160,7 +160,7 @@
                 for (var i = 0, len = points.length; i < len; ++i) {
                     components.push(this.parse.point.apply(this, [points[i]]));
                 }
-                return components//new esri.geometry.Polyline(components);  
+                return components//new esri.geometry.Polyline(components);
             },
 
             /**
@@ -205,7 +205,7 @@
             }
         }
     };
-    var WktToPoint=function(options) {
+    var WktToPoint = function (options) {
         require([
             "esri/geometry/Point",
             "dojo/domReady!"
@@ -228,7 +228,7 @@
      * @returns {Polyline}
      * @constructor
      */
-   var WktToPolyLine= function (options) {
+    var WktToPolyLine = function (options) {
         require([
             "esri/geometry/Point",
             "esri/geometry/Polyline",
@@ -250,7 +250,7 @@
      * @returns {Polygon}
      * @constructor
      */
-    var WktToPolygon=function(options) {
+    var WktToPolygon = function (options) {
         require([
             "esri/geometry/Point",
             "esri/geometry/Polygon",
@@ -286,4 +286,3 @@
         }
     };
 });
-

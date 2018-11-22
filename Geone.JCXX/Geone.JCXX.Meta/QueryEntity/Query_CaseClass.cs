@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Geone.JCXX.Meta
+﻿namespace Geone.JCXX.Meta
 {
     public class Query_CaseClass : Query_Base
     {
-
         public string ID { get; set; }
         public string CaseType { get; set; }
         public string CaseClassI { get; set; }

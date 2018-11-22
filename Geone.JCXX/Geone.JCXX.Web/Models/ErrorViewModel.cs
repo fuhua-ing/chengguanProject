@@ -1,5 +1,3 @@
-using System;
-
 namespace Geone.JCXX.Web.Models
 {
     public class ErrorViewModel

@@ -6,7 +6,7 @@
     $(function () {
         var ID = getQueryString("ID");
         var AppID = getQueryString("AppID");
-       
+
         //编辑
         if (ID != null && ID != "")
             $.DoAjax({
@@ -51,11 +51,10 @@
     }
 </script>
 
-
 <form id="fmInfo" style="overflow: hidden;">
     <input name="ID" type="hidden" />
-    <input name="AppID" type="hidden" id="AppID"/>
-   
+    <input name="AppID" type="hidden" id="AppID" />
+
     <div class="easyui-from-row">
         <div class="easyui-from-row-col6">
             <label class="easyui-form-label">*角色编号：</label>
@@ -80,7 +79,7 @@
         <div class="easyui-from-row-col6">
             <label class="easyui-form-label">*是否有效：</label>
             <div class="easyui-from-row-item">
-                <input class="easyui-combobox Dict_Enabled" name="Enabled" value="1"/>
+                <input class="easyui-combobox Dict_Enabled" name="Enabled" value="1" />
             </div>
         </div>
     </div>

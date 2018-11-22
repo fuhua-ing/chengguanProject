@@ -1,28 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Geone.JCXX.Meta;
+﻿using Geone.JCXX.Meta;
 using Geone.Utiliy.Database;
 using Geone.Utiliy.Library;
+using Geone.Utiliy.Logger;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Geone.JCXX.BLL
 {
     public class AppMenuBLL : IAppMenuBLL
     {
         private IDbEntity<JCXX_AppMenu> Respostry;
-        LogWriter log = new LogWriter(new FileLogRecord());
+        private ILogWriter log;
 
         /// <summary>
         /// 构造函数注入
         /// </summary>
         /// <param name="_t"></param>
-        public AppMenuBLL(IDbEntity<JCXX_AppMenu> _t)
+        public AppMenuBLL(IDbEntity<JCXX_AppMenu> _t, ILogWriter logWriter)
         {
             Respostry = _t;
             Respostry.SetTable("JCXX_AppMenu");
+            log = logWriter;
         }
-
 
         /// <summary>
         /// 分页获取列表
@@ -44,10 +44,9 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 result.total = 0;
                 result.rows = new List<JCXX_AppMenu>();
-
             }
             return result;
         }
@@ -73,6 +72,7 @@ namespace Geone.JCXX.BLL
                     case "MenuCode":
                         listResult = query.order == "desc" ? listResult.OrderByDescending(t => t.MenuCode).ToList() : listResult.OrderBy(t => t.MenuCode).ToList();
                         break;
+
                     default:
                         listResult = listResult.OrderByDescending(t => t.CREATED).ToList();
                         break;
@@ -81,7 +81,7 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return new List<JCXX_AppMenu>();
             }
         }
@@ -99,15 +99,12 @@ namespace Geone.JCXX.BLL
             if (!string.IsNullOrEmpty(query.MenuCode))
                 list = list.And(t => t.MenuCode.Eq(query.MenuCode));
             if (!string.IsNullOrEmpty(query.Like_MenuName))
-                list = list.And(t => t.MenuName.Like("%"+query.Like_MenuName+"%"));
+                list = list.And(t => t.MenuName.Like("%" + query.Like_MenuName + "%"));
             if (!string.IsNullOrEmpty(query.Like_MenuCode))
                 list = list.And(t => t.MenuCode.Like("%" + query.Like_MenuCode + "%"));
             if (query.Enabled != null)
                 list = list.And(t => t.Enabled.Eq((int)query.Enabled));
-
         }
-
-
 
         /// <summary>
         /// 递归本级和下级菜单
@@ -173,7 +170,8 @@ namespace Geone.JCXX.BLL
             }
             return listResut;
         }
-        void setSubTreeList(EasyuiTreeNode ParentNode, List<JCXX_AppMenu> listAll)
+
+        private void setSubTreeList(EasyuiTreeNode ParentNode, List<JCXX_AppMenu> listAll)
         {
             foreach (JCXX_AppMenu child in listAll.Where(t => t.ParentID == ParentNode.id).OrderBy(t => t.MenuCode))
             {
@@ -183,7 +181,6 @@ namespace Geone.JCXX.BLL
             }
         }
 
-       
         public JCXX_AppMenu GetByID(string ID)
         {
             try
@@ -197,7 +194,7 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return new JCXX_AppMenu();
             }
         }
@@ -225,7 +222,7 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return RepModel.Error(ex.Message);
             }
         }
@@ -242,12 +239,9 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return RepModel.Error(ex.Message);
             }
         }
-
-
-
     }
 }

@@ -2,10 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Geone.JCXX.Web
 {
@@ -56,8 +53,8 @@ namespace Geone.JCXX.Web
                                             return w;
                                         }";
                             //HttpContext.Current.Request.PathBase 获取网站基础路径
-                            script += "getWindow().location.href = '"+ HttpContext.Current.Request.PathBase + "/Home/Login" + "';";
-                            HttpContext.Current.Response.WriteAsync("<script>"+ script + "</script>");
+                            script += "getWindow().location.href = '" + HttpContext.Current.Request.PathBase + "/Home/Login" + "';";
+                            HttpContext.Current.Response.WriteAsync("<script>" + script + "</script>");
                         }
                     }
                 }

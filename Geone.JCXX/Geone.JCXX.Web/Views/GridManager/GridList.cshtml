@@ -4,7 +4,6 @@
     string Dict_GridType = ConstHelper.Dict_GridType;//数据字典-网格类型
 }
 
-
 <script>
     var Dict_GridType = '@Dict_GridType';
 
@@ -94,7 +93,7 @@
         $("#win").OpenWin({ title: "网格-批量导入", url: "../GridManager/GridImport", width: 700, height: 350 });
     }
     //导出
-    function Export() { 
+    function Export() {
         var param = $("#queryTab").getJsonValues().jsonData;
         window.location.href = "DownloadFile";
     }
@@ -104,14 +103,10 @@
         if (isOk)
             Search();
     }
-
-
 </script>
 
 <div id="win">
-
 </div>
-
 
 <div class="content_grid">
     <div class="StTitle" id="ToolBar">
@@ -172,6 +167,3 @@
         </thead>
     </table>
 </div>
-
-
-

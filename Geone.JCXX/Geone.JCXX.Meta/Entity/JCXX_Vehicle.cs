@@ -1,4 +1,5 @@
 using System;
+
 namespace Geone.JCXX.Meta
 {
     ///<summary>
@@ -6,7 +7,6 @@ namespace Geone.JCXX.Meta
     ///</summary>
     public class JCXX_Vehicle : BaseEntity
     {
-
         ///// <summary>
         ///// 部门ID
         ///// </summary>
@@ -15,6 +15,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 车牌号
         ///// </summary>
@@ -23,6 +24,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 设备类型
         ///// </summary>
@@ -31,6 +33,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 车辆类型
         ///// </summary>
@@ -39,6 +42,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 发动机编号
         ///// </summary>
@@ -47,30 +51,34 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
-        ///// 车辆识别代码	
+        ///// 车辆识别代码
         ///// </summary>
         public string FrameNo
         {
             get;
             set;
         }
+
         ///// <summary>
         ///// 发证日期
         ///// </summary>
-        public DateTime ? RegDate
+        public DateTime? RegDate
         {
             get;
             set;
         }
+
         ///// <summary>
         ///// 年检合格期
         ///// </summary>
-        public DateTime ? DueDate
+        public DateTime? DueDate
         {
             get;
             set;
         }
+
         ///// <summary>
         ///// GPRS号码
         ///// </summary>
@@ -79,6 +87,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 备注
         ///// </summary>
@@ -87,6 +96,5 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
-
-    }   
+    }
 }

@@ -8,8 +8,6 @@
     $(function () {
         var ID = getQueryString("ID");
         var DeptID = getQueryString("DeptID");
-        
-
 
         //编辑
         if (ID != null && ID != "") {
@@ -82,7 +80,6 @@
         parent.callback(false);
     }
 </script>
-
 
 <form id="fmInfo">
     <input type="hidden" name="ID" />
@@ -161,12 +158,10 @@
         <div class="easyui-from-row-col6">
             <label class="easyui-form-label">*是否有效：</label>
             <div class="easyui-from-row-item">
-                <input class="easyui-combobox Dict_Enabled" name="Enabled" value="1"/>
+                <input class="easyui-combobox Dict_Enabled" name="Enabled" value="1" />
             </div>
         </div>
     </div>
-
-
 </form>
 
 <div class="easyui-from-row">
@@ -176,4 +171,3 @@
         <button class="StBtn StBtn_cancel" onclick="Cancel()">取消</button>
     </div>
 </div>
-

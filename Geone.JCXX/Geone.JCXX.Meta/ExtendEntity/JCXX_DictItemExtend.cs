@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Geone.JCXX.Meta;
-
-namespace Geone.JCXX.Meta
+﻿namespace Geone.JCXX.Meta
 {
     public class JCXX_DictItemExtend : JCXX_DictItem
     {
@@ -15,6 +10,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         /// <summary>
         /// 应用名称
         /// </summary>
@@ -32,6 +28,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 字典类型名称
         ///// </summary>

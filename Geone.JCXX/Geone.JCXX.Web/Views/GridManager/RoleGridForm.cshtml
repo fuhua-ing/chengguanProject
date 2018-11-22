@@ -44,11 +44,10 @@
         }
 </style>
 
-
 <script>
 
     var ID = getQueryString("ID");
-    
+
     $(function () {
 
         //初始化左侧树
@@ -57,20 +56,20 @@
             url: "../QSRoleManager/GetEasyuiTreeList",
             checkbox: true,
             onCheck: function (node, isCheck) {
-                
+
                 var params = [];
-               
+
                 var _tree = $('#treeRoleQS').tree('getChildren');
                 var userList = $("#userList li");
-               
+
                 $.each(userList, function (index, item) {
                     params.push({ "RoleID": '' + item.id + '', "RoleName": '' + item.title + '' });
                 });
-               
+
                 var isExist;
                 $.each(_tree, function (ind, node) {
                     isExist = true;
-                    
+
                     if (params.length > 0) {
                         for (var i = 0; i < params.length; i++) {
                             if (node.id == params[i].RoleID && node.checkState == "unchecked") {
@@ -83,7 +82,6 @@
                                 break;
                             }
 
-                            
                         }
                     }
                     if (isExist && node.checkState == "checked") {
@@ -92,7 +90,7 @@
                         }
                     }
                 });
-               
+
                     //var _tree = $('#treeRoleQS').tree('getChecked');
                     //for (var i = 0; i < _tree.length; i++) {
 
@@ -100,7 +98,7 @@
                     //        params.push({ "RoleID": '' + _tree[i].id + '', "RoleName": '' + _tree[i].text + '' });
                     //    }
                     //}
-               
+
                 LoadChoiceRoleInfo(params);
 
             },
@@ -131,7 +129,7 @@
     function LoadChoiceRole(udata) {
         var _tree = $('#treeRoleQS');
         var _roots = $('#treeRoleQS').tree('getChildren');
-     
+
         $.each(udata, function (index, item) {
 
             for (var i = 0; i < _roots.length; i++) {
@@ -151,22 +149,21 @@
         debugger;
         var _html = "";
         $("#userList").html("");
-     
+
         $.each(udata, function (index, item) {
 
             _html += '<li class="' + item.RoleID + '"  id="' + item.RoleID + '" title="' + item.RoleName + '">';
 
             _html += '      <i class="fa fa-user"></i>' + item.RoleName;
 
-
             _html += '</li>';
         });
         $("#userList").html(_html);
-        
+
     }
     //初始化尺寸
     function InitSize() {
-      
+
         $('.content_grid_lft').height($(window).height() - 20);
         $('.content_grid_lft').width(300);
         $('.content_grid_rt').height($(window).height() - 20);
@@ -222,7 +219,7 @@
         var queryName = $("#searchName").val().trim();
 
         moduleTree = $('#treeRoleQS');
- 
+
         moduleTree.tree("options").url = "../QSRoleManager/GetEasyuiTreeList?RoleName=" + queryName;
         moduleTree.tree('reload');
     }
@@ -247,4 +244,3 @@
 
     <ul id="userList"></ul>
 </div>
-

@@ -33,7 +33,6 @@
         }
 </style>
 
-
 <script>
 
     var GroupID = getQueryString("GroupID");
@@ -72,7 +71,6 @@
                                 break;
                             }
 
-
                         }
                     }
                     if (isExist && node.checkState == "checked") {
@@ -81,7 +79,6 @@
                         }
                     }
                 });
-
 
                 LoadChoiceRoleInfo(params);
 
@@ -136,7 +133,6 @@
             _html += '<li class="' + item.RoleID + '"  id="' + item.RoleID + '" title="' + item.RoleName + '">';
 
             _html += '      <i class="fa fa-user"></i>' + item.RoleName;
-
 
             _html += '</li>';
         });

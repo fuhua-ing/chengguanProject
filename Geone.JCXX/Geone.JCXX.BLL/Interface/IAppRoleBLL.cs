@@ -1,19 +1,19 @@
-﻿using Geone.JCXX.Meta;using Geone.Utiliy.Library;
-
-using System;
+﻿using Geone.JCXX.Meta;
+using Geone.Utiliy.Library;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Geone.JCXX.BLL
 {
     public interface IAppRoleBLL
     {
         #region 维护角色
+
         /// <summary>
         /// 获取表格数据
         /// </summary>
         /// <returns></returns>
         GridData GetGrid(Query_AppRole query);
+
         /// <summary>
         /// 获取list数据
         /// </summary>
@@ -26,12 +26,14 @@ namespace Geone.JCXX.BLL
         /// <param name="ID">主键ID</param>
         /// <returns></returns>
         JCXX_AppRole GetByID(string ID);
+
         /// <summary>
         /// 保存数据
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
         RepModel Save(JCXX_AppRole entity);
+
         /// <summary>
         /// 通过ID删除
         /// </summary>
@@ -39,8 +41,10 @@ namespace Geone.JCXX.BLL
         /// <returns></returns>
         RepModel Del(string ID);
 
-        #endregion
+        #endregion 维护角色
+
         #region 角色用户设置
+
         /// <summary>
         /// 获取角色用户列表
         /// </summary>
@@ -56,14 +60,18 @@ namespace Geone.JCXX.BLL
         /// <param name="CREATED_MAN">创建人</param>
         /// <returns></returns>
         RepModel SaveRoleUser(string RoleID, string UserIDs, string CREATED_MAN);
-        #endregion
+
+        #endregion 角色用户设置
+
         #region 角色菜单设置
+
         /// <summary>
         /// 获取角色菜单的Easyui树形结构
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
         List<EasyuiTreeNode> GetRoleMenuTreeGrid(Query_RoleMenu query);
+
         /// <summary>
         /// 获取角色菜单的列表
         /// </summary>
@@ -79,6 +87,7 @@ namespace Geone.JCXX.BLL
         /// <param name="CREATED_MAN"></param>
         /// <returns></returns>
         RepModel SaveRoleMenu(string RoleID, string MenuIDs, string CREATED_MAN);
-        #endregion
+
+        #endregion 角色菜单设置
     }
 }

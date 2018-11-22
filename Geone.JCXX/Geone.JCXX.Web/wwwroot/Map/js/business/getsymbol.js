@@ -4,12 +4,12 @@
 function getDefaultSymbol(geo, key) {
     var symbol;
     require([
-            'esri/Color',
-            'esri/symbols/Symbol',
-            'esri/symbols/SimpleMarkerSymbol',
-            'esri/symbols/PictureMarkerSymbol',
-            'esri/symbols/SimpleLineSymbol',
-            'esri/symbols/SimpleFillSymbol'
+        'esri/Color',
+        'esri/symbols/Symbol',
+        'esri/symbols/SimpleMarkerSymbol',
+        'esri/symbols/PictureMarkerSymbol',
+        'esri/symbols/SimpleLineSymbol',
+        'esri/symbols/SimpleFillSymbol'
     ],
         function (Color, Symbol, SimpleMarkerSymbol, PictureMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol) {
             var symbolid = geo + "_" + key;

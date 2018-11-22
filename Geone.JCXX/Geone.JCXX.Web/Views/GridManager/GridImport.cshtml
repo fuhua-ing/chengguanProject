@@ -4,7 +4,6 @@
     string Dict_GridType = ConstHelper.Dict_GridType;//数据字典-网格类型
 }
 
-
 <script>
     var Dict_GridType = '@Dict_GridType';
 
@@ -33,14 +32,12 @@
             });
         }
     }
-    
 
     //取消
     function Cancel() {
         parent.callback(false);
     }
 </script>
-
 
 <form id="fmInfo" enctype="multipart/form-data" method="post" action="UploadFile">
     <div class="easyui-from-row">
@@ -75,6 +72,3 @@
         2.工作表内容必须包含列“网格编号”、“网格名称”、“显示名称”、“Shape”、“网格面积”，“备注”且顺序不可变；*@
     </div>
 </form>
-
-
-

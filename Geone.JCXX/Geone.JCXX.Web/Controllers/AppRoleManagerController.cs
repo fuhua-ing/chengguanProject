@@ -1,43 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Geone.JCXX.BLL;
+﻿using Geone.JCXX.BLL;
 using Geone.JCXX.Meta;
-
-using Microsoft.AspNetCore.Mvc;
 using Geone.Utiliy.Library;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Geone.JCXX.Web.Controllers
 {
     public class AppRoleManagerController : Controller
     {
         private IAppRoleBLL bll;
+
         public AppRoleManagerController(IAppRoleBLL _BLL)
         {
             bll = _BLL;
         }
+
         public ActionResult RoleList()
         {
             return View();
         }
+
         public ActionResult RoleForm()
         {
             return View();
         }
+
         public ActionResult RoleUserForm()
         {
             return View();
         }
+
         public ActionResult RoleRightForm()
         {
             return View();
         }
+
         public ActionResult MenuList()
         {
             return View();
         }
-      
 
         #region 维护角色
 
@@ -45,6 +45,7 @@ namespace Geone.JCXX.Web.Controllers
         {
             return Json(bll.GetGrid(query));
         }
+
         /// <summary>
         /// 获取列表
         /// </summary>
@@ -63,6 +64,7 @@ namespace Geone.JCXX.Web.Controllers
             string ID = Request.Form["ID"];
             return Json(bll.GetByID(ID));
         }
+
         /// <summary>
         /// 保存
         /// </summary>
@@ -86,7 +88,7 @@ namespace Geone.JCXX.Web.Controllers
             return Json(result);
         }
 
-        #endregion
+        #endregion 维护角色
 
         #region 角色用户设置
 
@@ -106,7 +108,8 @@ namespace Geone.JCXX.Web.Controllers
             RepModel result = bll.SaveRoleUser(RoleID, UserIDs, LoginHelp.GetLoginInfo().Account);
             return Json(result);
         }
-        #endregion
+
+        #endregion 角色用户设置
 
         #region 角色菜单设置
 
@@ -114,6 +117,7 @@ namespace Geone.JCXX.Web.Controllers
         {
             return Json(bll.GetRoleMenuTreeGrid(query));
         }
+
         /// <summary>
         /// 保存
         /// </summary>
@@ -125,7 +129,7 @@ namespace Geone.JCXX.Web.Controllers
             RepModel result = bll.SaveRoleMenu(RoleID, MenuIDs, LoginHelp.GetLoginInfo().Account);
             return Json(result);
         }
-        #endregion
 
+        #endregion 角色菜单设置
     }
 }

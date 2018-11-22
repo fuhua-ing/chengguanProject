@@ -1,13 +1,9 @@
 ﻿using Geone.JCXX.WebService.Meta.QueryEntity;
 using Geone.Utiliy.Library;
-using MagicOnion;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Geone.JCXX.WebService
 {
-    public interface IDataService 
+    public interface IDataService
     {
         /// <summary>
         /// 查询字典明细列表
@@ -22,25 +18,28 @@ namespace Geone.JCXX.WebService
         /// <param name="query"></param>
         /// <returns></returns>
         RepModel GetQSRoleList(Req_QSRole query);
-        
+
         /// <summary>
         /// 查询网格列表
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
         RepModel GetGridList(Req_Grid query);
+
         /// <summary>
         /// 根据网格点位获取到对应的网格权属角色
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
         RepModel GetQSRoleGridList(Req_Grid query);
+
         ///// <summary>
         ///// 根据用户ID获取当前权属信息
         ///// </summary>
         ///// <param name="query"></param>
         ///// <returns></returns>
         //UnaryResult<List<string>> GetQSRoleListByUserID(string UserID);
+
         /// <summary>
         /// 查询部门列表
         /// </summary>

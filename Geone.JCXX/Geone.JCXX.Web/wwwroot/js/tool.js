@@ -74,7 +74,6 @@ function delCookie(name) {
 }
 /***************** cookies  End ********************/
 
-
 //字符串截取
 function PadLeft(Value, totalWidth, paddingChar) {
     if (paddingChar == null)
@@ -124,14 +123,12 @@ function formatDateTime(value) {
         + PadLeft(unixTimestamp.getSeconds().toString(), 2, '0');
 }
 
-
 /****************************** easyui框架方法 start ******************************/
 
 //添加tab窗口
 function addPanel(menuid, menutext, url) {
     getRootWindow().addTab(menuid, menutext, url);
 }
-
 
 //刷新tab
 function refeshPanel(menuid) {
@@ -142,7 +139,6 @@ function refeshPanel(menuid) {
 function closePanel(menuid) {
     getRootWindow().closeTab(menuid);
 }
-
 
 /****************************** easyui框架方法 end ******************************/
 
@@ -218,4 +214,3 @@ $.fn.extend({
         }
     });
 }(jQuery));
-

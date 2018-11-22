@@ -5,10 +5,7 @@ var _token;
 var CONST_CONFIG_PATH = "config/root.config.json";
 var dynamicLayerID;
 
-
-
 $(document).ready(function () {
-
     $.get(CONST_CONFIG_PATH, function (data) {
         _rootconfig = data;
 
@@ -20,16 +17,13 @@ $(document).ready(function () {
                 } else if (_rootconfig.basemap.tokenid == "token_local") {
                     _rootconfig.basemap.url += '?token=' + _token;
                 }
-
             }
             if (_rootconfig.baseimg.token === true) {
-
                 if (_rootconfig.baseimg.tokenid == "token_scm") {
                     _rootconfig.baseimg.url += '?token=' + encodeURI(_rootconfig.services.token_scm.url);
                 } else if (_rootconfig.baseimg.tokenid == "token_local") {
                     _rootconfig.baseimg.url += '?token=' + _token;
                 }
-
             }
 
             //console.log(_rootconfig.basemap.url);
@@ -70,11 +64,8 @@ function createBaseMap(_rootconfig) {
 
             setInitExtent();
             InitCaseGISInfo();
-
         });
-
     })
-
 }
 /**
 创建地图工具
@@ -101,7 +92,6 @@ function createMapTool() {
 
 //初始化 加载部件图层、定位案件位置
 function InitCaseGISInfo() {
-
     var caseid = getQueryString("caseid");
     var objectid = getQueryString("objectid");
     var shape = getQueryString("shape");
@@ -109,14 +99,12 @@ function InitCaseGISInfo() {
     var level = getQueryString("level");
 
     if (shape == null || shape == "" || shape == undefined) {
-
     }
     else {
         Locate(caseid, objectid, shape, level);
-
     }
 
-    ////获取部件图层   
+    ////获取部件图层
     //$.ajax({
     //    type: "get",
     //    async: true,
@@ -143,7 +131,6 @@ function InitCaseGISInfo() {
     //        //console.log("1");
     //    }
     //});
-
 }
 
 /*
@@ -176,7 +163,6 @@ function loadTileLayer(url, id) {
 
 function loadDynamicLayer(url, id, vls) {
     $.get(_rootconfig.services.token_local.url, function (token) {
-
         var layerUrl = url + '?token=' + token;
         require(["esri/map", "esri/layers/ArcGISDynamicMapServiceLayer", "dojo/domReady!"],
             function (Map, ArcGISDynamicMapServiceLayer) {
@@ -209,7 +195,7 @@ function getGeoByWKT(wktStr) {
 }
 
 /**
-通过geometry获取集合要素的wkt值 
+通过geometry获取集合要素的wkt值
 */
 function getWKTbyGeo(geometry) {
     var wkt;
@@ -230,7 +216,7 @@ function zoomTo(wkt) {
 }
 //业务相关 定位
 function Locate(caseid, objectID, shape, level) {
-    //获取图层服务 
+    //获取图层服务
     console.log(shape);
     locateByWKT(shape, "");
 }
@@ -310,7 +296,6 @@ function drawGraphic(DRAW_TYPE, callback) {
                 break;
         }
         drawTool.on("draw-complete", function (event) {
-
             clearAllGraphicsLayer();
 
             drawTool.deactivate();
@@ -350,7 +335,6 @@ function clearAllGraphicsLayer() {
         if (layer.graphics.length > 0) {
             layer.clear();
         }
-
     });
 
     if (map.graphics.graphics.length > 0) {
@@ -367,7 +351,6 @@ function clientPickPatrolPoint(url) {
 }
 
 function slPickPatrolPointCompleted(wkt) {
-
     for (var i = 0; i < window.parent.jQuery("iframe").length; i++) {
         var ss = $(window.parent.jQuery("iframe")[i]).attr("src");
         ss = ss.toLowerCase().substring(3);
@@ -433,7 +416,6 @@ function selectFn(id) {
         default:
             break;
     }
-
 }
 $(document).ready(function () {
     $("#myslidedown").click(function () {
@@ -441,7 +423,6 @@ $(document).ready(function () {
     })
 
     $("#btn_close").click(function () {
-
         $("#infopanel").slideToggle("fast");
         clearOneGraphicLayer('lyr_iquery');
     })
@@ -453,20 +434,17 @@ function iQuery() {
         drawTool = new Draw(map);
         drawTool.activate(Draw.POINT);
         drawTool.on("draw-complete", function (event) {
-
             drawTool.deactivate();
             var x = event.geometry.x;
             var y = event.geometry.y;
             //var wkt = getWKTbyGeo(event.geometry);
             doQuery(x, y, dynamicLayerID);
-            //console.log(event); 
+            //console.log(event);
             //alert(wkt);
         });
     });
 
     // showMessage('I查询开始啦...');
-
-
 }
 
 //执行i查询，显示查询结果
@@ -494,7 +472,6 @@ function doQuery(x, y, layerID) {
 }
 //  初始化I查询结果展示
 function initinfolist(data) {
-
     var geo = getGeoByWKT(data.shape);
     var graLayer = getGraphicsLayer("lyr_iquery");
 
@@ -507,7 +484,6 @@ function initinfolist(data) {
     $('#infolist').empty();
 
     $.each(data.attribute, function (key, value) {
-
         var c_div = document.createElement("div");
         c_div.className = "container-fluid";
 
@@ -532,7 +508,6 @@ function initinfolist(data) {
 
 // 显示提示信息
 function showMessage(content) {
-
     $('#msgpanel').show();
     $('#msgContent').text(content);
 

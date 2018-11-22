@@ -1,7 +1,4 @@
 ﻿using Geone.Utiliy.Library;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Geone.JCXX.WebService.Meta.Response
 {

@@ -1,5 +1,3 @@
-
-using System;
 namespace Geone.JCXX.Meta
 {
     ///<summary>
@@ -7,7 +5,6 @@ namespace Geone.JCXX.Meta
     ///</summary>
     public class JCXX_PhoneGroup : BaseEntity
     {
-
         ///// <summary>
         ///// 组名
         ///// </summary>
@@ -16,6 +13,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 备注
         ///// </summary>
@@ -25,5 +23,4 @@ namespace Geone.JCXX.Meta
             set;
         }
     }
-       
 }

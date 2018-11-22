@@ -226,12 +226,10 @@ Wkt.Wkt.prototype.construct = {
                 }
 
                 return newRings;
-
             }()),
             spatialReference: config.spatialReference
         });
     }
-
 };
 
 /**
@@ -292,7 +290,6 @@ Wkt.Wkt.prototype.deconstruct = function (obj) {
 
     // esri.geometry.Point /////////////////////////////////////////////////////
     if (obj.constructor === esri.geometry.Point) {
-
         return {
             type: 'point',
             components: [{
@@ -300,12 +297,10 @@ Wkt.Wkt.prototype.deconstruct = function (obj) {
                 y: obj.y
             }]
         };
-
     }
 
     // esri.geometry.Multipoint ////////////////////////////////////////////////
     if (obj.constructor === esri.geometry.Multipoint) {
-
         verts = [];
         for (i = 0; i < obj.points.length; i += 1) {
             verts.push([{
@@ -318,12 +313,10 @@ Wkt.Wkt.prototype.deconstruct = function (obj) {
             type: 'multipoint',
             components: verts
         };
-
     }
 
     // esri.geometry.Polyline //////////////////////////////////////////////////
     if (obj.constructor === esri.geometry.Polyline) {
-
         paths = [];
         for (i = 0; i < obj.paths.length; i += 1) {
             verts = [];
@@ -347,12 +340,10 @@ Wkt.Wkt.prototype.deconstruct = function (obj) {
             type: 'linestring',
             components: verts
         };
-
     }
 
     // esri.geometry.Polygon ///////////////////////////////////////////////////
     if (obj.constructor === esri.geometry.Polygon || obj.constructor === esri.geometry.Circle) {
-
         rings = [];
         for (i = 0; i < obj.rings.length; i += 1) {
             verts = [];
@@ -373,7 +364,6 @@ Wkt.Wkt.prototype.deconstruct = function (obj) {
             } else {
                 rings.push([verts]);
             }
-
         }
 
         if (rings.length > 1) {
@@ -387,6 +377,5 @@ Wkt.Wkt.prototype.deconstruct = function (obj) {
             type: 'polygon',
             components: rings[0]
         };
-
     }
 };

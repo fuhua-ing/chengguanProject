@@ -4,7 +4,7 @@ using Nancy.ModelBinding;
 
 namespace Geone.JCXX.WebService
 {
-    public class DataModule : BaseModule
+    public class DataModule : NancyModule
     {
         public DataModule(IDataService ss) : base("/api")
         {
@@ -15,6 +15,7 @@ namespace Geone.JCXX.WebService
                 var rep = ss.GetDictItemList(req);
                 return Response.AsJson(rep);
             });
+
             //权属角色列表
             Get("/QSRole/List", parameter =>
             {
@@ -22,6 +23,7 @@ namespace Geone.JCXX.WebService
                 var rep = ss.GetQSRoleList(req);
                 return Response.AsJson(rep);
             });
+
             //根据网格点位获取到对应的网格权属角色
             Get("/QSRoleGrid/List", parameter =>
             {
@@ -29,6 +31,7 @@ namespace Geone.JCXX.WebService
                 var rep = ss.GetQSRoleGridList(req);
                 return Response.AsJson(rep);
             });
+
             //网格列表
             Get("/Grid/List", parameter =>
             {
@@ -36,6 +39,7 @@ namespace Geone.JCXX.WebService
                 var rep = ss.GetGridList(req);
                 return Response.AsJson(rep);
             });
+
             //部门列表
             Get("/Dept/List", parameter =>
             {
@@ -43,6 +47,7 @@ namespace Geone.JCXX.WebService
                 var rep = ss.GetDeptList(req);
                 return Response.AsJson(rep);
             });
+
             //立案条件列表
             Get("/CaseLATJ/List", parameter =>
             {

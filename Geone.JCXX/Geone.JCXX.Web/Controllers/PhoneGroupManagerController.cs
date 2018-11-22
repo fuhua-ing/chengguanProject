@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Geone.JCXX.BLL;
+﻿using Geone.JCXX.BLL;
 using Geone.JCXX.Meta;
-
-using Microsoft.AspNetCore.Mvc;
 using Geone.Utiliy.Library;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Geone.JCXX.Web.Controllers
 {
@@ -14,35 +9,37 @@ namespace Geone.JCXX.Web.Controllers
     {
         private IPhoneGroupBLL bll;
         private IPhoneGroupItemBLL itemBll;
+
         public PhoneGroupManagerController(IPhoneGroupBLL _BLL, IPhoneGroupItemBLL _itemBLL)
         {
             bll = _BLL;
             itemBll = _itemBLL;
         }
 
-
         public ActionResult PhoneGroupList()
         {
             return View();
         }
+
         public ActionResult PhoneGroupItemList()
         {
             return View();
         }
+
         public ActionResult RoleGroupForm()
         {
             return View();
         }
+
         public ActionResult PhoneGroupForm()
         {
             return View();
         }
+
         public ActionResult PhoneGroupItemForm()
         {
             return View();
         }
-
-
 
         /// <summary>
         /// 获取列表
@@ -52,7 +49,6 @@ namespace Geone.JCXX.Web.Controllers
         {
             return Content(JsonHelper.JsonDllSerialize<GridData>(bll.GetGrid(query), JsonDateTimeFormat.DateTime));
         }
-
 
         /// <summary>
         /// 获取
@@ -105,9 +101,11 @@ namespace Geone.JCXX.Web.Controllers
             RepModel result = bll.SaveRoleGroup(GroupID, RoleIDs, LoginHelp.GetLoginInfo().Account);
             return Json(result);
         }
-        #endregion
+
+        #endregion 角色用户设置
 
         #region 号码设置
+
         /// <summary>
         /// 获取列表
         /// </summary>
@@ -149,7 +147,7 @@ namespace Geone.JCXX.Web.Controllers
             RepModel result = itemBll.Del(ID);
             return Json(result);
         }
-        #endregion
-      
+
+        #endregion 号码设置
     }
 }

@@ -1,5 +1,4 @@
-﻿
-/**
+﻿/**
  * esyui-tab拓展方法，可以通过id验证tab的存在
  *
  */
@@ -51,7 +50,7 @@ $.extend($.fn.datagrid.methods, {
 });
 
 /**
- * 
+ *
  * 依赖easyui.min.js
  *
  */
@@ -93,7 +92,7 @@ $.fn.extend({
             //自动行高
             autoRowHeight: false,
             //服务端排序
-            remoteSort: false,  
+            remoteSort: false,
         }, opt);
         $gird.datagrid(opt);
     },
@@ -197,17 +196,16 @@ $.fn.extend({
                 return data;
             }
         }, opt);
-        
+
         if (opt.url != null) {
             opt.url = '../DictManager/GetItemListByCategoryCode?CategoryCode=' + opt.url;
         }
-        if (opt.url != null  && opt.parantID != null) {
+        if (opt.url != null && opt.parantID != null) {
             opt.url += "&&Note=" + opt.parantID;
         }
         $combobox.combobox(opt);
     },
     InitDeptCombobox: function (opt) {
-       
         var defaultAll = $(this).hasClass("defaultAll");
         var $combobox = $(this);
         var opt = $.extend({
@@ -223,17 +221,14 @@ $.fn.extend({
             textField: 'DeptName',
             //加载渲染
             loadFilter: function (data) {
-               
                 if (defaultAll)
                     data.unshift({ ID: "", DeptName: "所有" });
                 return data;
             }
         }, opt);
-        
-            opt.url = '../DeptManager/GetItemList';
-       
+
+        opt.url = '../DeptManager/GetItemList';
+
         $combobox.combobox(opt);
     }
 });
-
-

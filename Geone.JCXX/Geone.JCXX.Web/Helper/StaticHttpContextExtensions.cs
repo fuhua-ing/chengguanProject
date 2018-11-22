@@ -1,11 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using static Microsoft.AspNetCore.Razor.Language.TagHelperMetadata;
 
 namespace Geone.JCXX.Web
 {
@@ -15,7 +10,6 @@ namespace Geone.JCXX.Web
         {
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
-
 
         public static IApplicationBuilder UseStaticHttpContext(this IApplicationBuilder app)
         {

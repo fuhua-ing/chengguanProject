@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Geone.JCXX.Meta
+﻿namespace Geone.JCXX.Meta
 {
     public class Query_Grid : Query_Base
     {
@@ -11,6 +7,5 @@ namespace Geone.JCXX.Meta
         public string GridCode { get; set; }
         public string Like_GridCode { get; set; }
         public string Like_GridName { get; set; }
-        
     }
 }

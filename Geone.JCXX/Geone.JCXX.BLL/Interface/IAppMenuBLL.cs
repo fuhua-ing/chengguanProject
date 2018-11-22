@@ -1,8 +1,6 @@
-﻿using Geone.JCXX.Meta;using Geone.Utiliy.Library;
-
-using System;
+﻿using Geone.JCXX.Meta;
+using Geone.Utiliy.Library;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Geone.JCXX.BLL
 {
@@ -13,6 +11,7 @@ namespace Geone.JCXX.BLL
         /// </summary>
         /// <returns></returns>
         GridData GetGrid(Query_AppMenu query);
+
         /// <summary>
         /// 获取list数据
         /// </summary>
@@ -32,6 +31,7 @@ namespace Geone.JCXX.BLL
         /// <param name="ID">主键ID</param>
         /// <returns></returns>
         JCXX_AppMenu GetByID(string ID);
+
         /// <summary>
         /// 保存数据
         /// </summary>
@@ -45,9 +45,5 @@ namespace Geone.JCXX.BLL
         /// <param name="ID">主键ID</param>
         /// <returns></returns>
         RepModel Del(string ID);
-
-
-
-
     }
 }

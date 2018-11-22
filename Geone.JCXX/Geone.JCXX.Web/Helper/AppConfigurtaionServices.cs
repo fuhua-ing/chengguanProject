@@ -1,12 +1,7 @@
-﻿
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 
 namespace Geone.JCXX.Web
 {
@@ -20,7 +15,7 @@ namespace Geone.JCXX.Web
 
         static AppConfigurtaionServices()
         {
-            //ReloadOnChange = true 当appsettings.json被修改时重新加载           
+            //ReloadOnChange = true 当appsettings.json被修改时重新加载
             Configuration = new ConfigurationBuilder()
             .Add(new JsonConfigurationSource { Path = "appsettings.json", ReloadOnChange = true })
             .Build();

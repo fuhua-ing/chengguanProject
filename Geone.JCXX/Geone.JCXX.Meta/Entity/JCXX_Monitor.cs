@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Geone.JCXX.Meta
+﻿namespace Geone.JCXX.Meta
 {
     ///<summary>
     /// 监控设备
@@ -15,6 +13,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 设备类型
         ///// </summary>
@@ -23,6 +22,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 视频服务地址
         ///// </summary>
@@ -31,6 +31,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 坐标
         ///// </summary>
@@ -39,6 +40,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 是否带音柱 0无/1有
         ///// </summary>
@@ -47,6 +49,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 备注
         ///// </summary>

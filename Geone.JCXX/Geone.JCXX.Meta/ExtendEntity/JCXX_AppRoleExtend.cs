@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Geone.JCXX.Meta
+﻿namespace Geone.JCXX.Meta
 {
     public class JCXX_AppRoleExtend : JCXX_AppRole
     {
@@ -14,6 +10,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         /// <summary>
         /// 用户个数
         /// </summary>

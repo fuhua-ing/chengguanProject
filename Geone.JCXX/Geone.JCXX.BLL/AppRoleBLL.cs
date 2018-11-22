@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Geone.JCXX.Meta;
+﻿using Geone.JCXX.Meta;
 using Geone.Utiliy.Database;
 using Geone.Utiliy.Library;
+using Geone.Utiliy.Logger;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Geone.JCXX.BLL
 {
@@ -15,10 +15,9 @@ namespace Geone.JCXX.BLL
         private IDbEntity<JCXX_AppRole_Menu> Respostry_RM;
         private IDbEntity<View_AppRoleUser> Respostry_VRU;
         private IDbEntity<View_AppRoleMenu> Respostry_VRM;
-        private AppBLL appBLL;
-        private AppMenuBLL appMenuBLL;
-
-        LogWriter log = new LogWriter(new FileLogRecord());
+        private IAppBLL appBLL;
+        private IAppMenuBLL appMenuBLL;
+        private ILogWriter log;
 
         /// <summary>
         /// 构造函数注入
@@ -26,7 +25,8 @@ namespace Geone.JCXX.BLL
         /// <param name="_t"></param>
         public AppRoleBLL(IDbEntity<JCXX_AppRole> _t, IDbEntity<JCXX_App> _tApp,
             IDbEntity<JCXX_AppMenu> _tAppMenu, IDbEntity<JCXX_AppRole_User> _tRU, IDbEntity<JCXX_AppRole_Menu> _tRM,
-            IDbEntity<View_AppRoleUser> _tVRU, IDbEntity<View_AppRoleMenu> _tVRM)
+            IDbEntity<View_AppRoleUser> _tVRU, IDbEntity<View_AppRoleMenu> _tVRM,
+            IAppBLL _appBLL, IAppMenuBLL _appMenuBLL, ILogWriter logWriter)
         {
             Respostry = _t;
             Respostry.SetTable("JCXX_AppRole");
@@ -43,12 +43,13 @@ namespace Geone.JCXX.BLL
             Respostry_VRM = _tVRM;
             Respostry_VRM.SetTable("View_AppRoleMenu");
 
-            appBLL = new AppBLL(_tApp);
-            appMenuBLL = new AppMenuBLL(_tAppMenu);
+            appBLL = _appBLL;
+            appMenuBLL = _appMenuBLL;
+            log = logWriter;
         }
 
-
         #region 维护角色
+
         /// <summary>
         /// 分页获取列表
         /// </summary>
@@ -83,6 +84,7 @@ namespace Geone.JCXX.BLL
 
                         list = query.order == "asc" ? list.OrderBy(t => t.RoleCode) : list.OrderByDesc(t => t.RoleCode);
                         break;
+
                     default:
                         list = list.OrderByDesc(t => t.CREATED);
                         break;
@@ -91,7 +93,7 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return new List<JCXX_AppRole>();
             }
         }
@@ -143,11 +145,10 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return new List<JCXX_AppRoleExtend>();
             }
         }
-
 
         /// <summary>
         /// 查询条件筛选
@@ -167,9 +168,7 @@ namespace Geone.JCXX.BLL
                 list = list.And(t => t.RoleName.Like("%" + query.Like_RoleName + "%"));
             if (query.Enabled != null)
                 list = list.And(t => t.Enabled.Eq((int)query.Enabled));
-
         }
-
 
         public JCXX_AppRole GetByID(string ID)
         {
@@ -184,7 +183,7 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return new JCXX_AppRole();
             }
         }
@@ -212,7 +211,7 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return RepModel.Error(ex.Message);
             }
         }
@@ -229,12 +228,12 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return RepModel.Error(ex.Message);
             }
         }
 
-        #endregion
+        #endregion 维护角色
 
         #region 角色用户设置
 
@@ -290,12 +289,12 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return RepModel.Error(ex.Message);
             }
         }
 
-        #endregion
+        #endregion 角色用户设置
 
         #region 角色菜单设置
 
@@ -332,7 +331,8 @@ namespace Geone.JCXX.BLL
             }
             return listResult;
         }
-        void setRoleMenuSubTree(EasyuiTreeNode ParentNode, List<JCXX_AppMenu> listAllMenu, List<View_AppRoleMenu> listAllRoleMenu)
+
+        private void setRoleMenuSubTree(EasyuiTreeNode ParentNode, List<JCXX_AppMenu> listAllMenu, List<View_AppRoleMenu> listAllRoleMenu)
         {
             foreach (var child in listAllMenu.Where(t => t.ParentID == ParentNode.id).OrderBy(t => t.MenuCode))
             {
@@ -348,7 +348,6 @@ namespace Geone.JCXX.BLL
                 ParentNode.children.Add(childNode);
             }
         }
-
 
         /// <summary>
         /// 获取列表
@@ -366,7 +365,7 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return new List<View_AppRoleMenu>();
             }
         }
@@ -404,11 +403,11 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return RepModel.Error(ex.Message);
             }
         }
-        #endregion
 
+        #endregion 角色菜单设置
     }
 }

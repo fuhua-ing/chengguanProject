@@ -1,36 +1,32 @@
-﻿using System;
-using Geone.Utiliy.Library;
-using Geone.Utiliy.Database;
+﻿using Autofac;
 using Geone.JCXX.Meta;
-using System.Linq;
-using System.Collections.Generic;
-using MagicOnion.Server;
-using MagicOnion;
 using Geone.Utiliy.Build;
-using Autofac;
+using Geone.Utiliy.Database;
+using Geone.Utiliy.Logger;
+using MagicOnion;
+using MagicOnion.Server;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Geone.JCXX.WebService
 {
-    public class HolidayBLL : ServiceBase<IHolidayService>, IHolidayService
+    public class HolidayRpc : ServiceBase<IHoliday>, IHoliday
     {
+        private static IContainer container = InitBuilder.MockBuilder().Build();
+        private IDbEntity<JCXX_Holiday> Respostry = container.Resolve<IDbEntity<JCXX_Holiday>>();
+        private ILogWriter log = container.Resolve<ILogWriter>();
 
-        private static IContainer container = AutofacSettings.Build();
-        IDbEntity<JCXX_Holiday> Respostry;
+        private TimeSpan Work_StartTime1 = new TimeSpan(9, 0, 0);
+        private TimeSpan Work_EndTime1 = new TimeSpan(11, 0, 0);
 
-        LogWriter log = new LogWriter(new FileLogRecord());
+        private TimeSpan Work_StartTime2 = new TimeSpan(13, 0, 0);
+        private TimeSpan Work_EndTime2 = new TimeSpan(17, 0, 0);
 
-        //两个工作时间段
-        TimeSpan Work_StartTime1 = new TimeSpan(9, 0, 0);
-        TimeSpan Work_EndTime1 = new TimeSpan(11, 0, 0);
-        TimeSpan Work_StartTime2 = new TimeSpan(13, 0, 0);
-        TimeSpan Work_EndTime2 = new TimeSpan(17, 0, 0);
-
-        public HolidayBLL()
+        public HolidayRpc()
         {
-            Respostry = container.Resolve<IDbEntity<JCXX_Holiday>>();
             Respostry.SetTable(JCXX_Holiday.GetTbName());
         }
-
 
         /// <summary>
         /// 计算两个时间之间的工作时间差(单位：小时)
@@ -75,7 +71,9 @@ namespace Geone.JCXX.WebService
 
             //获取所有假期
             var listHoliday = Respostry.Select().Where(t => t.IsDelete.Eq(0)).QueryList();
+
             #region 先判断当前时间是否为工作日、工作时间，不是则调整为最近的工作开始时间
+
             //当前日是否为工作日
             while (IsHoliday(listHoliday, dt))
                 dt = dt.AddDays(1);
@@ -90,9 +88,11 @@ namespace Geone.JCXX.WebService
                 while (IsHoliday(listHoliday, dt))
                     dt = dt.AddDays(1);
             }
-            #endregion
+
+            #endregion 先判断当前时间是否为工作日、工作时间，不是则调整为最近的工作开始时间
 
             #region 判断当前所属工作时间段的剩余工作时间是否大于时限，不是则先扣光，然后进入下一个时间段继续计算
+
             bool isOk = false;
             while (!isOk)
             {
@@ -125,7 +125,9 @@ namespace Geone.JCXX.WebService
                         dt = dt.AddDays(1);
                 }
             }
-            #endregion
+
+            #endregion 判断当前所属工作时间段的剩余工作时间是否大于时限，不是则先扣光，然后进入下一个时间段继续计算
+
             return UnaryResult(result);
         }
 
@@ -135,13 +137,12 @@ namespace Geone.JCXX.WebService
         /// <param name="listHoliday"></param>
         /// <param name="dt"></param>
         /// <returns></returns>
-        bool IsHoliday(List<JCXX_Holiday> listHoliday, DateTime dt)
+        private bool IsHoliday(List<JCXX_Holiday> listHoliday, DateTime dt)
         {
             return dt.DayOfWeek.ToString() == "Sunday" //非星期日
                 || dt.DayOfWeek.ToString() == "Saturday" //非星期六
                 || listHoliday.Where(t => t.Holiday.ToShortDateString() == dt.ToShortDateString()).Count() > 0 //非节假日
                 ;
         }
-
     }
 }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Geone.JCXX.Meta
+﻿namespace Geone.JCXX.Meta
 {
     ///<summary>
     /// 数据字典视图
@@ -13,6 +9,7 @@ namespace Geone.JCXX.Meta
         {
             return "View_DictItem";
         }
+
         /// <summary>
         /// 应用ID
         /// </summary>
@@ -21,6 +18,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         /// <summary>
         /// 应用名
         /// </summary>
@@ -29,6 +27,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         /// <summary>
         /// 父级编码
         /// </summary>
@@ -37,6 +36,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         /// <summary>
         /// 父级名称
         /// </summary>
@@ -45,6 +45,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         /// <summary>
         /// 父级是否有效
         /// </summary>
@@ -53,6 +54,5 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
-        
     }
 }

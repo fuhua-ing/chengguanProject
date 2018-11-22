@@ -56,7 +56,6 @@ img {
     text-shadow: none;
 }
 
-
 .btn-link-1 {
     display: inline-block;
     height: 50px;
@@ -120,7 +119,6 @@ img {
         background: rgba(0, 0, 0, 0.3);
         color: #fff;
     }
-
 
 /***** Top content *****/
 
@@ -232,7 +230,6 @@ img {
     margin-top: 25px;
 }
 
-
 /***** Media queries *****/
 
 @media (min-width: 992px) and (max-width: 1199px) {
@@ -242,20 +239,16 @@ img {
 }
 
 @media (max-width: 767px) {
-
     .inner-bg {
         padding: 60px 0 110px 0;
     }
 }
 
 @media (max-width: 415px) {
-
     h1, h2 {
         font-size: 32px;
     }
 }
-
-
 
 input[type="text"],
 input[type="password"],
@@ -318,8 +311,6 @@ textarea.form-control {
         textarea::-webkit-input-placeholder, textarea.form-control::-webkit-input-placeholder {
             color: #888;
         }
-
-
 
 .btn {
     height: 50px;

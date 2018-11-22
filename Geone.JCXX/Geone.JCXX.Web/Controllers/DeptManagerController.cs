@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Geone.JCXX.BLL;
+﻿using Geone.JCXX.BLL;
 using Geone.JCXX.Meta;
-
-using Microsoft.AspNetCore.Mvc;
 using Geone.Utiliy.Library;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace Geone.JCXX.Web.Controllers
 {
     public class DeptManagerController : Controller
     {
         private IDeptBLL bll;
+
         public DeptManagerController(IDeptBLL deptBLL)
         {
             bll = deptBLL;
@@ -22,12 +19,11 @@ namespace Geone.JCXX.Web.Controllers
         {
             return View();
         }
+
         public ActionResult DeptForm()
         {
             return View();
         }
-
-
 
         /// <summary>
         /// 获取列表
@@ -75,15 +71,14 @@ namespace Geone.JCXX.Web.Controllers
             RepModel result = bll.Del(ID);
             return Json(result);
         }
+
         //统一调用
         [HttpGet]
         public ActionResult GetItemList()
         {
-
             Query_Dept query = new Query_Dept();
             List<JCXX_Dept> list = bll.GetList(query);
             return Content(JsonHelper.JsonDllSerializeList<JCXX_Dept>(list, JsonDateTimeFormat.DateTime));
         }
-
     }
 }

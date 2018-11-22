@@ -1,10 +1,4 @@
-﻿using Geone.Utiliy.Database;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-
-namespace Geone.JCXX.Meta
+﻿namespace Geone.JCXX.Meta
 {
     ///<summary>
     /// 有效案件权属视图
@@ -22,21 +16,25 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         public string CaseType
         {
             get;
             set;
         }
+
         public string CaseClassI
         {
             get;
             set;
         }
+
         public string CaseClassII
         {
             get;
             set;
         }
+
         public string CaseClassIII
         {
             get;

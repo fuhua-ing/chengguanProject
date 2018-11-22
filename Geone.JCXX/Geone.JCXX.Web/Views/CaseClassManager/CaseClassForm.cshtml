@@ -27,7 +27,6 @@
         $('#CaseType').combobox({
             onChange: function (newValue, oldValue) {
 
-
                     $('#CaseClassI').InitDictCombobox({ url: '@Dict_CaseClassI', parantID: newValue });
                     clearCombobox(3);
 
@@ -44,10 +43,9 @@
         $('#CaseClassII').combobox({
             onChange: function (newValue, oldValue) {
 
-               
                     $('#CaseClassIII').InitDictCombobox({ url: '@Dict_CaseClassIII', parantID: newValue });
                     clearCombobox(1);
-               
+
             }
         });
     });
@@ -59,7 +57,6 @@
         $('#RoleType').InitDictCombobox({ url: Dict_CaseClassQSType });
     }
     function clearCombobox(level) {
-
 
         if (level > 2) {
 
@@ -104,7 +101,6 @@
         parent.callback(false);
     }
 </script>
-
 
 <form id="fmInfo">
     <input type="hidden" name="ID" />
@@ -161,6 +157,3 @@
         </div>
     </div>
 </form>
-
-
-

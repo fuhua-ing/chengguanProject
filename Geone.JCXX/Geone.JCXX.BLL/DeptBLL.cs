@@ -1,28 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Geone.JCXX.Meta;
+﻿using Geone.JCXX.Meta;
 using Geone.Utiliy.Database;
 using Geone.Utiliy.Library;
+using Geone.Utiliy.Logger;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Geone.JCXX.BLL
 {
     public class DeptBLL : IDeptBLL
     {
         private IDbEntity<JCXX_Dept> Respostry;
-        LogWriter log = new LogWriter(new FileLogRecord());
+        private ILogWriter log;
 
         /// <summary>
         /// 构造函数注入
         /// </summary>
         /// <param name="_t"></param>
-        public DeptBLL(IDbEntity<JCXX_Dept> _t)
+        public DeptBLL(IDbEntity<JCXX_Dept> _t, ILogWriter logWriter)
         {
             Respostry = _t;
             Respostry.SetTable("JCXX_Dept");
+            log = logWriter;
         }
-
 
         public JCXX_Dept GetByID(string ID)
         {
@@ -37,7 +37,7 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return new JCXX_Dept();
             }
         }
@@ -65,7 +65,7 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return RepModel.Error(ex.Message);
             }
         }
@@ -82,12 +82,10 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return RepModel.Error(ex.Message);
             }
         }
-
-
 
         /// <summary>
         /// 分页获取列表
@@ -121,6 +119,7 @@ namespace Geone.JCXX.BLL
                     case "DeptCode":
                         list = query.order == "asc" ? list.OrderBy(t => t.DeptCode).ToList() : list.OrderByDescending(t => t.DeptCode).ToList();
                         break;
+
                     default:
                         list = list.OrderByDescending(t => t.CREATED).ToList();
                         break;
@@ -129,7 +128,7 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return new List<JCXX_Dept>();
             }
         }
@@ -159,7 +158,6 @@ namespace Geone.JCXX.BLL
             }
             return result;
         }
-
 
         /// <summary>
         /// 递归本级和下级部门
@@ -200,8 +198,6 @@ namespace Geone.JCXX.BLL
             }
             return resultList;
         }
-
-
 
         /// <summary>
         /// 获取Easyui树形结构
@@ -269,6 +265,7 @@ namespace Geone.JCXX.BLL
             }
             return firstListResut;
         }
+
         private void setSubTreeList(EasyuiTreeNode_Dept ParentNode, List<JCXX_Dept> listAll)
         {
             foreach (JCXX_Dept child in listAll.Where(t => t.ParentID == ParentNode.id).OrderBy(t => t.DeptCode))
@@ -295,6 +292,5 @@ namespace Geone.JCXX.BLL
                 ParentNode.children.Add(childNode);
             }
         }
-
     }
 }

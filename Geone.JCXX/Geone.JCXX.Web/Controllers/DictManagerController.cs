@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Geone.JCXX.BLL;
+﻿using Geone.JCXX.BLL;
 using Geone.JCXX.Meta;
-
-using Microsoft.AspNetCore.Mvc;
 using Geone.Utiliy.Library;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace Geone.JCXX.Web.Controllers
 {
     public class DictManagerController : Controller
     {
         private IDictCategoryBLL bll;
-        private IDictItemBLL itemBll ;
+        private IDictItemBLL itemBll;
 
         public DictManagerController(IDictCategoryBLL _BLL, IDictItemBLL _itemBLL)
         {
@@ -25,14 +21,17 @@ namespace Geone.JCXX.Web.Controllers
         {
             return View();
         }
+
         public ActionResult DictItemList()
         {
             return View();
         }
+
         public ActionResult DictCategoryForm()
         {
             return View();
         }
+
         public ActionResult DictItemForm()
         {
             return View();
@@ -47,6 +46,7 @@ namespace Geone.JCXX.Web.Controllers
         {
             return Content(JsonHelper.JsonDllSerialize<GridData>(bll.GetGrid(query), JsonDateTimeFormat.DateTime));
         }
+
         /// <summary>
         /// 获取列表
         /// </summary>
@@ -55,6 +55,7 @@ namespace Geone.JCXX.Web.Controllers
         {
             return Json(bll.GetList(query));
         }
+
         /// <summary>
         /// 获取
         /// </summary>
@@ -64,6 +65,7 @@ namespace Geone.JCXX.Web.Controllers
             string ID = Request.Form["ID"];
             return Json(bll.GetByID(ID));
         }
+
         /// <summary>
         /// 保存代码
         /// </summary>
@@ -75,6 +77,7 @@ namespace Geone.JCXX.Web.Controllers
             RepModel result = bll.Save(entity);
             return Json(result);
         }
+
         /// <summary>
         /// 删除
         /// </summary>
@@ -86,7 +89,6 @@ namespace Geone.JCXX.Web.Controllers
             return Json(result);
         }
 
-
         /// <summary>
         /// 获取列表
         /// </summary>
@@ -95,6 +97,7 @@ namespace Geone.JCXX.Web.Controllers
         {
             return Content(JsonHelper.JsonDllSerialize<GridData>(itemBll.GetGrid(query), JsonDateTimeFormat.DateTime));
         }
+
         /// <summary>
         /// 获取列表
         /// </summary>
@@ -103,6 +106,7 @@ namespace Geone.JCXX.Web.Controllers
         {
             return Json(itemBll.GetList(query));
         }
+
         /// <summary>
         /// 获取
         /// </summary>
@@ -141,8 +145,8 @@ namespace Geone.JCXX.Web.Controllers
         public ActionResult GetItemListByCategoryCode()
         {
             Query_DictItem query = new Query_DictItem();
-            query.AppID=AppConfigurtaionServices.Configuration["AppID"];
-            query.CategoryCode= Request.Query["CategoryCode"];
+            query.AppID = AppConfigurtaionServices.Configuration["AppID"];
+            query.CategoryCode = Request.Query["CategoryCode"];
             query.Note = Request.Query["Note"];
             query.Enabled = 1;
             query.sort = "ItemCode";
@@ -150,7 +154,5 @@ namespace Geone.JCXX.Web.Controllers
             //list.Add(new View_DictItem { AppID= query.AppID , CategoryCode=query.CategoryCode });
             return Content(JsonHelper.JsonDllSerializeList<View_DictItem>(list, JsonDateTimeFormat.DateTime));
         }
-
-      
     }
 }

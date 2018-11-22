@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Geone.JCXX.Meta;
+﻿using Geone.JCXX.Meta;
 using Geone.Utiliy.Database;
 using Geone.Utiliy.Library;
+using Geone.Utiliy.Logger;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Geone.JCXX.BLL
 {
@@ -13,13 +13,13 @@ namespace Geone.JCXX.BLL
         private IDbEntity<JCXX_Vehicle> Respostry;
         private IDbEntity<JCXX_Dept> Respostry_D;
         private IDbEntity<View_Vehicle> Respostry_V;
-        LogWriter log = new LogWriter(new FileLogRecord());
+        private ILogWriter log;
 
         /// <summary>
         /// 构造函数注入
         /// </summary>
         /// <param name="_t"></param>
-        public VehicleBLL(IDbEntity<JCXX_Vehicle> _t, IDbEntity<JCXX_Dept> _d, IDbEntity<View_Vehicle> _v)
+        public VehicleBLL(IDbEntity<JCXX_Vehicle> _t, IDbEntity<JCXX_Dept> _d, IDbEntity<View_Vehicle> _v, ILogWriter logWriter)
         {
             Respostry = _t;
             Respostry.SetTable("JCXX_Vehicle");
@@ -29,6 +29,8 @@ namespace Geone.JCXX.BLL
 
             Respostry_V = _v;
             Respostry_V.SetTable("View_Vehicle");
+
+            log = logWriter;
         }
 
         /// <summary>
@@ -52,10 +54,9 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 result.total = 0;
                 result.rows = new List<View_Vehicle>();
-
             }
             return result;
         }
@@ -76,6 +77,7 @@ namespace Geone.JCXX.BLL
 
                         list = query.order == "asc" ? list.OrderBy(t => t.CarNo).ToList() : list.OrderByDescending(t => t.CarNo).ToList();
                         break;
+
                     default:
                         list = list.OrderByDescending(t => t.CREATED).ToList();
                         break;
@@ -84,10 +86,9 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return new List<View_Vehicle>();
             }
-
         }
 
         /// <summary>
@@ -144,8 +145,6 @@ namespace Geone.JCXX.BLL
             return resultList;
         }
 
-
-
         public JCXX_Vehicle GetByID(string ID)
         {
             try
@@ -159,7 +158,7 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return new JCXX_Vehicle();
             }
         }
@@ -187,12 +186,10 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return RepModel.Error(ex.Message);
             }
-
         }
-
 
         public RepModel Del(string ID)
         {
@@ -206,10 +203,9 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return RepModel.Error(ex.Message);
             }
         }
-
     }
 }

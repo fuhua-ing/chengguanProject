@@ -1,8 +1,4 @@
 ﻿using Geone.Utiliy.Database;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 
 namespace Geone.JCXX.Meta
 {
@@ -11,21 +7,24 @@ namespace Geone.JCXX.Meta
     ///</summary>
     public class View_QSRoleGrid : JCXX_QSRole_Grid
     {
-
-        public  static string GetTbName()
+        public static string GetTbName()
         {
             return "View_QSRoleGrid";
         }
+
         public string RoleName
         {
             get;
             set;
         }
-        [GeoAttribute]
-        public string Shape {
+
+        [Geo]
+        public string Shape
+        {
             get;
             set;
         }
+
         public string RoleType
         {
             get;

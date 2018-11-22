@@ -42,7 +42,6 @@ a {
     text-decoration: none;
 }
 
-
 .StTitle {
     clear: both;
     margin-bottom: 10px;
@@ -125,7 +124,6 @@ table.StTable {
         background: #44bef4;
     }
 
-
 /*********************************** 数据列表表格操作菜单 ***********************************/
 .sipac_table_menu {
     height: 36px;
@@ -142,7 +140,7 @@ table.StTable {
         .sipac_table_menu a:hover, .sipac_table_menu a.live {
             border-bottom: 2px solid #157DBf;
             color: #157DBf;
-        } 
+        }
 
     .sipac_table_menu em {
         display: block;
@@ -153,9 +151,6 @@ table.StTable {
     }
 
 /*********************************** 详情页+地图格式的table ***********************************/
-
-
-
 
 .content_Table {
     position: absolute;
@@ -225,7 +220,6 @@ table.StTable {
             padding: 0 5px;
         }
 
-
     .content_Table .layui-field-title {
         border-color: #4092c6;
     }
@@ -258,7 +252,6 @@ table.StTable {
 .content_grid {
     padding: 10px 10px 10px 30px;
 }
-
 
 .StTitle .sipac_rtsearchbar {
     float: right;

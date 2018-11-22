@@ -5,11 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Src\Util\Geone.Utiliy.Library\Geone.Utiliy.Library.csproj" />
+    <Folder Include="Interface\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Interface\" />
+    <PackageReference Include="Geone.Utiliy.Build" Version="1.0.0" />
   </ItemGroup>
 
 </Project>

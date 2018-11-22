@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Geone.JCXX.Meta
+﻿namespace Geone.JCXX.Meta
 {
     ///<summary>
     /// 数据字典子表
@@ -11,6 +9,7 @@ namespace Geone.JCXX.Meta
         {
             return "JCXX_DictItem";
         }
+
         ///// <summary>
         ///// 数据字典类型ID
         ///// </summary>
@@ -19,6 +18,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 字典明细编号
         ///// </summary>
@@ -27,6 +27,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 字典明细名称
         ///// </summary>
@@ -35,6 +36,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 备注
         ///// </summary>
@@ -43,7 +45,5 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
-
     }
-
 }

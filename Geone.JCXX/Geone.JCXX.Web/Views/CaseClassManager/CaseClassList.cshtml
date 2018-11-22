@@ -12,7 +12,6 @@
 
     $(function () {
 
-
         //初始化表格
         $('#gd_url').InitGird({ url: "../CaseClassManager/GetGrid" });
 
@@ -31,9 +30,9 @@
 
         $('#CaseType').combobox({
             onChange: function (newValue, oldValue) {
-               
+
                 if (newValue == "") {
-                   
+
                     clearCombobox(3);
                 }
                 else {
@@ -43,9 +42,9 @@
         });
         $('#CaseClassI').combobox({
             onChange: function (newValue, oldValue) {
-               
+
                 if (newValue == "") {
-                   
+
                     clearCombobox(2);
                 }
                 else {
@@ -55,9 +54,9 @@
         });
         $('#CaseClassII').combobox({
             onChange: function (newValue, oldValue) {
-               
+
                 if (newValue == "") {
-                   
+
                     clearCombobox(1);
                 }
                 else {
@@ -66,11 +65,10 @@
             }
         });
 
-
     })
     function InitCombo() {
         var Dict_CaseType = '@Dict_CaseType';
-       
+
         var Dict_CaseClassQSType = '@Dict_CaseClassQSType';
         $('#CaseType').InitDictCombobox({ url: Dict_CaseType });
         $('#RoleType').InitDictCombobox({ url: Dict_CaseClassQSType });
@@ -85,12 +83,11 @@
             $('#CaseClassII').combobox('setValue', '');
         }
         if (level > 2) {
-          
+
             $('#CaseClassI').combobox('loadData', []);
             $('#CaseClassI').combobox('setValue', '');
         }
-       
-        
+
     }
     //初始化尺寸
     function InitSize() {
@@ -178,11 +175,8 @@
 
         }
     }
-
-
 </script>
 <div id="win"></div>
-
 
 <div class="content_grid_rt content_grid">
     <div class="StTitle" id="ToolBar">

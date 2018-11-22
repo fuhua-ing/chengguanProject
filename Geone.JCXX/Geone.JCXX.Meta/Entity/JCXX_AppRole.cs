@@ -1,13 +1,10 @@
-﻿using System;
-
-namespace Geone.JCXX.Meta
+﻿namespace Geone.JCXX.Meta
 {
     ///<summary>
     /// 系统角色
     ///</summary>
     public class JCXX_AppRole : BaseEntity
     {
-
         ///// <summary>
         ///// 应用ID
         ///// </summary>
@@ -16,6 +13,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 角色编号
         ///// </summary>
@@ -24,6 +22,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 角色名称
         ///// </summary>
@@ -32,6 +31,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 备注
         ///// </summary>
@@ -40,8 +40,5 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
-
-
     }
-
 }

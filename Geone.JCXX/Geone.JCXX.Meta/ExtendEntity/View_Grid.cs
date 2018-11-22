@@ -1,10 +1,4 @@
-﻿using Geone.Utiliy.Database;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-
-namespace Geone.JCXX.Meta
+﻿namespace Geone.JCXX.Meta
 {
     ///<summary>
     /// 有效用户角色视图
@@ -15,6 +9,7 @@ namespace Geone.JCXX.Meta
         {
             return "View_Grid";
         }
+
         ///// <summary>
         ///// 网格类型描述
         ///// </summary>
@@ -23,6 +18,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 权属角色数量
         ///// </summary>

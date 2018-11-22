@@ -1,7 +1,5 @@
 ﻿using Geone.Utiliy.Database;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Geone.JCXX.Meta
 {
@@ -18,6 +16,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 人员ID
         ///// </summary>
@@ -26,6 +25,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 角色ID
         ///// </summary>
@@ -34,6 +34,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 创建时间
         ///// </summary>
@@ -42,6 +43,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 创建人
         ///// </summary>
@@ -50,6 +52,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 更新时间
         ///// </summary>
@@ -58,6 +61,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 更新人
         ///// </summary>
@@ -66,7 +70,5 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
-
     }
-
 }

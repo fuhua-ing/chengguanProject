@@ -1,29 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Geone.JCXX.Meta;
+﻿using Geone.JCXX.Meta;
 using Geone.Utiliy.Database;
 using Geone.Utiliy.Library;
+using Geone.Utiliy.Logger;
+using System;
+using System.Collections.Generic;
 
 namespace Geone.JCXX.BLL
 {
     public class PhoneGroupItemBLL : IPhoneGroupItemBLL
     {
         private IDbEntity<JCXX_PhoneGroupItem> Respostry;
-        LogWriter log = new LogWriter(new FileLogRecord());
+        private ILogWriter log;
 
         /// <summary>
         /// 构造函数注入
         /// </summary>
         /// <param name="_t"></param>
-        public PhoneGroupItemBLL(IDbEntity<JCXX_PhoneGroupItem> _t)
+        public PhoneGroupItemBLL(IDbEntity<JCXX_PhoneGroupItem> _t, ILogWriter logWriter)
         {
             Respostry = _t;
             Respostry.SetTable("JCXX_PhoneGroupItem");
+            log = logWriter;
         }
 
         #region 短信号码维护
+
         /// <summary>
         /// 分页获取列表
         /// </summary>
@@ -40,6 +41,7 @@ namespace Geone.JCXX.BLL
             var result = list.QueryPage((int)query.page, (int)query.rows, query.sort);
             return new GridData() { rows = result.Rows, total = result.Total };
         }
+
         /// <summary>
         /// 获取列表
         /// </summary>
@@ -56,6 +58,7 @@ namespace Geone.JCXX.BLL
                     case "PersonName":
                         list = query.order == "asc" ? list.OrderByDesc(t => t.PersonName) : list.OrderBy(t => t.PersonName);
                         break;
+
                     default:
                         list = list.OrderByDesc(t => t.CREATED);
                         break;
@@ -64,11 +67,10 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return new List<JCXX_PhoneGroupItem>();
             }
         }
-
 
         /// <summary>
         /// 查询条件筛选
@@ -84,7 +86,6 @@ namespace Geone.JCXX.BLL
                 list = list.And(t => t.GroupID.Eq(query.GroupID));
             if (query.Enabled != null)
                 list = list.And(t => t.Enabled.Eq((int)query.Enabled));
-
         }
 
         public JCXX_PhoneGroupItem GetByID(string ID)
@@ -100,7 +101,7 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return new JCXX_PhoneGroupItem();
             }
         }
@@ -128,11 +129,10 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return RepModel.Error(ex.Message);
             }
         }
-
 
         public RepModel Del(string ID)
         {
@@ -146,11 +146,11 @@ namespace Geone.JCXX.BLL
             }
             catch (Exception ex)
             {
-                log.WriteException(null, ex);
+                log.WriteException(ex);
                 return RepModel.Error(ex.Message);
             }
         }
-        #endregion
 
+        #endregion 短信号码维护
     }
 }

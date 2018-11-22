@@ -20,7 +20,6 @@
  */
 
 (function (root, factory) {
-
     if (typeof define === "function" && define.amd) {
         // AMD (+ global for extensions)
         define(function () {
@@ -34,8 +33,6 @@
         root.Wkt = factory();
     }
 }(this, function () {
-
-
     var beginsWith, endsWith, root, Wkt;
 
     // Establish the root object, window in the browser, or exports on the server
@@ -52,8 +49,6 @@
         if (!(this instanceof Wkt)) return new Wkt(obj);
         this._wrapped = obj;
     };
-
-
 
     /**
      * Returns true if the substring is found at the beginning of the string.
@@ -128,7 +123,6 @@
      * @memberof Wkt
      */
     Wkt.Wkt = function (initializer) {
-
         /**
          * The default delimiter between X and Y coordinates.
          * @ignore
@@ -173,10 +167,7 @@
         } else if (initializer && typeof initializer !== undefined) {
             this.fromObject(initializer);
         }
-
     };
-
-
 
     /**
      * Returns true if the internal geometry is a collection of geometries.
@@ -283,58 +274,43 @@
                 x: coords[0],
                 y: coords[1]
             });
-
         } else {
-
             for (i in coords) {
                 if (coords.hasOwnProperty(i)) {
-
                     if (!Wkt.isArray(coords[i][0])) { // LineString
-
                         if (this.type === 'multipoint') { // MultiPoint
                             this.components.push([{
                                 x: coords[i][0],
                                 y: coords[i][1]
                             }]);
-
                         } else {
                             this.components.push({
                                 x: coords[i][0],
                                 y: coords[i][1]
                             });
-
                         }
-
                     } else {
-
                         oring = [];
                         for (j in coords[i]) {
                             if (coords[i].hasOwnProperty(j)) {
-
                                 if (!Wkt.isArray(coords[i][j][0])) {
                                     oring.push({
                                         x: coords[i][j][0],
                                         y: coords[i][j][1]
                                     });
-
                                 } else {
-
                                     iring = [];
                                     for (k in coords[i][j]) {
                                         if (coords[i][j].hasOwnProperty(k)) {
-
                                             iring.push({
                                                 x: coords[i][j][k][0],
                                                 y: coords[i][j][k][1]
                                             });
-
                                         }
                                     }
 
                                     oring.push(iring);
-
                                 }
-
                             }
                         }
 
@@ -342,7 +318,6 @@
                     }
                 }
             }
-
         }
 
         return this;
@@ -405,14 +380,12 @@
         // For the coordinates of most simple features
         for (i in cs) {
             if (cs.hasOwnProperty(i)) {
-
                 // For those nested structures
                 if (Wkt.isArray(cs[i])) {
                     rings = [];
 
                     for (j in cs[i]) {
                         if (cs[i].hasOwnProperty(j)) {
-
                             if (Wkt.isArray(cs[i][j])) { // MULTIPOLYGONS
                                 ring = [];
 
@@ -423,12 +396,9 @@
                                 }
 
                                 rings.push(ring);
-
                             } else { // POLYGONS and MULTILINESTRINGS
-
                                 if (cs[i].length > 1) {
                                     rings.push([cs[i][j].x, cs[i][j].y]);
-
                                 } else { // MULTIPOINTS
                                     rings = rings.concat([cs[i][j].x, cs[i][j].y]);
                                 }
@@ -437,16 +407,13 @@
                     }
 
                     json.coordinates.push(rings);
-
                 } else {
                     if (cs.length > 1) { // For LINESTRING type
                         json.coordinates.push([cs[i].x, cs[i].y]);
-
                     } else { // For POINT type
                         json.coordinates = json.coordinates.concat([cs[i].x, cs[i].y]);
                     }
                 }
-
             }
         }
 
@@ -473,7 +440,6 @@
         }
 
         switch (prefix) {
-
             case 'point':
                 this.components = [this.components.concat(wkt.components)];
                 break;
@@ -488,7 +454,6 @@
                     wkt.components
                 ];
                 break;
-
         }
 
         if (prefix !== 'multi') {
@@ -513,12 +478,10 @@
             if (this.ingest[this.type]) {
                 this.components = this.ingest[this.type].apply(this, [this.base]);
             }
-
         } else {
             if (this.regExes.crudeJson.test(str)) {
                 if (typeof JSON === 'object' && typeof JSON.parse === 'function') {
                     this.fromJson(JSON.parse(str));
-
                 } else {
                     console.log('JSON.parse() is not available; cannot parse GeoJSON strings');
                     throw {
@@ -526,7 +489,6 @@
                         message: 'JSON.parse() is not available; cannot parse GeoJSON strings'
                     };
                 }
-
             } else {
                 console.log('Invalid WKT string provided to read()');
                 throw {
@@ -568,7 +530,6 @@
             data = this.extract[this.type].apply(this, [components[i]]);
             if (this.isCollection() && this.type !== 'multipoint') {
                 pieces.push('(' + data + ')');
-
             } else {
                 pieces.push(data);
 
@@ -576,7 +537,6 @@
                 if (i !== (components.length - 1) && this.type !== 'multipoint') {
                     pieces.push(',');
                 }
-
             }
         }
 
@@ -712,7 +672,6 @@
      * @instance
      */
     Wkt.Wkt.prototype.ingest = {
-
         /**
          * Return point feature given a point WKT fragment.
          * @param   str {String}    A WKT fragment representing the point
@@ -874,7 +833,6 @@
         geometrycollection: function (str) {
             console.log('The geometrycollection WKT type is not yet supported.');
         }
-
     }; // eo ingest
 
     return Wkt;

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Geone.JCXX.Meta
+﻿namespace Geone.JCXX.Meta
 {
     ///<summary>
     /// 部门
@@ -11,6 +9,7 @@ namespace Geone.JCXX.Meta
         {
             return "JCXX_Dept";
         }
+
         ///// <summary>
         ///// 上级ID
         ///// </summary>
@@ -19,6 +18,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 部门名称
         ///// </summary>
@@ -27,6 +27,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 部门编号
         ///// </summary>
@@ -35,6 +36,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 简称
         ///// </summary>
@@ -43,6 +45,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 部门性质
         ///// </summary>
@@ -51,6 +54,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 负责人
         ///// </summary>
@@ -59,6 +63,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 联系电话
         ///// </summary>
@@ -67,6 +72,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 联系邮箱
         ///// </summary>
@@ -75,6 +81,7 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
+
         ///// <summary>
         ///// 备注
         ///// </summary>

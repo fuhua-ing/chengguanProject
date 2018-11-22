@@ -1,8 +1,5 @@
-﻿using System.IO;
-using Microsoft.AspNetCore;
+﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-
 
 namespace Geone.JCXX.WebService
 {
@@ -15,11 +12,6 @@ namespace Geone.JCXX.WebService
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .ConfigureAppConfiguration((hostingContext, config) =>
-                {
-                    config.AddJsonFile($"{Directory.GetCurrentDirectory()}/wwwroot/appinitialize.json",
-                                        optional: false, reloadOnChange: false);
-                })
                 .UseStartup<Startup>();
     }
 }
