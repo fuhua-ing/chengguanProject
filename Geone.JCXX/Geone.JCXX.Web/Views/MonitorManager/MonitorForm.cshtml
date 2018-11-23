@@ -13,7 +13,7 @@
         //编辑
         if (ID != null && ID != "")
             $.DoAjax({
-                url: "/MonitorManager/GetInfo",
+                url: '@Url.Action("GetInfo", "MonitorManager")',
                 dataParams: { ID: ID },
                 successFunc: function (result) {
                     $("#fmInfo").form("load", result);
@@ -26,7 +26,7 @@
         if ($("#fmInfo").form('validate'))
             $.DoAjax({
                 needWaiting: true,
-                url: "/MonitorManager/PostInfo",
+                url: '@Url.Action("PostInfo", "MonitorManager")',
                 dataParams: { info: $("#fmInfo").getJsonValues().jsonStr },
                 successFunc: function (result) {
                     if (result.StatusCode == "200") {

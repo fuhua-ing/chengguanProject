@@ -12,7 +12,7 @@
         //编辑
         if (ID != null && ID != "") {
             $.DoAjax({
-                url: "/PhoneGroupManager/GetItemInfo",
+                url: '@Url.Action("GetItemInfo", "PhoneGroupManager")',
                 dataParams: { ID: ID },
                 successFunc: function (result) {
                     $("#fmInfo").form("load", result);
@@ -27,7 +27,7 @@
         if ($("#fmInfo").form('validate'))
             $.DoAjax({
                 needWaiting: true,
-                url: "/PhoneGroupManager/PostItemInfo",
+                url: '@Url.Action("PostItemInfo", "PhoneGroupManager")',
                 dataParams: { info: $("#fmInfo").getJsonValues().jsonStr },
                 successFunc: function (result) {
                     if (result.StatusCode == "200") {

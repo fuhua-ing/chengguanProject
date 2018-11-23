@@ -61,12 +61,12 @@
                 var pwd = $("#form-password").val();
 
                 $.DoAjax({
-                    url: "/Home/Submit_Login",
+                    url:'@Url.Action("Submit_Login","Home")',
                     dataParams: { Account: account, Pwd: pwd },
                     successFunc: function (msg) {
                         console.log(msg);
                         if (msg == "") {
-                            window.location.href = getRootPath() + "/Home/Index";
+                            window.location.href = '@Url.Action("Index", "Home")';
                         }
                         else {
                             $("#login-errorMsg").html(msg);

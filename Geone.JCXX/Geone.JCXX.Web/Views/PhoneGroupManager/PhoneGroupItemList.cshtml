@@ -12,7 +12,7 @@
         //初始化表格
         var param = $("#queryTab").getJsonValues().jsonData;
 
-        $('#gd_url').InitGird({ url: "../PhoneGroupManager/GetItemGrid", queryParams: param });
+        $('#gd_url').InitGird({ url: '@Url.Action("GetItemGrid", "PhoneGroupManager")', queryParams: param });
 
         InitSize();
 
@@ -68,7 +68,7 @@
                     var row = $('#gd_url').datagrid('getSelected');
                     $.DoAjax({
                         needWaiting: true,
-                        url: "/PhoneGroupManager/DelItemInfo",
+                        url: '@Url.Action("DelItemInfo", "PhoneGroupManager")',
                         dataParams: { ID: row.ID },
                         successFunc: function (result) {
                             if (result.StatusCode == "200") {

@@ -16,7 +16,7 @@
         //编辑
         if (ID != null && ID != "") {
             $.DoAjax({
-                url: "/QSRoleManager/GetInfo",
+                url: '@Url.Action("GetInfo", "QSRoleManager")',
                 dataParams: { ID: ID },
                 successFunc: function (result) {
                     $("#fmInfo").form("load", result);
@@ -33,7 +33,7 @@
         //初始化树形选择框
         $('#ParentID').combotree({
             method: "post",
-            url: "../QSRoleManager/GetEasyuiTreeList",
+            url: '@Url.Action("GetEasyuiTreeList", "QSRoleManager")',
             loadFilter: function (data, parent) {
                 data.unshift({ id: "0", text: "——清除选中——" });
                 return data;
@@ -61,7 +61,7 @@
         if ($("#fmInfo").form('validate'))
             $.DoAjax({
                 needWaiting: true,
-                url: "/QSRoleManager/PostInfo",
+                url: '@Url.Action("PostInfo", "QSRoleManager")',
                 dataParams: { info: $("#fmInfo").getJsonValues().jsonStr },
                 successFunc: function (result) {
                     if (result.StatusCode == "200") {

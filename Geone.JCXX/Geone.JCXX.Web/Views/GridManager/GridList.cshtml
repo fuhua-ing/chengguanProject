@@ -9,7 +9,7 @@
 
     $(function () {
         //初始化表格
-        $('#gd_url').InitGird({ url: "../GridManager/GetGrid" });
+        $('#gd_url').InitGird({ url: '@Url.Action("GetGrid", "GridManager")' });
         //初始化数据字典
         $('#GridType').InitDictCombobox({ url: Dict_GridType });
         InitSize();
@@ -63,7 +63,7 @@
                     var row = $('#gd_url').datagrid('getSelected');
                     $.DoAjax({
                         needWaiting: true,
-                        url: "/GridManager/DelInfo",
+                        url: '@Url.Action("DelInfo", "GridManager")',
                         dataParams: { ID: row.ID },
                         successFunc: function (result) {
                             if (result.StatusCode == "200") {

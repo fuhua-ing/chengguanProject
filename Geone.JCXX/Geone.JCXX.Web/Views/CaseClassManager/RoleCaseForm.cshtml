@@ -111,7 +111,7 @@
     function LoadRoleGroup() {
         //获取用户
         $.DoAjax({
-            url: "/CaseClassManager/GetRoleCaseList",
+            url: '@Url.Action("GetRoleCaseList", "CaseClassManager")',
             dataParams: { ID: CaseClassID },
             successFunc: function (udata) {
                 LoadChoiceRoleInfo(udata);
@@ -186,7 +186,7 @@
 
         $.DoAjax({
             needWaiting: true,
-            url: "/CaseClassManager/PostRoleCase",
+            url: '@Url.Action("PostRoleCase", "CaseClassManager")',
             dataParams: { CaseClassID: CaseClassID, RoleIDs: ids },
             successFunc: function (result) {
                 if (result.StatusCode == "200") {

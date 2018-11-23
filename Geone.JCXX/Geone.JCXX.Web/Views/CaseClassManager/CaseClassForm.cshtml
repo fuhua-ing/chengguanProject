@@ -16,7 +16,7 @@
         //编辑
         if (ID != null && ID != "") {
             $.DoAjax({
-                url: "/CaseClassManager/GetInfo",
+                url: '@Url.Action("GetInfo", "CaseClassManager")',
                 dataParams: { ID: ID },
                 successFunc: function (result) {
                     $("#fmInfo").form("load", result);
@@ -79,7 +79,8 @@
         if ($("#fmInfo").form('validate'))
             $.DoAjax({
                 needWaiting: true,
-                url: "/CaseClassManager/PostInfo",
+                url: '@Url.Action("PostInfo", "CaseClassManager")',
+
                 dataParams: { info: $("#fmInfo").getJsonValues().jsonStr },
                 successFunc: function (result) {
                     if (result.StatusCode == "200") {

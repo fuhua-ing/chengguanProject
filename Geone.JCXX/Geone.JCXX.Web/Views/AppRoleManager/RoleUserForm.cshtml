@@ -99,7 +99,7 @@
     function LoadUser() {
         //获取用户
         $.DoAjax({
-            url: "/UserManager/GetAllList",
+            url: '@Url.Action("GetAllList", "UserManager")',
             successFunc: function (udata) {
                 var _html = "";
                 $.each(udata, function (index, item) {
@@ -114,7 +114,7 @@
 
                 //获取角色用户
                 $.DoAjax({
-                    url: "/AppRoleManager/GetRoleUserList",
+                    url: '@Url.Action("GetRoleUserList", "AppRoleManager")',
                     dataParams: { RoleID: RoleID },
                     successFunc: function (rudata) {
                         var _selectHtml = "";
@@ -154,7 +154,7 @@
         var queryDept = treenode == null ? "" : treenode.id;
         var queryName = IsNeedName ? $("#searchName").val().trim() : "";
         $.DoAjax({
-            url: "/UserManager/GetAllList",
+             url: '@Url.Action("GetAllList", "UserManager")',
             dataParams: { DeptParentID: queryDept, Like_AccountOrName: queryName },
             successFunc: function (data) {
                 $("#userList li").hide();
@@ -181,7 +181,7 @@
         });
         $.DoAjax({
             needWaiting:true,
-            url: "/AppRoleManager/PostRoleUser",
+            url: '@Url.Action("PostRoleUser", "AppRoleManager")',
             dataParams: { RoleID: RoleID, UserIDs: ids },
             successFunc: function (result) {
                 if (result.StatusCode == "200") {

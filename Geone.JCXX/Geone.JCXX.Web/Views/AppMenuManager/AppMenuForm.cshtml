@@ -10,7 +10,7 @@
         //编辑
         if (ID != null && ID != "") {
             $.DoAjax({
-                url: "/AppMenuManager/GetInfo",
+                url: '@Url.Action("GetInfo", "AppMenuManager")',
                 dataParams: { ID: ID },
                 successFunc: function (result) {
                     $("#fmInfo").form("load", result);
@@ -58,7 +58,7 @@
         if ($("#fmInfo").form('validate'))
             $.DoAjax({
                 needWaiting:true,
-                url: "/AppMenuManager/PostInfo",
+                url: '@Url.Action("PostInfo", "AppMenuManager")',
                 dataParams: { info: $("#fmInfo").getJsonValues().jsonStr },
                 successFunc: function (result) {
                     if (result.StatusCode == "200") {

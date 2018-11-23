@@ -16,7 +16,7 @@
     $(function () {
         $("#cc-c").width($(window).width() - 60);
 
-        $.getJSON(getRootPath() + "/json/menu.json", function (result) {
+        $.getJSON('@Url.Action("../json/menu.json")', function (result) {
             LoadMenu(".index_menu", result);
         });
 
@@ -32,7 +32,8 @@
     function Logout() {
         $.messager.confirm("提示", "确认注销登录吗？", function (r) {
             if (r) {
-                var url = getRootPath() + "/Home/Logout";
+                var url = '@Url.Action("Logout", "Home")';
+
                 window.location.href = url;
             }
         });

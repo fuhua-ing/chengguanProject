@@ -31,7 +31,7 @@
     $(function () {
          //初始化表格
         $('#gd_url').InitGird({
-                url: "../DictManager/GetGrid",
+                url: '@Url.Action("GetGrid", "DictManager")',
                 view: detailview,
                 detailFormatter: function (index, row) {
                     return '<div class="divDictItem"><div class="submenu">'
@@ -43,7 +43,7 @@
                 },
                 onExpandRow: function (index, row) {
                     $('#tbDictItem-' + index).datagrid({
-                        url: "../DictManager/GetItemAllList",
+                        url: '@Url.Action("GetItemAllList", "DictManager")',
                         queryParams: { CategoryID: row.ID, sort: "ItemCode", order:"asc" },
                         fitColumns: true,
                         singleSelect: true,
@@ -70,7 +70,7 @@
         //初始化应用选择列表
         $('#sysApp').combobox({
             method: 'get',
-            url: '../AppManager/GetAllList',
+            url: '@Url.Action("GetAllList", "AppManager")',
             editable: false,
             valueField: 'ID',
             textField: 'AppName',
@@ -183,7 +183,7 @@
                     var row = $('#tbDictItem-' + TbRowIndex).datagrid('getSelected');
                     $.DoAjax({
                         needWaiting: true,
-                        url: "/DictManager/DelItemInfo",
+                        url: '@Url.Action("DelItemInfo", "DictManager")',
                         dataParams: { ID: row.ID },
                         successFunc: function (result) {
                             if (result.StatusCode == "200") {

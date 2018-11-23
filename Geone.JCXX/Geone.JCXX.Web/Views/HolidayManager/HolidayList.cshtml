@@ -23,7 +23,7 @@
     function InitPika(Year) {
         //获取节假日列表
         $.DoAjax({
-            url: "/HolidayManager/GetList",
+            url: '@Url.Action("GetList", "HolidayManager")',
             dataParams: { YearNo: Year },
             successFunc: function (result) {
                 var jsonData = JSON.parse(result);

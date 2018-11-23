@@ -11,7 +11,7 @@
         //编辑
         if (ID != null && ID != "")
             $.DoAjax({
-                url: "/DictManager/GetInfo",
+                url: '@Url.Action("GetInfo", "DictManager")',
                 dataParams: { ID: ID },
                 successFunc: function (result) {
                     $("#fmInfo").form("load", result);
@@ -26,7 +26,7 @@
         if ($("#fmInfo").form('validate'))
             $.DoAjax({
                 needWaiting: true,
-                url: "/DictManager/PostInfo",
+                url: '@Url.Action("PostInfo", "DictManager")',
                 dataParams: { info: $("#fmInfo").getJsonValues().jsonStr },
                 successFunc: function (result) {
                     if (result.StatusCode == "200") {

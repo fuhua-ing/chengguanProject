@@ -10,7 +10,7 @@
         //编辑
         if (ID != null && ID != "")
             $.DoAjax({
-                url: "/HolidayManager/GetInfo",
+                url: '@Url.Action("GetInfo", "HolidayManager")',
                 dataParams: { ID: ID },
                 successFunc: function (result) {
                     $("#fmInfo").form("load", result);
@@ -22,7 +22,7 @@
         if ($("#fmInfo").form('validate'))
             $.DoAjax({
                 needWaiting: true,
-                url: "/HolidayManager/PostInfo",
+                url: '@Url.Action("PostInfo", "HolidayManager")',
                 dataParams: { info: $("#fmInfo").getJsonValues().jsonStr },
                 successFunc: function (result) {
                     if (result.StatusCode == "200") {

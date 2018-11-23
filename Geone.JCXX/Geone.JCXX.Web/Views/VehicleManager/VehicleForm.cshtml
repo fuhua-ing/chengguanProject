@@ -11,8 +11,9 @@
         InitCombo();
         //编辑
         if (ID != null && ID != "") {
+          
             $.DoAjax({
-                url: "/VehicleManager/GetInfo",
+                url: '@Url.Action("GetInfo", "VehicleManager")',
                 dataParams: { ID: ID },
                 successFunc: function (result) {
                     $("#fmInfo").form("load", result);
@@ -31,7 +32,7 @@
         if ($("#fmInfo").form('validate'))
             $.DoAjax({
                 needWaiting: true,
-                url: "/VehicleManager/PostInfo",
+                url: '@Url.Action("PostInfo", "VehicleManager")',
                 dataParams: { info: $("#fmInfo").getJsonValues().jsonStr },
                 successFunc: function (result) {
                     if (result.StatusCode == "200") {
