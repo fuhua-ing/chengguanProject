@@ -87,8 +87,8 @@
       },
       {
         "id": "0602",
-        "name": "网格管理",
-        "url": "/GridManager/GridList",
+        "name": "网格权属管理",
+        "url": "/GridManager/GridList?PageType=1",
         "icon": "fa-globe"
       },
 
@@ -103,7 +103,20 @@
         "name": "短信号码组管理",
         "url": "/PhoneGroupManager/PhoneGroupList",
         "icon": "fa-bars"
+      },
+      {
+        "id": "0508",
+        "name": "短信服务参数管理",
+        "url": "/Config_SMSManager/Config_SMSList",
+        "icon": "fa-bars"
       }
     ]
+  },
+  {
+    "id": "07",
+    "name": "网格管理",
+    "url": "/GridManager/GridList?PageType=0",
+    "icon": "fa-calendar",
+    "children": []
   }
 ]

@@ -1,10 +1,11 @@
 ﻿//是否有效渲染
 function formatter_valid(value, row, index) {
-    if (value && value != null)
+    if (value != null) {
         if (value.toString() == "1")
             return '<span class="label label-success">有效</span>';
         else
             return '<span class="label label-danger">无效</span>';
+    }
 }
 //是否渲染
 function formatter_YesOrNo(value, row, index) {

@@ -1,33 +1,13 @@
 ﻿@{
-    ViewBag.Title = "网格管理";
+    ViewBag.Title = "短信服务参数管理";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    string Dict_GridType = ConstHelper.Dict_GridType;//数据字典-网格类型
 }
 
 <script>
-    var Dict_GridType = '@Dict_GridType';
-    var PageType;//页面类型
 
     $(function () {
-        PageType = getQueryString("PageType");//随URL传件来的参数
-        //菜单：网格管理
-        if (PageType == 0) {
-            $("#btn_add").show();       //按钮：新增
-            $("#btn_edit").show();      //按钮：编辑
-            $("#btn_delete").show();    //按钮：删除
-            $("#btn_import").show();    //按钮：导入
-            $("#btn_export").show();    //按钮：导出
-        } else if (PageType == 1) {     //菜单：网格权属管理
-            $("#btn_roleset").show();   //按钮：角色设置
-        } else {
-            $.messager.alert('提示', '无法识别页类型！');
-            return false;
-        }
-
         //初始化表格
-        $('#gd_url').InitGird({ url: '@Url.Action("GetGrid", "GridManager")' });
-        //初始化数据字典
-        $('#GridType').InitDictCombobox({ url: Dict_GridType });
+        $('#gd_url').InitGird({ url: "../Config_SMSManager/GetGrid" });
         InitSize();
 
         //搜索栏切换显示
@@ -48,7 +28,13 @@
             height: $(window).height() - 20
         });
     }
-
+    //状态
+    function formatter_Sms_Status(value, row, index) {
+        if (value.toString() == "1")
+            return '<span class="label label-success">正常</span>';
+        else
+            return '<span class="label label-danger">非正常</span>';
+    }
     //查询
     function Search() {
         var param = $("#queryTab").getJsonValues().jsonData;
@@ -62,13 +48,13 @@
     }
     //新增
     function Add() {
-        $("#win").OpenWin({ title: "网格-新增", url: "../GridManager/GridForm", width: 800, height: 550 });
+        $("#win").OpenWin({ title: "短信服务参数-新增", url: "../Config_SMSManager/Config_SMSForm", width: 700, height: 400 });
     }
     //修改
     function Edit() {
         if ($('#gd_url').datagrid('IsSelectedRow')) {
             var row = $('#gd_url').datagrid('getSelected');
-            $("#win").OpenWin({ title: "网格-编辑", url: "../GridManager/GridForm?ID=" + row.ID, width: 800, height: 550 });
+            $("#win").OpenWin({ title: "短信服务参数-编辑", url: "../Config_SMSManager/Config_SMSForm?ID=" + row.ID, width: 700, height: 400 });
         }
     }
     //删除
@@ -79,7 +65,7 @@
                     var row = $('#gd_url').datagrid('getSelected');
                     $.DoAjax({
                         needWaiting: true,
-                        url: '@Url.Action("DelInfo", "GridManager")',
+                        url: "/Config_SMSManager/DelInfo",
                         dataParams: { ID: row.ID },
                         successFunc: function (result) {
                             if (result.StatusCode == "200") {
@@ -97,22 +83,7 @@
             });
         }
     }
-    //网格权属角色设置
-    function OpenGroupRole() {
-        if ($('#gd_url').datagrid('IsSelectedRow')) {
-            var row = $('#gd_url').datagrid('getSelected');
-            $("#win").OpenWin({ title: "网格权属角色", url: "../GridManager/RoleGridForm?ID=" + row.ID, width: 800, height: 500 });
-        }
-    }
-    //导入
-    function Import() {
-        $("#win").OpenWin({ title: "网格-批量导入", url: "../GridManager/GridImport", width: 700, height: 350 });
-    }
-    //导出
-    function Export() {
-        var param = $("#queryTab").getJsonValues().jsonData;
-        window.location.href = "DownloadFile";
-    }
+
     //回调
     function callback(isOk) {
         $("#win").window('close');
@@ -121,9 +92,7 @@
     }
 </script>
 
-<div id="win">
-</div>
-
+<div id="win"></div>
 <div class="content_grid">
     <div class="StTitle" id="ToolBar">
         <div class="sipac_rtsearchbar">
@@ -139,16 +108,14 @@
             <table>
                 <tbody>
                     <tr>
-                        <th>网格编号</th>
-                        <td width="35%"><input class="easyui-textbox" name="Like_GridCode"></td>
-                        <th>网格名称</th>
-                        <td width="35%"><input class="easyui-textbox" name="Like_GridName"></td>
+                        <th>系统标识</th>
+                        <td width="35%"><input class="easyui-textbox" name="Like_SystemID" /></td>
+                        <th>用户名</th>
+                        <td width="35%"><input class="easyui-textbox" name="Like_Username" /></td>
                     </tr>
                     <tr>
-                        <th>网格类型</th>
-                        <td width="35%"><input class="easyui-combobox defaultAll" name="GridType" id="GridType"></td>
                         <th>是否有效</th>
-                        <td width="35%">
+                        <td colspan="3">
                             <input class="easyui-combobox Dict_Enabled defaultAll" name="Enabled" />
                         </td>
                     </tr>
@@ -161,9 +128,6 @@
             <a href="javascript:void(0);" onclick="Add()">新增</a><em></em>
             <a href="javascript:void(0);" onclick="Edit()">修改</a><em></em>
             <a href="javascript:void(0);" onclick="Del()">删除</a><em></em>
-            <a href="javascript:void(0);" onclick="OpenGroupRole()">角色设置</a><em></em>
-            <a href="javascript:void(0);" onclick="Import()">导入</a><em></em>
-            <a href="javascript:void(0);" onclick="Export()">导出</a><em></em>
             <a href="javascript:void(0);" onclick="Refresh()">刷新</a><em></em>
         </div>
     </div>
@@ -171,15 +135,21 @@
     <table id="gd_url">
         <thead>
             <tr>
-                <th data-options="field:'GridTypeDesc',width:200">网格类型</th>
-                <th data-options="field:'GridCode',width:200">网格编号</th>
-                <th data-options="field:'GridName',width:200">网格名称</th>
-                <th data-options="field:'ShowName',width:200">显示名称</th>
-                <th data-options="field:'GridArea',width:200">网格面积(平方米)</th>
-                <th data-options="field:'RoleCount',width:200,align:'center',formatter:formatter_count,hidden:this.PageType==0?true:false">权属角色(个)</th>  @*根据条件动态控制dataguid th 列显示/隐藏（hidden:this.PageType==0?true:false）*@
-                <th data-options="field:'Note',width:400">备注</th>
-                <th data-options="field:'Enabled',width:100,align:'center',formatter:formatter_valid">是否有效</th>
+                <th data-options="field:'ApplicationID',width:80">分配的唯一编号</th>
+                <th data-options="field:'SystemID',width:100">系统标识</th>
+                <th data-options="field:'Username',width:100">用户名</th>
+                <th data-options="field:'Password',width:100">密码</th>
+                <th data-options="field:'DeliveryResultRequest',width:80">发送结果请求</th>
+                <th data-options="field:'Note',width:200">备注说明</th>
+                <th data-options="field:'Precedence',width:80,align:'center'">优先级别</th>
+                <th data-options="field:'Enabled',width:80,align:'center',formatter:formatter_valid">是否有效</th>
+                <th data-options="field:'Sms_Status',width:80,align:'center',formatter:formatter_Sms_Status">状态</th>
+                @*<th data-options="field:'CREATED_MAN',width:80,align:'center'">创建人</th>
+                    <th data-options="field:'CREATED',width:100,align:'center'">创建时间</th>
+                    <th data-options="field:'UPDATED_MAN',width:80,align:'center'">更新人</th>
+                    <th data-options="field:'UPDATED',width:100,align:'center'">更新时间</th>*@
             </tr>
         </thead>
     </table>
 </div>
+

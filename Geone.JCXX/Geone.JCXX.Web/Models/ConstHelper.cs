@@ -64,6 +64,11 @@
         /// </summary>
         public const string Dict_MonitorType = "MonitorType";
 
+        /// <summary>
+        /// 状态
+        /// </summary>
+        public const string Dict_Sms_Status = "Sms_Status";
+
         #endregion DataCategory 数据字典分类
     }
 }
