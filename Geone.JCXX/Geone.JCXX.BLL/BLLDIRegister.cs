@@ -22,6 +22,8 @@ namespace Geone.JCXX.BLL
             services.AddTransient(typeof(IVehicleBLL), typeof(VehicleBLL));
             services.AddTransient(typeof(IMonitorBLL), typeof(MonitorBLL));
             services.AddTransient(typeof(IConfig_SMSBLL), typeof(Config_SMSBLL));
+            services.AddTransient(typeof(ICaseLATJBLL), typeof(CaseLATJBLL));
+            services.AddTransient(typeof(ICaseTimeLimitBLL), typeof(CaseTimeLimitBLL));
         }
     }
 }

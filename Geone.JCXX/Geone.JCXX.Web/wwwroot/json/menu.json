@@ -121,12 +121,18 @@
   },
   {
     "id": "08",
-    "name": "平台时限",
-    "url": "/CaseLATJManager/CaseLATJList",
+    "name": "时限管理",
+    "url": "",
     "icon": "fa-calendar",
     "children": [
       {
         "id": "0801",
+        "name": "平台时限",
+        "url": "/CaseLATJManager/CaseLATJList",
+        "icon": "fa-bars"
+      },
+      {
+        "id": "0802",
         "name": "处置时限",
         "url": "/CaseTimeLimitManager/CaseTimeLimitList",
         "icon": "fa-bars"
