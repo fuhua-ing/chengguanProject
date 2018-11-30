@@ -2,14 +2,11 @@
     ViewBag.Title = "短信服务参数管理";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 <script>
-
     $(function () {
         //初始化表格
         $('#gd_url').InitGird({ url: "../Config_SMSManager/GetGrid" });
         InitSize();
-
         //搜索栏切换显示
         $(".StTitle .s_s_morebtn,.s_s_close a").click(function () {
             $(".sipac_rtsearchbar").toggle();
@@ -20,7 +17,6 @@
             InitSize();
         });
     })
-
     //初始化尺寸
     function InitSize() {
         $('#gd_url').datagrid('resize', {
@@ -83,7 +79,6 @@
             });
         }
     }
-
     //回调
     function callback(isOk) {
         $("#win").window('close');
@@ -91,7 +86,6 @@
             Search();
     }
 </script>
-
 <div id="win"></div>
 <div class="content_grid">
     <div class="StTitle" id="ToolBar">
@@ -131,7 +125,6 @@
             <a href="javascript:void(0);" onclick="Refresh()">刷新</a><em></em>
         </div>
     </div>
-
     <table id="gd_url">
         <thead>
             <tr>
@@ -152,4 +145,3 @@
         </thead>
     </table>
 </div>
-

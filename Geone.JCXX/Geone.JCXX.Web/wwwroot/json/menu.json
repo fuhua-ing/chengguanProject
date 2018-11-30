@@ -80,7 +80,7 @@
     "icon": "fa-globe",
     "children": [
       {
-        "id": "0501",
+        "id": "0601",
         "name": "权属角色管理",
         "url": "/QSRoleManager/QSRoleList",
         "icon": "fa-bars"
@@ -93,19 +93,19 @@
       },
 
       {
-        "id": "0506",
+        "id": "0606",
         "name": "案件权属管理",
         "url": "/CaseClassManager/CaseClassList",
         "icon": "fa-bars"
       },
       {
-        "id": "0507",
+        "id": "0607",
         "name": "短信号码组管理",
         "url": "/PhoneGroupManager/PhoneGroupList",
         "icon": "fa-bars"
       },
       {
-        "id": "0508",
+        "id": "0608",
         "name": "短信服务参数管理",
         "url": "/Config_SMSManager/Config_SMSList",
         "icon": "fa-bars"
@@ -118,5 +118,19 @@
     "url": "/GridManager/GridList?PageType=0",
     "icon": "fa-calendar",
     "children": []
+  },
+  {
+    "id": "08",
+    "name": "平台时限",
+    "url": "/CaseLATJManager/CaseLATJList",
+    "icon": "fa-calendar",
+    "children": [
+      {
+        "id": "0801",
+        "name": "处置时限",
+        "url": "/CaseTimeLimitManager/CaseTimeLimitList",
+        "icon": "fa-bars"
+      }
+    ]
   }
 ]
