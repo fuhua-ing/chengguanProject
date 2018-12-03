@@ -116,14 +116,14 @@
     "id": "07",
     "name": "网格管理",
     "url": "/GridManager/GridList?PageType=0",
-    "icon": "fa-calendar",
+    "icon": "fa fa-table",
     "children": []
   },
   {
     "id": "08",
     "name": "时限管理",
     "url": "",
-    "icon": "fa-calendar",
+    "icon": "fa fa-hourglass-half",
     "children": [
       {
         "id": "0801",
