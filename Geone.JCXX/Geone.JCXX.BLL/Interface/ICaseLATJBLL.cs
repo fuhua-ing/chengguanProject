@@ -1,4 +1,5 @@
 ﻿using Geone.JCXX.Meta;
+using Geone.JCXX.Meta.ExtendEntity;
 using Geone.Utiliy.Library;
 using System.Collections.Generic;
 
@@ -16,14 +17,14 @@ namespace Geone.JCXX.BLL
         /// 获取list数据
         /// </summary>
         /// <returns></returns>
-        List<JCXX_CaseLATJ> GetList(Query_CaseLATJ query);
+        List<View_CaseLATJ> GetList(Query_CaseLATJ query);
 
         /// <summary>
         /// 根据ID获取单条数据
         /// </summary>
         /// <param name="ID">主键ID</param>
         /// <returns></returns>
-        JCXX_CaseLATJ GetByID(string ID);
+        View_CaseLATJ GetByID(string ID);
 
         /// <summary>
         /// 保存数据

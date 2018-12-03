@@ -1,7 +1,128 @@
-﻿
-@{
-    ViewData["Title"] = "CaseLATJForm";
+﻿@{
+    ViewBag.Title = "时限编辑";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string Dict_CaseClassI = ConstHelper.Dict_CaseClassI;//数据字典-案件大类
+    string Dict_CaseClassII = ConstHelper.Dict_CaseClassII;//数据字典-案件小类
+    string Dict_CaseCondition = ConstHelper.Dict_CaseCondition;//数据字典-立案条件
 }
 
-<h2>CaseLATJForm</h2>
+<script>
+    var Dict_CaseClassI = '@Dict_CaseClassI';
+    var Dict_CaseClassII = '@Dict_CaseClassII';
+    var Dict_CaseCondition = '@Dict_CaseCondition';
+
+    $(function () {
+        var ID = getQueryString("ID");
+
+        //初始化数据字典
+        $('#CaseClassI').InitDictCombobox({ url: Dict_CaseClassI, required: true });
+        $('#CaseClassII').InitDictCombobox({ url: Dict_CaseClassII, required: true });
+        $('#CaseCondition').InitDictCombobox({ url: Dict_CaseCondition });
+
+        //编辑
+        if (ID != null && ID != "") {
+            $.DoAjax({
+                url: '@Url.Action("GetInfo", "CaseLATJManager")',
+                dataParams: { ID: ID },
+                successFunc: function (result) {
+                    $("#fmInfo").form("load", result);
+                }
+            });
+        }
+    })
+
+    //保存
+    function Save() {
+        if ($("#fmInfo").form('validate'))
+            $.DoAjax({
+                url: '@Url.Action("PostInfo", "CaseLATJManager")',
+                dataParams: { info: $("#fmInfo").getJsonValues().jsonStr },
+                successFunc: function (result) {
+                    if (result.StatusCode == "200") {
+                        $.messager.alert('提示', '保存成功', 'info', function () {
+                            parent.callback(true);
+                        });
+                    }
+                    else {
+                        console.log(result);
+                        $.messager.alert('提示', '保存失败', 'info', function () {
+                            window.location.reload();
+                        });
+                    }
+                }
+            });
+    }
+
+    //取消
+    function Cancel() {
+        parent.callback(false);
+    }
+</script>
+
+<form id="fmInfo">
+    <input type="hidden" name="ID" />
+    <div class="easyui-from-row">
+        <div class="easyui-from-row-col6">
+            <label class="easyui-form-label">*案件大类：</label>
+            <div class="easyui-from-row-item">
+                <input class="easyui-combobox" name="CaseClassI" id="CaseClassI" style="width:100%" />
+            </div>
+        </div>
+        <div class="easyui-from-row-col6">
+            <label class="easyui-form-label">*案件小类：</label>
+            <div class="easyui-from-row-item">
+                <input class="easyui-combobox" name="CaseClassII" id="CaseClassII" style="width:100%" />
+            </div>
+        </div>
+    </div>
+    <div class="easyui-from-row">
+        <div class="easyui-from-row-col6">
+            <label class="easyui-form-label">*时限：</label>
+            <div class="easyui-from-row-item">
+                <input class="easyui-numberbox" name="TimeLimit" data-options="required:true,prompt:'仅限输入数字',min:0,max:2147483647" style="width:100%" />
+            </div>
+        </div>
+        <div class="easyui-from-row-col6">
+            <label class="easyui-form-label">*时限描述：</label>
+            <div class="easyui-from-row-item">
+                <input class="easyui-textbox" name="TimeLimitDesc" data-options="required:true" style="width:100%" />
+            </div>
+        </div>
+        <div class="easyui-from-row">
+            <div class="easyui-from-row-col6">
+                <label class="easyui-form-label">立案条件：</label>
+                <div class="easyui-from-row-item">
+                    <input class="easyui-combobox" name="CaseCondition" id="CaseCondition" style="width:100%" />
+                </div>
+            </div>
+            <div class="easyui-from-row-col6">
+                <label class="easyui-form-label">立案条件描述：</label>
+                <div class="easyui-from-row-item">
+                    <input class="easyui-textbox" name="CaseConditionDesc" style="width:100%" />
+                </div>
+            </div>
+        </div>
+        <div class="easyui-from-row">
+            <div class="easyui-from-row-col6">
+                <label class="easyui-form-label">是否有效：</label>
+                <div class="easyui-from-row-item">
+                    <input class="easyui-combobox Dict_Enabled" name="Enabled" style="width:100%" value="1" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="easyui-from-row">
+        <label class="easyui-form-label">结案条件：</label>
+        <div class="easyui-from-row-item">
+            <input class="easyui-textbox" name="JACondition" data-options="multiline:true" style="width:100%;height:80px" />
+        </div>
+    </div>
+    <div class="easyui-from-row">
+        <label class="easyui-form-label">&nbsp;</label>
+        <div class="easyui-from-row-item">
+            <input type="button" class="StBtn StBtn_submit" onclick="Save()" value="保存" />
+            <input type="button" class="StBtn StBtn_cancel" onclick="Cancel()" value="取消" />
+        </div>
+    </div>
+</form>
 

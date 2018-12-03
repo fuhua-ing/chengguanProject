@@ -15,5 +15,15 @@ namespace Geone.JCXX.Meta
         /// 时限描述
         /// </summary>
         public string Like_TimeLimitDesc { get; set; }
+
+        /// <summary>
+        /// 案件大类
+        /// </summary>
+        public string CaseClassI { get; set; }
+
+        /// <summary>
+        /// 案件小类
+        /// </summary>
+        public string CaseClassII { get; set; }
     }
 }

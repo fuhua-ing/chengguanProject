@@ -89,7 +89,7 @@ namespace Geone.JCXX.Meta
         ///// <summary>
         /////
         ///// </summary>
-        public DateTime CREATED
+        public DateTime? CREATED
         {
             get;
             set;
@@ -98,7 +98,7 @@ namespace Geone.JCXX.Meta
         ///// <summary>
         /////
         ///// </summary>
-        public DateTime UPDATED
+        public DateTime? UPDATED
         {
             get;
             set;
@@ -117,6 +117,24 @@ namespace Geone.JCXX.Meta
         /////
         ///// </summary>
         public string UPDATED_MAN
+        {
+            get;
+            set;
+        }
+
+        ///// <summary>
+        ///// 是否删除
+        ///// </summary>
+        public int? IsDelete
+        {
+            get;
+            set;
+        }
+
+        ///// <summary>
+        ///// 是否可用
+        ///// </summary>
+        public int? Enabled
         {
             get;
             set;

@@ -1,4 +1,5 @@
 ﻿using Geone.JCXX.Meta;
+using Geone.JCXX.Meta.ExtendEntity;
 using Geone.Utiliy.Database;
 using Geone.Utiliy.Library;
 using Geone.Utiliy.Logger;
@@ -10,16 +11,21 @@ namespace Geone.JCXX.BLL
     public class CaseLATJBLL : ICaseLATJBLL
     {
         private IDbEntity<JCXX_CaseLATJ> Respostry;
+        private IDbEntity<View_CaseLATJ> Respostry_V;
         private ILogWriter log;
 
         /// <summary>
         /// 构造函数注入
         /// </summary>
         /// <param name="_t"></param>
-        public CaseLATJBLL(IDbEntity<JCXX_CaseLATJ> _t, ILogWriter logWriter)
+        public CaseLATJBLL(IDbEntity<JCXX_CaseLATJ> _t, IDbEntity<View_CaseLATJ> _vt, ILogWriter logWriter)
         {
             Respostry = _t;
-            Respostry.SetTable("CaseLATJBLL");
+            Respostry.SetTable("JCXX_CaseLATJ");
+
+            Respostry_V = _vt;
+            Respostry_V.SetTable("View_CaseLATJ");
+
             log = logWriter;
         }
 
@@ -32,7 +38,7 @@ namespace Geone.JCXX.BLL
         /// <returns></returns>
         public GridData GetGrid(Query_CaseLATJ query)
         {
-            var list = Respostry.Select();
+            var list = Respostry_V.Select();
             SetQuery(list, query);
             if (string.IsNullOrEmpty(query.sort))
                 query.sort = "CREATED";
@@ -45,11 +51,11 @@ namespace Geone.JCXX.BLL
         /// </summary>
         /// <param name="qf"></param>
         /// <returns></returns>
-        public List<JCXX_CaseLATJ> GetList(Query_CaseLATJ query)
+        public List<View_CaseLATJ> GetList(Query_CaseLATJ query)
         {
             try
             {
-                var list = Respostry;//.Select().Where(t => t.IsDelete.Eq(0));
+                var list = Respostry_V;//.Select().Where(t => t.IsDelete.Eq(0));
                 SetQuery(list, query);
                 switch (query.sort)
                 {
@@ -67,7 +73,7 @@ namespace Geone.JCXX.BLL
             catch (Exception ex)
             {
                 log.WriteException(ex);
-                return new List<JCXX_CaseLATJ>();
+                return new List<View_CaseLATJ>();
             }
         }
 
@@ -76,13 +82,15 @@ namespace Geone.JCXX.BLL
         /// </summary>
         /// <param name="list"></param>
         /// <param name="query"></param>
-        private void SetQuery(IDbEntity<JCXX_CaseLATJ> list, Query_CaseLATJ query)
+        private void SetQuery(IDbEntity<View_CaseLATJ> list, Query_CaseLATJ query)
         {
-            //list = list.Where(t => t.IsDelete.Eq(0));
+            list = list.Where(t => t.IsDelete.Eq(0));
             //if (query.Enabled != null)
             //    list = list.And(t => t.Enabled.Eq(query.Enabled));
-            if (query.Like_CaseConditionDesc != null)
-                list = list.And(t => t.CaseConditionDesc.Like("%" + query.Like_CaseConditionDesc + "%"));
+            if (!string.IsNullOrEmpty(query.CaseClassI))
+                list = list.And(t => t.CaseClassI.Eq(query.CaseClassI));
+            if (!string.IsNullOrEmpty(query.CaseClassII))
+                list = list.And(t => t.CaseClassII.Eq(query.CaseClassII));
             if (query.Like_TimeLimitDesc != null)
                 list = list.And(t => t.TimeLimitDesc.Like("%" + query.Like_TimeLimitDesc + "%"));
         }
@@ -99,8 +107,8 @@ namespace Geone.JCXX.BLL
                 if (string.IsNullOrEmpty(entity.ID))
                 {
                     entity.ID = Guid.NewGuid().ToString();
-                    //entity.IsDelete = 0;
-                    //entity.Enabled = 1;
+                    entity.IsDelete = 0;
+                    entity.Enabled = 1;
                     entity.CREATED = DateTime.Now;
                     entity.CREATED_MAN = entity.CREATED_MAN;
                     return Respostry.Insert(entity).ExecInsert() ? RepModel.Success("新增成功") : RepModel.Error("新增失败");
@@ -109,7 +117,7 @@ namespace Geone.JCXX.BLL
                 {
                     entity.UPDATED = DateTime.Now;
                     entity.UPDATED_MAN = entity.UPDATED_MAN;
-                    return Respostry.Minus(t => t.CREATED, t => t.CREATED_MAN).
+                    return Respostry.Minus(t => t.CREATED, t => t.CREATED_MAN, t => t.IsDelete).
                        UpdateByPKey(entity).ExecModify() ? RepModel.Success("更新成功") : RepModel.Error("更新失败");
                 }
             }
@@ -120,21 +128,21 @@ namespace Geone.JCXX.BLL
             }
         }
 
-        public JCXX_CaseLATJ GetByID(string ID)
+        public View_CaseLATJ GetByID(string ID)
         {
             try
             {
                 if (string.IsNullOrEmpty(ID))
-                    return new JCXX_CaseLATJ();
+                    return new View_CaseLATJ();
                 else
                 {
-                    return Respostry.Select().Where(t => t.ID.Eq(ID)).QueryFirst();
+                    return Respostry_V.Select().Where(t => t.ID.Eq(ID)).QueryFirst();
                 }
             }
             catch (Exception ex)
             {
                 log.WriteException(ex);
-                return new JCXX_CaseLATJ();
+                return new View_CaseLATJ();
             }
         }
 

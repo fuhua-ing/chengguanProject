@@ -69,6 +69,11 @@
         /// </summary>
         public const string Dict_Sms_Status = "Sms_Status";
 
+        /// <summary>
+        /// 立案条件
+        /// </summary>
+        public const string Dict_CaseCondition = "CaseCondition";
+
         #endregion DataCategory 数据字典分类
     }
 }
