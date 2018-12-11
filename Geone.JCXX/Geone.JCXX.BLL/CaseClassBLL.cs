@@ -140,8 +140,9 @@ namespace Geone.JCXX.BLL
                 else
                 {
                     entity.UPDATED = DateTime.Now;
-                    entity.UPDATED_MAN = entity.UPDATED_MAN; return Respostry.Minus(t => t.CREATED, t => t.CREATED_MAN, t => t.IsDelete).
-                        UpdateByPKey(entity).ExecModify() ? RepModel.Success("更新成功") : RepModel.Error("更新失败"); return Respostry.UpdateByPKey(entity).ExecModify() ? RepModel.Success("更新成功") : RepModel.Error("更新失败");
+                    entity.UPDATED_MAN = entity.UPDATED_MAN;
+                    return Respostry.Minus(t => t.CREATED, t => t.CREATED_MAN, t => t.IsDelete).
+                        UpdateByPKey(entity).ExecModify() ? RepModel.Success("更新成功") : RepModel.Error("更新失败");
                 }
             }
             catch (Exception ex)
