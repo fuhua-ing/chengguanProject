@@ -41,6 +41,11 @@ namespace Geone.JCXX.Web.Controllers
             return View();
         }
 
+        public ActionResult OwnerShipGuidForm()
+        {
+            return View();
+        }
+
         /// <summary>
         /// 获取列表
         /// </summary>
@@ -211,5 +216,15 @@ namespace Geone.JCXX.Web.Controllers
         }
 
         #endregion 角色网格设置
+
+        /// <summary>
+        /// 网格权属角色多级设置
+        /// </summary>
+        /// <param name="GridID">网格ID</param>
+        /// <returns></returns>
+        public ActionResult GetEasyuiTreeList(string GridID)
+        {
+            return Json(bll.GetTreeList(GridID));
+        }
     }
 }

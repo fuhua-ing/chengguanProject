@@ -25,4 +25,14 @@ namespace Geone.JCXX.Meta
         public string Mobile { get; set; }
         public string Email { get; set; }
     }
+
+    public class EasyuiTreeNode_GridQSRoleTree : JCXX_GridQSRoleTree
+    {
+        public string id { get; set; }
+        public string text { get; set; }
+        public string parentid { get; set; }
+        public string roleid { get; set; }
+        public int? ischecked { get; set; }
+        public List<EasyuiTreeNode_GridQSRoleTree> children { get; set; }
+    }
 }

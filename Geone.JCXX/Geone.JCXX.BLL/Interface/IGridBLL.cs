@@ -67,5 +67,12 @@ namespace Geone.JCXX.BLL
         RepModel SaveRoleGrid(string GridID, string RoleIDs, string CREATED_MAN);
 
         #endregion 权属角色网格设置
+
+        /// <summary>
+        /// 获取Easyui树形结构
+        /// </summary>
+        /// <param name="GridID"></param>
+        /// <returns></returns>
+        List<EasyuiTreeNode_GridQSRoleTree> GetTreeList(string GridID);
     }
 }

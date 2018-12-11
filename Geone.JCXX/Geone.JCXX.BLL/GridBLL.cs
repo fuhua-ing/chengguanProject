@@ -4,6 +4,7 @@ using Geone.Utiliy.Library;
 using Geone.Utiliy.Logger;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Geone.JCXX.BLL
 {
@@ -11,6 +12,7 @@ namespace Geone.JCXX.BLL
     {
         private IDbEntity<JCXX_Grid> Respostry;
         private IDbEntity<View_Grid> Respostry_V;
+        private IDbEntity<JCXX_GridQSRoleTree> Respostry_R;
         private IDbEntity<JCXX_QSRole_Grid> Respostry_RG;
         private IDbEntity<View_QSRoleGrid> Respostry_VRG;
         private ILogWriter log;
@@ -20,7 +22,7 @@ namespace Geone.JCXX.BLL
         /// </summary>
         /// <param name="_t"></param>
         public GridBLL(IDbEntity<JCXX_Grid> _t, IDbEntity<JCXX_QSRole_Grid> _trg,
-            IDbEntity<View_Grid> _tv, IDbEntity<View_QSRoleGrid> _tvrg,
+            IDbEntity<View_Grid> _tv, IDbEntity<JCXX_GridQSRoleTree> _r, IDbEntity<View_QSRoleGrid> _tvrg,
             ILogWriter logWriter)
         {
             Respostry = _t;
@@ -28,6 +30,9 @@ namespace Geone.JCXX.BLL
 
             Respostry_V = _tv;
             Respostry_V.SetTable("View_Grid");
+
+            Respostry_R = _r;
+            Respostry_R.SetTable("JCXX_GridQSRoleTree");
 
             Respostry_RG = _trg;
             Respostry_RG.SetTable("JCXX_QSRole_Grid");
@@ -247,5 +252,110 @@ namespace Geone.JCXX.BLL
         }
 
         #endregion 权属角色网格设置
+
+
+        #region 网格权属角色多级设置
+        /// <summary>
+        /// 根据网格ID，获取网格权属角色列表
+        /// </summary>
+        /// <param name="GridID">网格ID</param>
+        /// <returns></returns>
+        public List<JCXX_GridQSRoleTree> GetGridQSRoleTreeList(string GridID)
+        {
+            try
+            {
+                var list = Respostry_R.Select().Where(r => r.GridID.Eq(GridID));
+                return list.QueryList();
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex);
+                return new List<JCXX_GridQSRoleTree>();
+            }
+        }
+
+        /// <summary>
+        /// 获取Easyui树形结构
+        /// </summary>
+        /// <param name="GridID"></param>
+        /// <returns></returns>
+        public List<EasyuiTreeNode_GridQSRoleTree> GetTreeList(string GridID)
+        {
+            var listResut = new List<EasyuiTreeNode_GridQSRoleTree>();
+            var listAll = GetGridQSRoleTreeList(GridID);
+            if (listAll == null)
+            {
+                return null;
+            }
+
+            var listParent = listAll.Where(t => string.IsNullOrEmpty(t.RoleParentID)).OrderBy(t => t.RoleName).ToList();
+            //如果查找结果不为0，根目录为0
+            if (listAll.Count > 0 && listParent.Count() == 0)
+            {
+                var q = from p in listAll
+                        group p by p.RoleParentID into g
+                        select new { g.Key };
+                foreach (var item in q)
+                {
+                    if (listAll.Where(t => t.ID == item.Key).Count() == 0)
+                    {
+                        listParent.AddRange(listAll.Where(t => t.RoleParentID == item.Key).ToList());
+                    }
+                }
+            }
+            foreach (JCXX_GridQSRoleTree parent in listParent)
+            {
+                var parentNode = new EasyuiTreeNode_GridQSRoleTree()
+                {
+                    text = parent.RoleName,
+                    id = parent.RoleID,
+                    roleid = parent.ID,
+                    parentid = "",
+                    children = new List<EasyuiTreeNode_GridQSRoleTree>(),
+                    ID = parent.RoleID
+                    //Enabled = parent.Enabled
+                };
+                setSubTreeList(parentNode, listAll);
+                listResut.Add(parentNode);
+            }
+            var firstListResut = new List<EasyuiTreeNode_GridQSRoleTree>();
+            //if (query.ChoiceAll == null)
+            //{
+            //    var firstPparentNode = new EasyuiTreeNode_GridQSRoleTree()
+            //    {
+            //        text = "全部",
+            //        id = "",
+            //        parentid = null,
+            //        ischecked = 1,
+            //        children = listResut.Where(r => r.parentid == "").ToList()
+            //    };
+            //    firstListResut.Add(firstPparentNode);
+            //}
+            //else
+            //{
+            firstListResut = listResut;
+            //}
+            return firstListResut;
+        }
+
+        private void setSubTreeList(EasyuiTreeNode_GridQSRoleTree ParentNode, List<JCXX_GridQSRoleTree> listAll)
+        {
+            foreach (JCXX_GridQSRoleTree child in listAll.Where(t => t.RoleParentID == ParentNode.id).OrderBy(t => t.RoleName))
+            {
+                var childNode = new EasyuiTreeNode_GridQSRoleTree()
+                {
+                    text = child.RoleName,
+                    id = child.RoleID,
+                    roleid = child.ID,
+                    parentid = ParentNode.id,
+                    children = new List<EasyuiTreeNode_GridQSRoleTree>(),
+                    ID = child.RoleID
+                    //Enabled = child.Enabled
+                };
+                setSubTreeList(childNode, listAll);
+                ParentNode.children.Add(childNode);
+            }
+        }
+        #endregion 
     }
 }

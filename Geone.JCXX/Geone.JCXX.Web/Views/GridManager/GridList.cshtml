@@ -17,14 +17,16 @@
             $("#btn_delete").show();    //按钮：删除
             $("#btn_import").show();    //按钮：导入
             $("#btn_export").show();    //按钮：导出
-            $("#em_roleset").hide();   
+            $("#em_roleset").hide();
+            $("#em_ownership").hide();
         } else if (PageType == 1) {     //菜单：网格权属管理
             $("#btn_roleset").show();   //按钮：角色设置
-            $("#em_add").hide();   
-            $("#em_edit").hide();   
-            $("#em_delete").hide();   
-            $("#em_import").hide();   
-            $("#em_export").hide();   
+            $("#btn_ownership").show();
+            $("#em_add").hide();
+            $("#em_edit").hide();
+            $("#em_delete").hide();
+            $("#em_import").hide();
+            $("#em_export").hide();
         } else {
             $.messager.alert('提示', '无法识别页类型！');
             return false;
@@ -110,6 +112,13 @@
             $("#win").OpenWin({ title: "网格权属角色", url: "../GridManager/RoleGridForm?ID=" + row.ID, width: 800, height: 500 });
         }
     }
+    //网格权属设置
+    function OpenOwnerShip() {
+        if ($('#gd_url').datagrid('IsSelectedRow')) {
+            var row = $('#gd_url').datagrid('getSelected');
+            $("#win").OpenWin({ title: "网格权属多级配置", url: "../GridManager/OwnerShipGuidForm?ID=" + row.ID, width: 800, height: 500 });
+        }
+    }
     //导入
     function Import() {
         $("#win").OpenWin({ title: "网格-批量导入", url: "../GridManager/GridImport", width: 700, height: 350 });
@@ -168,6 +177,7 @@
             <a style="display:none;" id="btn_edit" href="javascript:void(0);" onclick="Edit()">修改</a><em id="em_edit"></em>
             <a style="display:none;" id="btn_delete" href="javascript:void(0);" onclick="Del()">删除</a><em id="em_delete"></em>
             <a style="display:none;" id="btn_roleset" href="javascript:void(0);" onclick="OpenGroupRole()">角色设置</a><em id="em_roleset"></em>
+            <a style="display:none;" id="btn_ownership" href="javascript:void(0);" onclick="OpenOwnerShip()">权属设置</a><em id="em_ownership"></em>
             <a style="display:none;" id="btn_import" href="javascript:void(0);" onclick="Import()">导入</a><em id="em_import"></em>
             <a style="display:none;" id="btn_export" href="javascript:void(0);" onclick="Export()">导出</a><em id="em_export"></em>
             <a href="javascript:void(0);" onclick="Refresh()">刷新</a><em></em>
