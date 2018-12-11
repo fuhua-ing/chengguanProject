@@ -21,7 +21,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Geone.JCXX.BLL\Geone.JCXX.BLL.csproj" />
-    <ProjectReference Include="..\Geone.JCXX.Meta\Geone.JCXX.Meta.csproj" />
   </ItemGroup>
 
   <ItemGroup>

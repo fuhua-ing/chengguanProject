@@ -22,7 +22,7 @@ namespace Geone.JCXX.WebService
         {
             Get("/", r =>
             {
-                Init = ctool.Get().Get<AppSettingsConfig>();
+                AppSettingsConfig Init = ctool.Get().Get<AppSettingsConfig>();
                 return RepModel.SuccessAsJson($"欢迎使用{Init.ApplicationName}，本服务为{Init.ApplicationDesc}。");
             });
         }
