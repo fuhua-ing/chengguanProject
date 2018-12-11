@@ -74,5 +74,15 @@ namespace Geone.JCXX.BLL
         /// <param name="GridID"></param>
         /// <returns></returns>
         List<EasyuiTreeNode_GridQSRoleTree> GetTreeList(string GridID);
+
+        /// <summary>
+        /// 根据网格ID和角色ID更新父级角色ID
+        /// </summary>
+        /// <param name="GridID">网格ID</param>
+        /// <param name="RoleID">角色ID</param>
+        /// <param name="RoleParentID">父级角色ID</param>
+        /// <param name=""></param>
+        /// <returns></returns>
+        RepModel UpdateTreeByID(string GridID, string RoleID, string RoleParentID);
     }
 }

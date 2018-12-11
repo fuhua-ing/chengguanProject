@@ -12,6 +12,7 @@ namespace Geone.JCXX.BLL
     {
         private IDbEntity<JCXX_Grid> Respostry;
         private IDbEntity<View_Grid> Respostry_V;
+        private IDbEntity<JCXX_QSRole> Respostry_Role;
         private IDbEntity<JCXX_GridQSRoleTree> Respostry_R;
         private IDbEntity<JCXX_QSRole_Grid> Respostry_RG;
         private IDbEntity<View_QSRoleGrid> Respostry_VRG;
@@ -22,7 +23,7 @@ namespace Geone.JCXX.BLL
         /// </summary>
         /// <param name="_t"></param>
         public GridBLL(IDbEntity<JCXX_Grid> _t, IDbEntity<JCXX_QSRole_Grid> _trg,
-            IDbEntity<View_Grid> _tv, IDbEntity<JCXX_GridQSRoleTree> _r, IDbEntity<View_QSRoleGrid> _tvrg,
+            IDbEntity<View_Grid> _tv, IDbEntity<JCXX_GridQSRoleTree> _r, IDbEntity<View_QSRoleGrid> _tvrg, IDbEntity<JCXX_QSRole> _role,
             ILogWriter logWriter)
         {
             Respostry = _t;
@@ -33,6 +34,9 @@ namespace Geone.JCXX.BLL
 
             Respostry_R = _r;
             Respostry_R.SetTable("JCXX_GridQSRoleTree");
+
+            Respostry_Role = _role;
+            Respostry_Role.SetTable("JCXX_QSRole");
 
             Respostry_RG = _trg;
             Respostry_RG.SetTable("JCXX_QSRole_Grid");
@@ -225,8 +229,10 @@ namespace Geone.JCXX.BLL
             {
                 if (string.IsNullOrEmpty(GridID))
                     return RepModel.Error("网格不能为空");
-                //删除原有角色网格
-                Respostry_RG.Delete().Where(t => t.GridID.Eq(GridID)).ExecRemove();
+
+                Respostry_RG.Delete().Where(t => t.GridID.Eq(GridID)).ExecRemove();//删除原有角色网格
+                Respostry_R.Delete().Where(t => t.GridID.Eq(GridID)).ExecRemove();
+
                 //新增现有角色网格
                 var listNew = new List<JCXX_QSRole_Grid>();
                 foreach (var RoleID in RoleIDs.Split(','))
@@ -242,7 +248,26 @@ namespace Geone.JCXX.BLL
                         CREATED_MAN = CREATED_MAN
                     });
                 }
-                return listNew.Count == 0 || Respostry_RG.Insert(listNew).ExecInsertBatch() ? RepModel.Success("操作成功") : RepModel.Error("操作失败");
+
+                //新增现有网格权属角色
+                var listRoleTree = new List<JCXX_GridQSRoleTree>();
+                foreach (var RoleID in RoleIDs.Split(','))
+                {
+                    if (string.IsNullOrEmpty(RoleID))
+                        continue;
+                    var QSRoleEntity = GetQSRoleByID(RoleID);
+                    listRoleTree.Add(new JCXX_GridQSRoleTree()
+                    {
+                        ID = Guid.NewGuid().ToString(),
+                        RoleID = RoleID,
+                        RoleName = QSRoleEntity.RoleName,
+                        GridID = GridID,
+                        CREATED = DateTime.Now,
+                        CREATED_MAN = CREATED_MAN
+                    });
+                }
+
+                return (listNew.Count == 0 || Respostry_RG.Insert(listNew).ExecInsertBatch()) && (listRoleTree.Count == 0 || Respostry_R.Insert(listRoleTree).ExecInsertBatch()) ? RepModel.Success("操作成功") : RepModel.Error("操作失败");
             }
             catch (Exception ex)
             {
@@ -297,7 +322,7 @@ namespace Geone.JCXX.BLL
                         select new { g.Key };
                 foreach (var item in q)
                 {
-                    if (listAll.Where(t => t.ID == item.Key).Count() == 0)
+                    if (listAll.Where(t => t.RoleID == item.Key).Count() == 0)
                     {
                         listParent.AddRange(listAll.Where(t => t.RoleParentID == item.Key).ToList());
                     }
@@ -309,7 +334,6 @@ namespace Geone.JCXX.BLL
                 {
                     text = parent.RoleName,
                     id = parent.RoleID,
-                    roleid = parent.ID,
                     parentid = "",
                     children = new List<EasyuiTreeNode_GridQSRoleTree>(),
                     ID = parent.RoleID
@@ -319,22 +343,17 @@ namespace Geone.JCXX.BLL
                 listResut.Add(parentNode);
             }
             var firstListResut = new List<EasyuiTreeNode_GridQSRoleTree>();
-            //if (query.ChoiceAll == null)
-            //{
-            //    var firstPparentNode = new EasyuiTreeNode_GridQSRoleTree()
-            //    {
-            //        text = "全部",
-            //        id = "",
-            //        parentid = null,
-            //        ischecked = 1,
-            //        children = listResut.Where(r => r.parentid == "").ToList()
-            //    };
-            //    firstListResut.Add(firstPparentNode);
-            //}
-            //else
-            //{
-            firstListResut = listResut;
-            //}
+
+            var firstPparentNode = new EasyuiTreeNode_GridQSRoleTree()
+            {
+                text = "父级",
+                id = "",
+                parentid = null,
+                ischecked = 1,
+                children = listResut.Where(r => r.parentid == "").ToList()
+            };
+            firstListResut.Add(firstPparentNode);
+            //firstListResut=listResut;
             return firstListResut;
         }
 
@@ -346,7 +365,6 @@ namespace Geone.JCXX.BLL
                 {
                     text = child.RoleName,
                     id = child.RoleID,
-                    roleid = child.ID,
                     parentid = ParentNode.id,
                     children = new List<EasyuiTreeNode_GridQSRoleTree>(),
                     ID = child.RoleID
@@ -354,6 +372,71 @@ namespace Geone.JCXX.BLL
                 };
                 setSubTreeList(childNode, listAll);
                 ParentNode.children.Add(childNode);
+            }
+        }
+
+        /// <summary>
+        /// 根据网格ID和角色ID更新父级角色ID
+        /// </summary>
+        /// <param name="GridID">网格ID</param>
+        /// <param name="RoleID">角色ID</param>
+        /// <param name="RoleParentID">父级角色ID</param>
+        /// <param name=""></param>
+        /// <returns></returns>
+        public RepModel UpdateTreeByID(string GridID, string RoleID, string RoleParentID)
+        {
+            RepModel result = new RepModel();
+
+            JCXX_GridQSRoleTree oldEntity = GetGridQSRoleTreeByID(RoleID, GridID);
+            oldEntity.RoleParentID = RoleParentID;
+            oldEntity.UPDATED = DateTime.Now;
+            return Respostry_R.UpdateByPKey(oldEntity).ExecModify() ? RepModel.Success("更新成功") : RepModel.Error("更新失败");
+        }
+
+        /// <summary>
+        /// 根据网格ID和角色ID查询对应记录
+        /// </summary>
+        /// <param name="GridID">网格ID</param>
+        /// <param name="RoleID">角色ID</param>
+        /// <returns></returns>
+        public JCXX_GridQSRoleTree GetGridQSRoleTreeByID(string RoleID, string GridID)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(RoleID) || string.IsNullOrEmpty(GridID))
+                    return new JCXX_GridQSRoleTree();
+                else
+                {
+                    return Respostry_R.Select().Where(t => t.GridID.Eq(GridID)).And(t => t.RoleID.Eq(RoleID)).QueryFirst();
+                }
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex);
+                return new JCXX_GridQSRoleTree();
+            }
+        }
+
+        /// <summary>
+        /// 根据权属角色id，获取记录
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <returns></returns>
+        public JCXX_QSRole GetQSRoleByID(string ID)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(ID))
+                    return new JCXX_QSRole();
+                else
+                {
+                    return Respostry_Role.Select().Where(t => t.ID.Eq(ID)).QueryFirst();
+                }
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex);
+                return new JCXX_QSRole();
             }
         }
         #endregion 

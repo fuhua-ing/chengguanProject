@@ -27,7 +27,7 @@ ul, li {
     }
 
         ul.sTree2 li, ul#sortableListsBase li {
-            padding-left: 50px;
+            padding-left: 2px;
             margin: 5px;
             border: 1px solid #ddd;
             background-color: #eee;

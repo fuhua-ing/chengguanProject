@@ -7,117 +7,39 @@
 <head>
     <meta charset='utf-8'>
     <link href="~/css/jquery-sortable-lists_style.css" rel="stylesheet" media="screen" />
-    <script src="~/lib/jquery-sortable/jquery-sortable-lists.min.js"></script>
-    <style>
-        .tree-expanded {
-            background: none;
-        }
-    </style>
+    @*<script src="~/lib/jquery-sortable/jquery-sortable-lists.min.js"></script>*@
     <script type="text/javascript">
-        var ID = getQueryString("ID");
+        var ID = getQueryString("ID");//网格ID
         $(function () {
             BindTreeData();
         });
-
         function BindTreeData() {
-            //$.ajax({
-            //    url: "../GridManager/GetEasyuiTreeList?GridID=" + ID,
-            //    type: 'post',                 //获取数据方式:post/get
-            //    async: false,                  //加载方式默认异步,true为同步
-            //    dataType: 'json',            //数据格式
-            //    success: function (data) {
-            //        var carNewsList = "";
-            //        $.each(data, function (i, item) {   //遍历ul中的li
-            //            carNewsList += "<li  style='font-size:14px;color:#5d5d5d;'>" + item.columnName + "</li>";
-            //        });
-            //        $('#sTree2').html(carNewsList);        //数据在<ul id="leftCarInformationList"></ul>里面显示
-            //    },
-            //    error: function (obj) {
-            //        alert("return error:" + obj);
-            //    },
-            //});
             $('#sTree2').tree({
                 method: "post",
                 dnd: true,
                 url: "../GridManager/GetEasyuiTreeList?GridID=" + ID,
-                onLoadSuccess: function (node, data) {
-                    //$("span").removeClass("background");
-                },
                 onDrop: function (targetNode, source, point) {
-                    debugger
                     var targetId = $('#sTree2').tree('getNode', targetNode).id;
                     $.ajax({
-                        url: '../GridManager/UpdateEasyuiTreeList',
+                        url: '../GridManager/UpdateTreeByID',
                         type: 'post',
                         dataType: 'json',
                         data: {
-                            id: source.id,
-                            roleid: source.roleid,
-                            targetId: targetId,
-                            point: point
-                        }
+                            id: source.id,      //源节点
+                            targetId: targetId, //DOM 对象，放置的目标节点
+                            point: point,       //表示放置操作，可能的值是：'append'、'top' 或 'bottom'。
+                            gridid: ID          //网格记录ID
+                        },
+                        async: true
                     });
                 }
-                //queryParams: $("#queryTab").getJsonValues().jsonData,
-                //onClick: function (node) {
-                //取消选择
-                //$('#treeDept').find('.tree-node-selected').removeClass('tree-node-selected');
-                //$("#hfParentID").val('');
-                //Search();
-                //    alert(node.text);
-                //}
-                //onClick: function (note) {
-                //    $("#hfParentID").val(note.id);
-                //    Search();
-                //}
             });
         }
-        $(function () {
-            var options = {
-                placeholderCss: { 'background-color': '#ff8' },
-                hintCss: { 'background-color': '#bbf' },
-                isAllowed: function (cEl, hint, target) {
-                    if (hint.parents('li').first().data('module') === 'c' && cEl.data('module') !== 'c') {
-                        hint.css('background-color', '#ff9999');
-                        return false;
-                    }
-                    else {
-                        hint.css('background-color', '#99ff99');
-                        return true;
-                    }
-                },
-                opener: {
-                    active: true,
-                    close: '../../images/Remove2.png',
-                    open: '../../images/Add2.png',
-                    openerCss: {
-                        'display': 'inline-block',
-                        'width': '18px',
-                        'height': '20px',
-                        'float': 'left',
-                        'margin-left': '-48px',
-                        'margin-right': '5px',
-                        'background-position': 'center center',
-                        'background-repeat': 'no-repeat'
-                    },
-                    openerClass: ''
-                }
-            },
-                sWrapper = $('#settingsWrapper');
-            $('#sTree2, #sTree').sortableLists(options);
-            $('#toArrBtn').on('click', function () { console.log($('#sTree2').sortableListsToArray()); });
-            $('#toHierBtn').on('click', function () { console.log($('#sTree2').sortableListsToHierarchy()); });
-            $('#toStrBtn').on('click', function () { console.log($('#sTree2').sortableListsToString()); });
-            $('.descPicture').on('click', function (e) { $(this).toggleClass('descPictureClose'); });
-        });
     </script>
 </head>
 <body>
     <div class="container">
         <section id="main_content">
-            <div style="text-align:right;height: 40px;line-height: 59px;">
-                <button class="StBtn StBtn_submit" style="background-color:#ddd;color:#555;" onclick="#">保 存</button>
-            </div>
             <ul class="sTree2 listsClass" id="sTree2"></ul>
         </section>
     </div>

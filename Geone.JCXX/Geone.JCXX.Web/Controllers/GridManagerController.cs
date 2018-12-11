@@ -226,5 +226,18 @@ namespace Geone.JCXX.Web.Controllers
         {
             return Json(bll.GetTreeList(GridID));
         }
+
+        /// <summary>
+        /// 根据网格ID和角色ID更新父级角色ID
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult UpdateTreeByID()
+        {
+            string GridID = Request.Form["gridid"];         //网格ID
+            string RoleID = Request.Form["id"];             //RoleID
+            string ParentRoleID = Request.Form["targetId"]; //RoleParentID
+
+            return Json(bll.UpdateTreeByID(GridID, RoleID, ParentRoleID));
+        }
     }
 }
