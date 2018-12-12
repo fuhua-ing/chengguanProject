@@ -278,7 +278,6 @@ namespace Geone.JCXX.BLL
 
         #endregion 权属角色网格设置
 
-
         #region 网格权属角色多级设置
         /// <summary>
         /// 根据网格ID，获取网格权属角色列表
@@ -300,7 +299,7 @@ namespace Geone.JCXX.BLL
         }
 
         /// <summary>
-        /// 获取Easyui树形结构
+        /// 根据网格ID，获取网格权属角色树形结构
         /// </summary>
         /// <param name="GridID"></param>
         /// <returns></returns>
@@ -357,6 +356,11 @@ namespace Geone.JCXX.BLL
             return firstListResut;
         }
 
+        /// <summary>
+        /// 子树
+        /// </summary>
+        /// <param name="ParentNode"></param>
+        /// <param name="listAll"></param>
         private void setSubTreeList(EasyuiTreeNode_GridQSRoleTree ParentNode, List<JCXX_GridQSRoleTree> listAll)
         {
             foreach (JCXX_GridQSRoleTree child in listAll.Where(t => t.RoleParentID == ParentNode.id).OrderBy(t => t.RoleName))
@@ -376,7 +380,7 @@ namespace Geone.JCXX.BLL
         }
 
         /// <summary>
-        /// 根据网格ID和角色ID更新父级角色ID
+        /// 根据网格ID和角色ID，更新原归属的父级角色ID
         /// </summary>
         /// <param name="GridID">网格ID</param>
         /// <param name="RoleID">角色ID</param>
@@ -394,7 +398,7 @@ namespace Geone.JCXX.BLL
         }
 
         /// <summary>
-        /// 根据网格ID和角色ID查询对应记录
+        /// 根据网格ID和角色ID，查询数据
         /// </summary>
         /// <param name="GridID">网格ID</param>
         /// <param name="RoleID">角色ID</param>
@@ -418,7 +422,7 @@ namespace Geone.JCXX.BLL
         }
 
         /// <summary>
-        /// 根据权属角色id，获取记录
+        /// 根据权属角色ID，获取数据
         /// </summary>
         /// <param name="ID"></param>
         /// <returns></returns>

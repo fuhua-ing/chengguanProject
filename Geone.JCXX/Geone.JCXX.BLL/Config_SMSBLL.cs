@@ -26,9 +26,7 @@ namespace Geone.JCXX.BLL
         /// <summary>
         /// 分页获取列表
         /// </summary>
-        /// <param name="pageSize"></param>
-        /// <param name="pageNum"></param>
-        /// <param name="qf"></param>
+        /// <param name="query"></param>
         /// <returns></returns>
         public GridData GetGrid(Query_Config_SMS query)
         {
@@ -43,7 +41,7 @@ namespace Geone.JCXX.BLL
         /// <summary>
         /// 获取列表
         /// </summary>
-        /// <param name="qf"></param>
+        /// <param name="query"></param>
         /// <returns></returns>
         public List<JCXX_Config_SMS> GetList(Query_Config_SMS query)
         {
@@ -120,6 +118,11 @@ namespace Geone.JCXX.BLL
             }
         }
 
+        /// <summary>
+        /// 根据ID，获取记录数据
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <returns></returns>
         public JCXX_Config_SMS GetByID(string ID)
         {
             try
@@ -138,6 +141,11 @@ namespace Geone.JCXX.BLL
             }
         }
 
+        /// <summary>
+        /// 删除
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <returns></returns>
         public RepModel Del(string ID)
         {
             try

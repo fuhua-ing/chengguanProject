@@ -228,7 +228,7 @@ namespace Geone.JCXX.Web.Controllers
         }
 
         /// <summary>
-        /// 根据网格ID和角色ID更新父级角色ID
+        /// 根据网格ID和角色ID，更新父级角色ID
         /// </summary>
         /// <returns></returns>
         public ActionResult UpdateTreeByID()

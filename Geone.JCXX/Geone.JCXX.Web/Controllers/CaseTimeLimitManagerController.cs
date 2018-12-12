@@ -27,6 +27,7 @@ namespace Geone.JCXX.Web.Controllers
         /// <summary>
         /// 获取列表
         /// </summary>
+        /// <param name="query">筛选条件</param>
         /// <returns></returns>
         public ActionResult GetGrid(Query_CaseTimeLimit query)
         {
@@ -34,7 +35,7 @@ namespace Geone.JCXX.Web.Controllers
         }
 
         /// <summary>
-        /// 获取
+        /// 根据ID，获取记录数据
         /// </summary>
         /// <returns></returns>
         public ActionResult GetInfo()
@@ -51,6 +52,15 @@ namespace Geone.JCXX.Web.Controllers
         {
             string info = Request.Form["info"];
             JCXX_CaseTimeLimit entity = JsonHelper.JsonDllDeserialize<JCXX_CaseTimeLimit>(info);
+            if (string.IsNullOrEmpty(entity.ID))
+            {
+                entity.CREATED_MAN = LoginHelp.GetLoginInfo().Account;
+            }
+            else
+            {
+                entity.UPDATED_MAN = LoginHelp.GetLoginInfo().Account;
+            }
+
             RepModel result = bll.Save(entity);
             return Json(result);
         }
