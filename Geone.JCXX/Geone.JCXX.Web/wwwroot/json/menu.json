@@ -75,49 +75,49 @@
   },
   {
     "id": "06",
+    "name": "网格管理",
+    "url": "/GridManager/GridList?PageType=0",
+    "icon": "fa fa-table",
+    "children": []
+  },
+  {
+    "id": "07",
     "name": "地图管理",
     "url": "",
     "icon": "fa-globe",
     "children": [
       {
-        "id": "0601",
+        "id": "0701",
         "name": "权属角色管理",
         "url": "/QSRoleManager/QSRoleList",
         "icon": "fa-bars"
       },
       {
-        "id": "0602",
+        "id": "0702",
         "name": "网格权属管理",
         "url": "/GridManager/GridList?PageType=1",
         "icon": "fa-globe"
       },
 
       {
-        "id": "0606",
+        "id": "0706",
         "name": "案件权属管理",
         "url": "/CaseClassManager/CaseClassList",
         "icon": "fa-bars"
       },
       {
-        "id": "0607",
+        "id": "0707",
         "name": "短信号码组管理",
         "url": "/PhoneGroupManager/PhoneGroupList",
         "icon": "fa-bars"
       },
       {
-        "id": "0608",
+        "id": "0708",
         "name": "短信服务参数管理",
         "url": "/Config_SMSManager/Config_SMSList",
         "icon": "fa-bars"
       }
     ]
-  },
-  {
-    "id": "07",
-    "name": "网格管理",
-    "url": "/GridManager/GridList?PageType=0",
-    "icon": "fa fa-table",
-    "children": []
   },
   {
     "id": "08",
