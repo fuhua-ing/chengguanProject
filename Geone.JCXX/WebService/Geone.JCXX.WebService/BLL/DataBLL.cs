@@ -14,6 +14,7 @@ namespace Geone.JCXX.WebService
         private IDbEntity<JCXX_QSRole> Respostry_QSRole;
         private IDbEntity<View_QSRoleUser> Respostry_QSRoleUser;
         private IDbEntity<JCXX_Grid> Respostry_Grid;
+        private IDbEntity<JCXX_GridQSRoleTree> Respostry_qsTree;
         private IDbEntity<View_Grid> Respostry_VGrid;
         private IDbEntity<JCXX_Dept> Respostry_Dept;
         private IDbEntity<JCXX_CaseLATJ> Respostry_LATJ;
@@ -28,6 +29,7 @@ namespace Geone.JCXX.WebService
             IDbEntity<JCXX_Dept> _Dept,
             IDbEntity<JCXX_CaseLATJ> _LATJ,
             IDbEntity<View_QSRoleGrid> _QSRG,
+            IDbEntity<JCXX_GridQSRoleTree> _QSTree,
             ILogWriter logWriter)
         {
             Respostry_DictItem = _DictItem;
@@ -53,6 +55,8 @@ namespace Geone.JCXX.WebService
 
             Respostry_QSRoleUser = _QSRoleUser;
             Respostry_QSRoleUser.SetTable(View_QSRoleUser.GetTbName());
+            Respostry_qsTree = _QSTree;
+            Respostry_qsTree.SetTable(JCXX_GridQSRoleTree.GetTbName());
 
             log = logWriter;
         }
@@ -99,35 +103,48 @@ namespace Geone.JCXX.WebService
             }
         }
 
-        ///// <summary>
-        ///// 根据用户ID获取当前权属信息
-        ///// </summary>
-        ///// <param name="UserID"></param>
-        ///// <returns></returns>
-        //public UnaryResult<RepModel> GetQSRoleListByUserID(string UserID)
-        //{
-        //    return null;
-        //    //try
-        //    //{
-        //    //    var q = Respostry_QSRoleUser.Select().Where("1=1");
-        //    //    if (!string.IsNullOrEmpty(UserID))
-        //    //        q.And(t => t.UserID.Eq(UserID));
+        /// <summary>
+        /// 根据网格ID获取该网格所有的权属角色
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public RepModel GetQSRoleTree(Req_Grid query)
+        {
+            try
+            {
+                var gridList = Respostry_Grid.Select().Where("1=1");
 
-        //    //    var list = q.QueryList().Select(m => new
-        //    //    {
-        //    //        ID = m.ID,
-        //    //        RoleType = m.RoleType,
-        //    //        RoleCode = m.RoleCode,
-        //    //        RoleName = m.RoleName
-        //    //    });
-        //    //    return UnaryResult(RepModel.Success(JsonConvert.SerializeObject(list)));
-        //    //}
-        //    //catch (Exception ex)
-        //    //{
-        //    //    log.WriteException(ex);
-        //    //    return UnaryResult(RepModel.Error());
-        //    //}
-        //}
+                if (!string.IsNullOrEmpty(query.Point))
+                {
+                    gridList.And(t => t.Shape.IsContains(query.Point));
+                    var gResult = gridList.QueryFirst();
+                    if (gResult != null)
+                    {
+                        var q = Respostry_qsTree.Select().Where("1=1");
+                        q.And(t => t.GridID.Eq(gResult.ID));
+                        if (query.Enabled != null)
+                            q.And(t => t.Enabled.Eq(query.Enabled));
+                        var list = q.QueryList().Select(m => new
+                        {
+                            ID = m.ID,
+                            RoleID = m.RoleID,
+                            RoleParentID = m.RoleParentID,
+                            RoleName = m.RoleName,
+                            Enabled = m.Enabled
+                        });
+                        return RepModel.Success(list);
+                    }
+                }
+
+                return RepModel.Success(null);
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex);
+                return RepModel.Error();
+            }
+        }
+
         /// <summary>
         /// 查询权属角色列表
         /// </summary>
@@ -164,32 +181,32 @@ namespace Geone.JCXX.WebService
             }
         }
 
-        /// <summary>
-        /// 根据网格点位获取到对应的网格权属角色
-        /// </summary>
-        /// <param name="query"></param>
-        /// <returns></returns>
-        public RepModel GetQSRoleGridList(Req_Grid query)
-        {
-            try
-            {
-                var q = Respostry_QSRG.Select().Where("1=1");
-                if (!string.IsNullOrEmpty(query.Point))
-                    q.And(t => t.Shape.IsContains(query.Point));
-                var list = q.QueryList().Select(m => new
-                {
-                    ID = m.RoleID,
-                    RoleType = m.RoleType,
-                    RoleName = m.RoleName
-                });
-                return RepModel.Success(list);
-            }
-            catch (Exception ex)
-            {
-                log.WriteException(ex);
-                return RepModel.Error();
-            }
-        }
+        ///// <summary>
+        ///// 根据网格点位获取到对应的网格权属角色
+        ///// </summary>
+        ///// <param name="query"></param>
+        ///// <returns></returns>
+        //public RepModel GetQSRoleGridList(Req_Grid query)
+        //{
+        //    try
+        //    {
+        //        var q = Respostry_QSRG.Select().Where("1=1");
+        //        if (!string.IsNullOrEmpty(query.Point))
+        //            q.And(t => t.Shape.IsContains(query.Point));
+        //        var list = q.QueryList().Select(m => new
+        //        {
+        //            ID = m.RoleID,
+        //            RoleType = m.RoleType,
+        //            RoleName = m.RoleName
+        //        });
+        //        return RepModel.Success(list);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        log.WriteException(ex);
+        //        return RepModel.Error();
+        //    }
+        //}
 
         /// <summary>
         /// 查询网格列表

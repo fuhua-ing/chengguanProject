@@ -26,12 +26,19 @@ namespace Geone.JCXX.WebService
         /// <returns></returns>
         RepModel GetGridList(Req_Grid query);
 
+        ///// <summary>
+        ///// 根据网格点位获取到对应的网格权属角色
+        ///// </summary>
+        ///// <param name="query"></param>
+        ///// <returns></returns>
+        //RepModel GetQSRoleGridList(Req_Grid query);
+
         /// <summary>
         /// 根据网格点位获取到对应的网格权属角色
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        RepModel GetQSRoleGridList(Req_Grid query);
+        RepModel GetQSRoleTree(Req_Grid query);
 
         ///// <summary>
         ///// 根据用户ID获取当前权属信息

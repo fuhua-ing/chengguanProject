@@ -3,6 +3,11 @@
     public class Req_Grid
     {
         /// <summary>
+        /// 网格ID
+        /// </summary>
+        public string ID { get; set; }
+
+        /// <summary>
         /// 网格类型
         /// </summary>
         public string GridType { get; set; }

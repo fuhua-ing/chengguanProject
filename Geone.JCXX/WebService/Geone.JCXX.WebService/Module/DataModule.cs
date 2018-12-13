@@ -25,13 +25,12 @@ namespace Geone.JCXX.WebService
             });
 
             //根据网格点位获取到对应的网格权属角色
-            Get("/QSRoleGrid/List", parameter =>
+            Get("/GetQSRoleTree/List", parameter =>
             {
                 var req = this.Bind<Req_Grid>();
-                var rep = ss.GetQSRoleGridList(req);
+                var rep = ss.GetQSRoleTree(req);
                 return Response.AsJson(rep);
             });
-
             //网格列表
             Get("/Grid/List", parameter =>
             {
