@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Geone.JCXX.Meta
+﻿namespace Geone.JCXX.Meta
 {
     public class JCXX_CaseTimeLimit : BaseEntity
     {
+        public static string GetTbName()
+        {
+            return "JCXX_CaseTimeLimit";
+        }
+
         ///// <summary>
         ///// 节点类型
         ///// </summary>
@@ -50,6 +51,5 @@ namespace Geone.JCXX.Meta
             get;
             set;
         }
-
     }
 }
