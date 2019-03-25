@@ -55,7 +55,9 @@
 
     //保存
     function Save() {
+       
         if ($("#fmInfo").form('validate'))
+          
             $.DoAjax({
                 needWaiting:true,
                 url: '@Url.Action("PostInfo", "AppMenuManager")',

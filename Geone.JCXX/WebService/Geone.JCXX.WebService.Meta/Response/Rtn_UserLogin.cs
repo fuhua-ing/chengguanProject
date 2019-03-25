@@ -1,4 +1,5 @@
 ﻿using Geone.Utiliy.Library;
+using System.Collections.Generic;
 
 namespace Geone.JCXX.WebService.Meta.Response
 {
@@ -6,6 +7,8 @@ namespace Geone.JCXX.WebService.Meta.Response
     {
         public Rtn_UserLogin_User Userinfo { get; set; }
         public Token Token { get; set; }
+
+        public List<JCXX_QSRole> JCXX_QSRole { get; set; }
     }
 
     public class Rtn_UserLogin_User

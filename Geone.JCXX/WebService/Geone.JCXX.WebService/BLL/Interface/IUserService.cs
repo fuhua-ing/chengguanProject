@@ -14,6 +14,13 @@ namespace Geone.JCXX.WebService
         RepModel Login(Req_UserLogin query);
 
         /// <summary>
+        /// 刷新Token
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        RepModel RefreshToken(Req_UserLogin query);
+
+        /// <summary>
         /// 修改密码
         /// </summary>
         /// <param name="query"></param>

@@ -4,9 +4,9 @@ using Nancy.ModelBinding;
 
 namespace Geone.JCXX.WebService
 {
-    public class DataModule : NancyModule
+    public class MobileDataModule : NancyModule
     {
-        public DataModule(IDataService ss) : base("/api")
+        public MobileDataModule(IDataService ss) : base("/mobileapi")
         {
             //字典明细列表
             Get("/DictCategory/ItemList", parameter =>

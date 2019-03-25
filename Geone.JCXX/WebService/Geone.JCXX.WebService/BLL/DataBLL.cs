@@ -1,9 +1,11 @@
 ﻿using Geone.JCXX.Meta;
 using Geone.JCXX.WebService.Meta.QueryEntity;
+using Geone.JCXX.WebService.Meta.Response;
 using Geone.Utiliy.Database;
 using Geone.Utiliy.Library;
 using Geone.Utiliy.Logger;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Geone.JCXX.WebService
@@ -11,7 +13,7 @@ namespace Geone.JCXX.WebService
     public class DataBLL : IDataService
     {
         private IDbEntity<View_DictItem> Respostry_DictItem;
-        private IDbEntity<JCXX_QSRole> Respostry_QSRole;
+        private IDbEntity<View_QSRole> Respostry_QSRole;
         private IDbEntity<View_QSRoleUser> Respostry_QSRoleUser;
         private IDbEntity<JCXX_Grid> Respostry_Grid;
         private IDbEntity<JCXX_GridQSRoleTree> Respostry_qsTree;
@@ -22,7 +24,7 @@ namespace Geone.JCXX.WebService
         private ILogWriter log;
 
         public DataBLL(IDbEntity<View_DictItem> _DictItem,
-            IDbEntity<JCXX_QSRole> _QSRole,
+            IDbEntity<View_QSRole> _QSRole,
             IDbEntity<View_QSRoleUser> _QSRoleUser,
             IDbEntity<JCXX_Grid> _Grid,
             IDbEntity<View_Grid> _VGrid,
@@ -36,7 +38,7 @@ namespace Geone.JCXX.WebService
             Respostry_DictItem.SetTable(View_DictItem.GetTbName());
 
             Respostry_QSRole = _QSRole;
-            Respostry_QSRole.SetTable(JCXX_QSRole.GetTbName());
+            Respostry_QSRole.SetTable(View_QSRole.GetTbVName());
 
             Respostry_Grid = _Grid;
             Respostry_Grid.SetTable(JCXX_Grid.GetTbName());
@@ -155,6 +157,19 @@ namespace Geone.JCXX.WebService
             try
             {
                 var q = Respostry_QSRole.Select().Where("1=1");
+                if (!string.IsNullOrEmpty(query.OperatorLevel) && query.OperatorLevel.Contains("2"))
+                {
+                    q.And(t => t.ParentCode.Eq("SBJPQRJ"));
+                }
+                else if (!string.IsNullOrEmpty(query.OperatorLevel) && query.OperatorLevel.Contains("1"))
+                {
+                    q.And(t => t.ParentCode.Ne("SBJPQRJ"));
+                    q.And(t => t.Note.Ne(""));
+                }
+                if (!string.IsNullOrEmpty(query.NoContainsRoleType))
+                    q.And(t => t.RoleType.Ne(query.NoContainsRoleType));
+                if (!string.IsNullOrEmpty(query.ParentCode))
+                    q.And(t => t.ParentCode.Eq(query.ParentCode));
                 if (!string.IsNullOrEmpty(query.RoleType))
                     q.And(t => t.RoleType.Eq(query.RoleType));
                 if (!string.IsNullOrEmpty(query.Like_RoleCode))
@@ -163,14 +178,88 @@ namespace Geone.JCXX.WebService
                     q.And(t => t.RoleName.Like("%" + query.Like_RoleName + "%"));
                 if (query.Enabled != null)
                     q.And(t => t.Enabled.Eq(query.Enabled));
+
                 var list = q.QueryList().Select(m => new
                 {
-                    ID = m.ID,
+                    RoleID = m.ID,
                     RoleType = m.RoleType,
+                    RoleTypeDesc = m.RoleTypeDesc,
                     RoleCode = m.RoleCode,
+                    RoleParentID = m.ParentCode,
                     RoleName = m.RoleName,
                     Note = m.Note,
                     Enabled = m.Enabled
+                });
+                List<Rtn_QSRole> rtn_QSRoleList = new List<Rtn_QSRole>();
+                var resList = list.ToList();
+                //获取角色类型（第一级）
+                var RoleTypeList = from p in list
+                                   group p by p.RoleType into g
+                                   select g;
+                var RList = RoleTypeList.ToList();
+
+                if (query.OperatorLevel != "2")
+                {
+                    foreach (var item in RList)
+                    {
+                        var value = item.First();
+                        rtn_QSRoleList.Add(new Rtn_QSRole { RoleID = value.RoleType, RoleName = value.RoleTypeDesc, RoleParentID = "RoleType" });
+                    }
+
+                    var noteList = from p in list
+                                   group p by p.Note into g
+                                   select g;
+                    var NList = noteList.ToList();
+
+                    foreach (var item in RList)
+                    {
+                        var value = item.First();
+                        rtn_QSRoleList.Add(new Rtn_QSRole { RoleID = value.Note, RoleName = value.Note, RoleParentID = value.RoleType });
+                    }
+                }
+                foreach (var item in resList)
+                {
+                    rtn_QSRoleList.Add(new Rtn_QSRole
+                    {
+                        RoleID = item.RoleID,
+                        RoleType = item.RoleType,
+                        RoleTypeDesc = item.RoleTypeDesc,
+                        RoleCode = item.RoleCode,
+                        RoleParentID = item.Note,
+                        RoleName = item.RoleName,
+                        Note = item.Note,
+                        Enabled = item.Enabled
+                    });
+                }
+                return RepModel.Success(rtn_QSRoleList);
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex);
+                return RepModel.Error();
+            }
+        }
+
+        /// <summary>
+        /// 根据网格点位获取到对应的网格权属角色
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public RepModel GetQSRoleGridList(Req_Grid query)
+        {
+            try
+            {
+                var q = Respostry_QSRG.Select().Where("1=1");
+                if (!string.IsNullOrEmpty(query.Point))
+                    q.And(t => t.Shape.IsContains(query.Point));
+                if (!string.IsNullOrEmpty(query.GridType))
+                    q.And(t => t.RoleType.Eq(query.GridType));
+                var list = q.QueryList().Select(m => new
+                {
+                    ID = m.RoleID,
+                    RoleType = m.RoleType,
+                    RoleName = m.RoleName,
+                    RoleCode = m.RoleCode
                 });
                 return RepModel.Success(list);
             }
@@ -180,33 +269,6 @@ namespace Geone.JCXX.WebService
                 return RepModel.Error();
             }
         }
-
-        ///// <summary>
-        ///// 根据网格点位获取到对应的网格权属角色
-        ///// </summary>
-        ///// <param name="query"></param>
-        ///// <returns></returns>
-        //public RepModel GetQSRoleGridList(Req_Grid query)
-        //{
-        //    try
-        //    {
-        //        var q = Respostry_QSRG.Select().Where("1=1");
-        //        if (!string.IsNullOrEmpty(query.Point))
-        //            q.And(t => t.Shape.IsContains(query.Point));
-        //        var list = q.QueryList().Select(m => new
-        //        {
-        //            ID = m.RoleID,
-        //            RoleType = m.RoleType,
-        //            RoleName = m.RoleName
-        //        });
-        //        return RepModel.Success(list);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        log.WriteException(ex);
-        //        return RepModel.Error();
-        //    }
-        //}
 
         /// <summary>
         /// 查询网格列表
@@ -316,6 +378,7 @@ namespace Geone.JCXX.WebService
                     Note = m.Note,
                     Enabled = m.Enabled
                 });
+
                 return RepModel.Success(list);
             }
             catch (Exception ex)

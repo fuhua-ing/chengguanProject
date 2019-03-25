@@ -28,6 +28,19 @@ namespace Geone.JCXX.WebService
                     return Response.AsJson(RepModel.Error(ex.Message));
                 }
             });
+            Post("/RefreshToken", parameter =>
+            {
+                try
+                {
+                    var req = this.Bind<Req_UserLogin>();
+                    var rep = ss.RefreshToken(req);
+                    return Response.AsJson(rep);
+                }
+                catch (Exception ex)
+                {
+                    return Response.AsJson(RepModel.Error(ex.Message));
+                }
+            });
         }
     }
 }

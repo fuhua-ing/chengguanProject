@@ -12,6 +12,12 @@ namespace Geone.JCXX.Meta
             return "View_QSRoleGrid";
         }
 
+        public string RoleCode
+        {
+            get;
+            set;
+        }
+
         public string RoleName
         {
             get;

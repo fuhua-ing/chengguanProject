@@ -22,7 +22,7 @@
         if ($("#fmInfo").form('validate'))
             $.DoAjax({
                 needWaiting: true,
-                url: '@Url.Action("GetInfo", "AppManager")',
+                url: '@Url.Action("PostInfo", "AppManager")',
                 dataParams: { info: $("#fmInfo").getJsonValues().jsonStr },
                 successFunc: function (result) {
                     if (result.StatusCode == "200") {

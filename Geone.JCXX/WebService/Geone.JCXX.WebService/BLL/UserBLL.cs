@@ -93,6 +93,45 @@ namespace Geone.JCXX.WebService
 
                 #endregion 根据AppID查找用户角色信息
 
+                #region 根据用户ID获取权属角色
+
+                List<Geone.JCXX.WebService.Meta.Response.JCXX_QSRole> jqsList = new List<Geone.JCXX.WebService.Meta.Response.JCXX_QSRole>();
+
+                var rq = Respostry_VQSRU.Select().Where("1=1");
+                rq.And(t => t.UserID.Eq(Userinfo.ID));
+                var qlist = rq.QueryList();
+                foreach (var item in qlist)
+                {
+                    Geone.JCXX.WebService.Meta.Response.JCXX_QSRole model = new Geone.JCXX.WebService.Meta.Response.JCXX_QSRole();
+                    model.ID = item.ID;
+                    model.UserEnabled = item.UserEnabled;
+                    model.UserID = item.UserID;
+                    model.UserName = item.UserName;
+                    model.UserCode = item.UserCode;
+                    model.Account = item.Account;
+                    model.Pwd = item.Pwd;
+                    model.Gender = item.Gender;
+                    model.IDNumber = item.IDNumber;
+                    model.Mobile = item.Mobile;
+                    model.Email = item.Email;
+                    model.RoleEnabled = item.RoleEnabled;
+                    model.RoleID = item.RoleID;
+                    model.RoleCode = item.RoleCode;
+                    model.RoleName = item.RoleName;
+                    model.RoleType = item.RoleType;
+                    model.DeptEnabled = item.DeptEnabled;
+                    model.DeptID = item.DeptID;
+                    model.DeptCode = item.DeptCode;
+                    model.DeptName = item.DeptName;
+                    model.DeptShortName = item.DeptShortName;
+                    model.DeptType = item.DeptType;
+                    model.DeptTypeName = item.DeptTypeName;
+                    jqsList.Add(model);
+                }
+                result.JCXX_QSRole = jqsList;
+
+                #endregion 根据用户ID获取权属角色
+
                 #region 创建tokne
 
                 var token_user = JsonHelper.JsonDllSerialize(new AppUserResult()
@@ -107,6 +146,43 @@ namespace Geone.JCXX.WebService
                 #endregion 创建tokne
 
                 return RepModel.Success(result);
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex);
+                return RepModel.Error();
+            }
+        }
+
+        /// <summary>
+        /// 用户刷新token
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public RepModel RefreshToken(Req_UserLogin query)
+        {
+            try
+            {
+                #region 刷新tokne
+
+                var result = new Rtn_UserLogin();
+
+                bool tokenValidate = Token.VerifyRefreshToken(key, query.AppId, query.AccessToken, query.RefreshToken);
+
+                if (tokenValidate)
+                {
+                    dynamic atoken = Token.ObtainAccessToken(key, query.AccessToken);
+
+                    var token = Token.DistributeARToken(key, query.AppId, atoken.user.ToString(), atoken.role.ToString(), 6);
+
+                    return RepModel.Success(token);
+                }
+                else
+                {
+                    return RepModel.Error(log.WriteWarn("令牌刷新失败。", 401.2));
+                }
+
+                #endregion 刷新tokne
             }
             catch (Exception ex)
             {

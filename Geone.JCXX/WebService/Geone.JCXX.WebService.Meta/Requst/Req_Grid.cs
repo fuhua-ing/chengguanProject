@@ -31,5 +31,10 @@
         /// 网格有效性 0无效/1有效
         /// </summary>
         public int? Enabled { get; set; }
+
+        /// <summary>
+        ///如果是2则表示要派遣到二级单位（如街道、执法等）
+        /// </summary>
+        public string OperatorLevel { get; set; }
     }
 }

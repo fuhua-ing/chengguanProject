@@ -16,5 +16,15 @@
         /// 密码
         /// </summary>
         public string Password { get; set; }
+
+        /// <summary>
+        /// 请求token
+        /// </summary>
+        public string AccessToken { get; set; }
+
+        /// <summary>
+        /// 刷新token
+        /// </summary>
+        public string RefreshToken { get; set; }
     }
 }

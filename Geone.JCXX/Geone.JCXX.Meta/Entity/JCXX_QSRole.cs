@@ -29,6 +29,15 @@ namespace Geone.JCXX.Meta
         }
 
         ///// <summary>
+        ///// 父类code
+        ///// </summary>
+        public string ParentCode
+        {
+            get;
+            set;
+        }
+
+        ///// <summary>
         ///// 角色名称
         ///// </summary>
         public string RoleName
