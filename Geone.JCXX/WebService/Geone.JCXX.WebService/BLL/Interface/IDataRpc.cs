@@ -40,5 +40,13 @@ namespace Geone.JCXX.WebService
         /// <param name="CategoryCode"></param>
         /// <returns></returns>
         UnaryResult<string> GetDictItemList(string AppID, string CategoryCode);
+
+        /// <summary>
+        /// 根据点位获取网格和标段
+        /// </summary>
+        /// <param name="point"></param>
+        /// <param name="gridType"></param>
+        /// <returns></returns>
+        UnaryResult<string> GetGridAndArea(string point, string[] gridType = null);
     }
 }

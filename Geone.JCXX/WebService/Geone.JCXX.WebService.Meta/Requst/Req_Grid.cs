@@ -1,4 +1,6 @@
-﻿namespace Geone.JCXX.WebService.Meta.QueryEntity
+﻿using System.Collections.Generic;
+
+namespace Geone.JCXX.WebService.Meta.QueryEntity
 {
     public class Req_Grid
     {
@@ -11,6 +13,11 @@
         /// 网格类型
         /// </summary>
         public string GridType { get; set; }
+
+        /// <summary>
+        /// 网格类型列表
+        /// </summary>
+        public Dictionary<string, string> GridTypeList { get; set; }
 
         /// <summary>
         /// 网格编号（模糊查询）

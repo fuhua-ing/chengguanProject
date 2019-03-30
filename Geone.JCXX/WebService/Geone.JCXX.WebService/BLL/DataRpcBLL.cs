@@ -16,6 +16,7 @@ namespace Geone.JCXX.WebService.BLL
         private IDbEntity<JCXX_CaseLATJ> RespostryLATJ = container.Resolve<IDbEntity<JCXX_CaseLATJ>>();
         private IDbEntity<JCXX_CaseTimeLimit> RespostryTL = container.Resolve<IDbEntity<JCXX_CaseTimeLimit>>();
         private IDbEntity<View_DictItem> Respostry_DictItem = container.Resolve<IDbEntity<View_DictItem>>();
+        private IDbEntity<View_Grid> Respostry_VGrid = container.Resolve<IDbEntity<View_Grid>>();
         private ILogWriter log = container.Resolve<ILogWriter>();
 
         /// <summary>
@@ -158,6 +159,48 @@ namespace Geone.JCXX.WebService.BLL
                     ItemName = m.ItemName,
                     Enabled = m.Enabled,
                     Note = m.Note
+                });
+
+                return UnaryResult(Newtonsoft.Json.JsonConvert.SerializeObject(list));
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex);
+                return UnaryResult("");
+            }
+        }
+
+        /// <summary>
+        /// 根据点位获取网格和标段
+        /// </summary>
+        /// <param name="point"></param>
+        /// <param name="gridType"></param>
+        /// <returns></returns>
+        public UnaryResult<string> GetGridAndArea(string point, string[] gridType = null)
+        {
+            try
+            {
+                Respostry_VGrid.SetTable(View_Grid.GetTbName());
+                var q = Respostry_VGrid.Select().Where(" 1=1 ");
+
+                if (!string.IsNullOrEmpty(point))
+                    q.And(t => t.Shape.IsContains(point));
+                if (gridType == null)
+                {
+                    gridType = new string[2] { "02", "05" };//查询所属区域和标段
+                }
+                q.And(t => t.GridType.In(gridType));
+
+                var list = q.QueryList().Select(m => new
+                {
+                    ID = m.ID,
+                    GridType = m.GridType,
+                    GridCode = m.GridCode,
+                    GridName = m.GridName,
+                    ShowCode = m.GridCode,
+                    ShowName = m.ShowName,
+                    Note = m.Note,
+                    Enabled = m.Enabled
                 });
 
                 return UnaryResult(Newtonsoft.Json.JsonConvert.SerializeObject(list));

@@ -282,6 +282,8 @@ namespace Geone.JCXX.WebService
                 var q = Respostry_VGrid.Select().Where("1=1");
                 if (!string.IsNullOrEmpty(query.GridType))
                     q.And(t => t.GridType.Eq(query.GridType));
+                if (query.GridTypeList != null && query.GridTypeList.Count > 0)
+                    q.And(t => t.GridType.In(query.GridTypeList.Keys.ToArray()));
                 if (!string.IsNullOrEmpty(query.Like_GridCode))
                     q.And(t => t.GridCode.Like("%" + query.Like_GridCode + "%"));
                 if (!string.IsNullOrEmpty(query.Like_GridName))
