@@ -1,22 +1,14 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-<link href="~/css/view/index.css" rel="stylesheet" />
-<style>
-    .fi-li i {
-        font-size: 28px;
-        color: white;
-        display: inline-block;
-        width: 100%;
-        text-align: center;
-        margin-top: 12px;
-    }
-</style>
-<script>
-    $(function () {
-        $("#cc-c").width($(window).width() - 60);
 
-        $.getJSON('@Url.Action("../json/menu.json")', function (result) {
+<link href="~/css/view/index.css" rel="stylesheet" />
+
+
+<script>
+
+    $(function () {
+        $.getJSON(config_jcxx_url+"/json/menu.json", function (result) {
             LoadMenu(".index_menu", result);
         });
 
@@ -32,7 +24,7 @@
     function Logout() {
         $.messager.confirm("提示", "确认注销登录吗？", function (r) {
             if (r) {
-                var url = '@Url.Action("Logout", "Home")';
+                var url = '/Home/Logout';
 
                 window.location.href = url;
             }
@@ -40,40 +32,84 @@
 
     }
 
+
+
     //加载菜单
     function LoadMenu(menuobj, menu) {
-        let _html = '<ul class="fi-ul">';
+        let _html = '';
         $.each(menu, function (idx, item) {
             if (item.children.length == 0) {
-                _html += '<li class="fi-li" dd-id="' + item.id + '" dd-name="' + item.name + '" dd-url="' + item.url
-                    + '"><i class="fa ' + item.icon + '" ></i><ul class="sec-ul">'
-                    + '<li class="sec-li" dd-id="' + item.id + '" dd-name="' + item.name + '" dd-url="' + item.url + '"><a>' + item.name + '</a></li></ul></li>';
-            }
-            else {
-                _html += '<li class="fi-li"><i class="fa ' + item.icon + '" ></i><ul class="sec-ul">';
+                _html += ' <li class="nav-item" dd-id="' + item.id + '" dd-name="' + item.name + '" dd-url="' + item.url
+                    + '"><a href="javascript:;"><i class="nav-icon fa ' + item.icon + '" ></i><span>' + item.name
+                    + '</span></a></li>';
+            } else {
+                _html += '<li class="nav-item" ><a href="javascript:;"><i class="nav-icon fa ' + item.icon + '" ></i><span>' + item.name
+                    + '</span><i class="fa fa-angle-right nav-more"></i></a><ul>';
                 $.each(item.children, function (idx2, item2) {
-                    _html += '<li class="sec-li" dd-id="' + item2.id + '" dd-name="' + item2.name + '" dd-url="' + item2.url + '"><a>' + item2.name + '</a></li>';
+                    _html += ' <li dd-id="' + item2.id + '" dd-name="' + item2.name + '" dd-url="' + item2.url
+                        + '"><a href="javascript:;"><span>' + item2.name + '</span></a></li>';
                 });
-                _html += '</ul>';
+                _html += '</ul></li>';
             }
         });
-        _html += '</ul>';
-        $(menuobj).html(_html);
+        $(menuobj).find('ul').html(_html);
         if ($('.fi-li .sec-ul:eq(0) li').length == 1)
             $('.fi-li .sec-ul:eq(0)').remove();
         //目录事件
-        $('.fi-li,.sec-li').on('click', function () {
+        // nav收缩展开
+        $('.nav-item>a').on('click', function () {
+            if (!$('.nav').hasClass('nav-mini')) {
+                if ($(this).next().css('display') == "none") {
+                    //收起所有
+                    $('.nav-item').children('ul').slideUp(300);
+                    $(".fa-angle-down").addClass('fa-angle-right').removeClass('fa-angle-down');
+                    //展开当前
+                    $(this).next('ul').slideDown(300);
+                    //右边箭头切换
+                    $(this).find(".fa-angle-right").addClass('fa-angle-down').removeClass('fa-angle-right');
+
+                } else {
+                    //收缩已展开
+                    $(this).next('ul').slideUp(300);
+                    //右边箭头切换
+                    $(this).find(".fa-angle-down").addClass('fa-angle-right').removeClass('fa-angle-down');
+                }
+            }
+        });
+        //菜单收缩切换
+        $('#mini').on('click', function () {
+            if (!$('.nav').hasClass('nav-mini')) {
+                $('.nav-item').children('ul').removeAttr('style');
+                $('.nav').addClass('nav-mini');
+                $(".fa-angle-double-left").addClass('fa-angle-double-right').removeClass('fa-angle-double-left');
+                $(this).find("span").hide();
+                $("#cc-c").layout('panel', 'west').panel('resize', { width: 60 });
+            } else {
+                $('.nav').removeClass('nav-mini');
+                $(".fa-angle-down").addClass('fa-angle-right').removeClass('fa-angle-down');
+                $(".fa-angle-double-right").addClass('fa-angle-double-left').removeClass('fa-angle-double-right');
+                $(this).find("span").show();
+                $("#cc-c").layout('panel', 'west').panel('resize', { width: 180 });
+            }
+            $("#cc-c").layout('resize');
+        });
+        //菜单点击
+        $('.nav li').on('click', function () {
             var id = $(this).attr("dd-id");
             if (id != undefined && id != null) {
                 var title = $(this).attr("dd-name");
                 var url = $(this).attr("dd-url");
-                $(".fi-ul li").removeClass("on");
+                $(".nav li").removeClass("on");
                 $(this).addClass("on");
                 addTab(id, title, url);
             }
         });
+
+
         //添加固定首页
         $(menuobj + " li").eq(0).click();
+        $("#cc-c").layout('panel', 'west').panel('resize', { width: 180 });
+        $("#cc-c").layout('resize');
     }
     //添加tab窗口
     function addTab(menuid, menutext, url, _closable) {
@@ -133,29 +169,41 @@
         var index = tabPanel.tabs('getTabIndex', tab);
         tabPanel.tabs('close', index);
     }
+
+    $(function () {
+
+    });
 </script>
 
-<div class="easyui-layout" id="cc-c" data-options="fit:true" style="margin: 0 0 0 60px;">
-    <div class="index_menu">
-    </div>
-    <div data-options="region:'north'" class="index_top">
-        <div class="lft_title">基础信息管理系统</div>
 
-        <div class="rt_box">
-            <div class="TopTip">
-                <i class="fa fa-bell-o "></i>
-                <span class="badge-dot"></span>
-            </div>
-            <div class="avatar">&nbsp;</div>
-            <div id="MenuUserName" class="username" title="xxxx">
-                管理员
-            </div>
-            <div class="more">
-                <i class=" fa fa-ellipsis-v"></i>
+
+<div class="easyui-layout" id="cc-c" data-options="fit:true" style="width:100%">
+    <div class="index_menu nav" data-options="region:'west',width:180">
+        <div class="nav-top">
+            <div id="mini"><i class="fa fa-angle-double-left"></i><span>@*折叠*@</span></div>
+        </div>
+        <ul></ul>
+    </div>
+
+
+    <div data-options="region:'center'" class="index_center">
+        <div class="index_top">
+            <div class="lft_title">基础信息管理系统</div>
+
+            <div class="rt_box">
+                <div class="TopTip">
+                    <i class="fa fa-bell-o "></i>
+                    <span class="badge-dot"></span>
+                </div>
+                <div class="avatar">&nbsp;</div>
+                <div id="MenuUserName" class="username" title="xxxx">
+                    管理员
+                </div>
+                <div class="more">
+                    <i class=" fa fa-ellipsis-v"></i>
+                </div>
             </div>
         </div>
-    </div>
-    <div data-options="region:'center'" class="index_center" style="margin-left:5px">
         <div id="mainTabs" class="easyui-tabs" data-options="fit:true,border:false"></div>
     </div>
 </div>
@@ -169,3 +217,4 @@
         <li class=""><a href="javascript:Logout()">退出</a></li>
     </ul>
 </div>
+

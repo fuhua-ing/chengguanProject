@@ -8,7 +8,7 @@
         //初始化左侧部门树
         $('#treeDept').tree({
             method: "post",
-            url: "../DeptManager/GetEasyuiTreeList",
+            url: config_jcxx_url + "/DeptManager/GetEasyuiTreeList",
             queryParams: $("#queryTab").getJsonValues().jsonData,
             onDblClick: function (node) {
                 //取消选择
@@ -23,7 +23,7 @@
         });
 
         //初始化表格
-        $('#gd_url').InitGird({ url: "../UserManager/GetGrid" });
+        $('#gd_url').InitGird({ url: "/UserManager/GetGrid" });
 
         InitSize();
 
@@ -51,14 +51,14 @@
     //新增
     function Add() {
         var parentID = $("#hfParentID").val();
-        $("#win").OpenWin({ title: "人员-新增", url: "../UserManager/UserForm?DeptID=" + parentID, width: 800, height: 500 });
+        $("#win").OpenWin({ title: "人员-新增", url: "/UserManager/UserForm?DeptID=" + parentID, width: 800, height: 500 });
     }
 
     //修改
     function Edit() {
         if ($('#gd_url').datagrid('IsSelectedRow')) {
             var row = $('#gd_url').datagrid('getSelected');
-            $("#win").OpenWin({ title: "人员-编辑", url: "../UserManager/UserForm?ID=" + row.ID, width: 800, height: 500 });
+            $("#win").OpenWin({ title: "人员-编辑", url: "/UserManager/UserForm?ID=" + row.ID, width: 800, height: 500 });
         }
     }
 
@@ -69,7 +69,7 @@
                 if (r) {
                     var row = $('#gd_url').datagrid('getSelected');
                     $.DoAjax({
-                        needWaiting:true,
+                        needWaiting: true,
                         url: "/UserManager/DelInfo",
                         dataParams: { ID: row.ID },
                         successFunc: function (result) {
@@ -107,7 +107,7 @@
     function PwdReset() {
         if ($('#gd_url').datagrid('IsSelectedRow')) {
             var row = $('#gd_url').datagrid('getSelected');
-            $("#win").OpenWin({ title: "人员-密码重置", url: "../UserManager/UserPwd?ID=" + row.ID, width: 550, height: 250 });
+            $("#win").OpenWin({ title: "人员-密码重置", url: "/UserManager/UserPwd?ID=" + row.ID, width: 550, height: 250 });
         }
     }
 

@@ -203,7 +203,7 @@ $.fn.extend({
                 }
             }
             $.ajax({
-                url: getRootPath() + opt.url,
+                url: config_jcxx_url + opt.url,
                 type: opt.typeAction,
                 data: opt.dataParams,
                 complete: opt.completeFunc,

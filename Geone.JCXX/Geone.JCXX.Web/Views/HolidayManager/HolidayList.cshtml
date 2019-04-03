@@ -23,7 +23,7 @@
     function InitPika(Year) {
         //获取节假日列表
         $.DoAjax({
-            url: '@Url.Action("GetList", "HolidayManager")',
+            url: '/HolidayManager/GetList',
             dataParams: { YearNo: Year },
             successFunc: function (result) {
                 var jsonData = JSON.parse(result);
@@ -119,7 +119,7 @@
 
     //新增
     function AddDay() {
-        $("#win").OpenWin({ title: "节假日-新增", url: "../HolidayManager/HolidayForm", width: 400, height: 300 });
+        $("#win").OpenWin({ title: "节假日-新增", url: "/HolidayManager/HolidayForm", width: 400, height: 300 });
     }
     //修改
     function EditDay() {
@@ -132,7 +132,7 @@
             return;
         }
         var ID = $('td.checked .enable').eq(0).attr("ID");
-        $("#win").OpenWin({ title: "节假日-编辑", url: "../HolidayManager/HolidayForm?ID=" + ID, width: 400, height: 300 });
+        $("#win").OpenWin({ title: "节假日-编辑", url: "/HolidayManager/HolidayForm?ID=" + ID, width: 400, height: 300 });
     }
     //删除
     function DelDay() {

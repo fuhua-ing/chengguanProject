@@ -11,7 +11,7 @@
 
     $(function () {
         //初始化表格
-        $('#gd_url').InitGird({ url: '@Url.Action("GetGrid", "CaseLATJManager")' });
+        $('#gd_url').InitGird({ url: '/CaseLATJManager/GetGrid' });
         //初始化数据字典
         $('#CaseClassI').InitDictCombobox({ url: Dict_CaseClassI });
         $('#CaseClassII').InitDictCombobox({ url: Dict_CaseClassII });
@@ -49,13 +49,13 @@
     }
     //新增
     function Add() {
-        $("#win").OpenWin({ title: "时限-新增", url: "../CaseLATJManager/CaseLATJForm", width: 800, height: 550 });
+        $("#win").OpenWin({ title: "时限-新增", url: "/CaseLATJManager/CaseLATJForm", width: 800, height: 550 });
     }
     //修改
     function Edit() {
         if ($('#gd_url').datagrid('IsSelectedRow')) {
             var row = $('#gd_url').datagrid('getSelected');
-            $("#win").OpenWin({ title: "时限-编辑", url: "../CaseLATJManager/CaseLATJForm?ID=" + row.ID, width: 800, height: 550 });
+            $("#win").OpenWin({ title: "时限-编辑", url: "/CaseLATJManager/CaseLATJForm?ID=" + row.ID, width: 800, height: 550 });
         }
     }
     //删除
@@ -66,7 +66,7 @@
                     var row = $('#gd_url').datagrid('getSelected');
                     $.DoAjax({
                         needWaiting: true,
-                        url: '@Url.Action("DelInfo", "CaseLATJManager")',
+                        url: '/CaseLATJManager/DelInfo',
                         dataParams: { ID: row.ID },
                         successFunc: function (result) {
                             if (result.StatusCode == "200") {

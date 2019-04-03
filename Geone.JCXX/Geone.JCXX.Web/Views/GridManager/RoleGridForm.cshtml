@@ -54,7 +54,7 @@
         //初始化左侧树
         $('#treeRoleQS').tree({
             method: "post",
-            url: '@Url.Action("GetEasyuiTreeList", "QSRoleManager")',
+            url: config_jcxx_url + '/QSRoleManager/GetEasyuiTreeList',
             checkbox: true,
             onCheck: function (node, isCheck) {
 
@@ -75,7 +75,7 @@
                         for (var i = 0; i < params.length; i++) {
                             if (node.id == params[i].RoleID && node.checkState == "unchecked") {
                                 isExist = false;
-                                params.splice(i , 1);
+                                params.splice(i, 1);
                                 break;
                             }
                             else if (node.id == params[i].RoleID && node.checkState == "checked") {
@@ -92,13 +92,13 @@
                     }
                 });
 
-                    //var _tree = $('#treeRoleQS').tree('getChecked');
-                    //for (var i = 0; i < _tree.length; i++) {
+                //var _tree = $('#treeRoleQS').tree('getChecked');
+                //for (var i = 0; i < _tree.length; i++) {
 
-                    //    if (_tree[i].parentid != null && _tree[i].parentid != "") {
-                    //        params.push({ "RoleID": '' + _tree[i].id + '', "RoleName": '' + _tree[i].text + '' });
-                    //    }
-                    //}
+                //    if (_tree[i].parentid != null && _tree[i].parentid != "") {
+                //        params.push({ "RoleID": '' + _tree[i].id + '', "RoleName": '' + _tree[i].text + '' });
+                //    }
+                //}
 
                 LoadChoiceRoleInfo(params);
 
@@ -119,7 +119,7 @@
     function LoadRoleGrid() {
         //获取用户
         $.DoAjax({
-            url: '@Url.Action("GetRoleGridList", "GridManager")',
+            url: '/GridManager/GetRoleGridList',
             dataParams: { ID: ID },
             successFunc: function (udata) {
                 LoadChoiceRoleInfo(udata);
@@ -198,7 +198,7 @@
 
         $.DoAjax({
             needWaiting: true,
-            url: '@Url.Action("PostRoleGrid", "GridManager")',
+            url: '/GridManager/PostRoleGrid',
             dataParams: { ID: ID, RoleIDs: ids },
             successFunc: function (result) {
                 if (result.StatusCode == "200") {

@@ -16,6 +16,7 @@
     <!-- Javascript -->
     <script src="~/lib/jquery/jquery-1.10.2.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/js/config.js"></script>
     <script src="~/js/tool.js"></script>
 
     <!-- Favicon and touch icons -->
@@ -61,12 +62,12 @@
                 var pwd = $("#form-password").val();
 
                 $.DoAjax({
-                    url:'@Url.Action("Submit_Login","Home")',
+                    url: '/Home/Submit_Login',
                     dataParams: { Account: account, Pwd: pwd },
                     successFunc: function (msg) {
                         console.log(msg);
                         if (msg == "") {
-                            window.location.href = '@Url.Action("Index", "Home")';
+                            window.location.href = config_jcxx_url + '/Home/Index';
                         }
                         else {
                             $("#login-errorMsg").html(msg);

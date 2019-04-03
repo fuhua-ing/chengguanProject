@@ -5,19 +5,18 @@
 
 <script>
     var _pageSize = 10;
-    var _url = "../Content/Json/JCXXDictItem.json";
     $(function () {
         //初始化系统选择列表
         $('#sysApp').combobox({
             method: 'get',
-            url: '../AppManager/GetAllList',
+            url: config_jcxx_url + '/AppManager/GetAllList',
             editable: false,
             valueField: 'ID',
             textField: 'AppName'
         });
 
         //初始化表格
-        $('#gd_url').InitGird({ url: "../DictManager/GetItemList" });
+        $('#gd_url').InitGird({ url: "/DictManager/GetItemList" });
 
         InitSize();
 
@@ -54,13 +53,13 @@
     }
     //新增
     function Add() {
-        $("#win").OpenWin({ title: "字典明细管理-新增", url: "../DictManager/DictItemForm", width: 800, height: 500 });
+        $("#win").OpenWin({ title: "字典明细管理-新增", url: "/DictManager/DictItemForm", width: 800, height: 500 });
     }
     //修改
     function Edit() {
         if ($('#gd_url').datagrid('IsSelectedRow')) {
             var row = $('#gd_url').datagrid('getSelected');
-            $("#win").OpenWin({ title: "字典明细管理-编辑", url: "../DictManager/DictItemForm?ID=" + row.ID, width: 800, height: 500 });
+            $("#win").OpenWin({ title: "字典明细管理-编辑", url: "/DictManager/DictItemForm?ID=" + row.ID, width: 800, height: 500 });
         }
     }
     //删除

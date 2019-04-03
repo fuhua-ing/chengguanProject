@@ -11,7 +11,7 @@
         //初始化左侧权属角色树
         /*  $('#treeAppRole_QS').tree({
               method: "post",
-              url: "../QSRoleManager/GetEasyuiTreeList",
+              url: "/QSRoleManager/GetEasyuiTreeList",
               queryParams: $("#queryTab").getJsonValues().jsonData,
               //双击事件
               onDblClick: function (node) {
@@ -40,7 +40,7 @@
           });*/
 
         //初始化表格
-        $('#gd_url').InitGird({ url: "../QSRoleManager/GetGrid" });
+        $('#gd_url').InitGird({ url: "/QSRoleManager/GetGrid" });
         //初始化数据字典
         debugger;
         $('#RoleType').InitDictCombobox({ url: Dict_QSRoleType});
@@ -82,20 +82,20 @@
     function OpenRoleUser() {
         if ($('#gd_url').datagrid('IsSelectedRow')) {
             var row = $('#gd_url').datagrid('getSelected');
-            $("#win").OpenWin({ title: "角色用户", url: "../QSRoleManager/RoleUserForm?RoleID=" + row.ID, width: 800, height: 500 });
+            $("#win").OpenWin({ title: "角色用户", url: "/QSRoleManager/RoleUserForm?RoleID=" + row.ID, width: 800, height: 500 });
         }
     }
 
     //新增
     function Add() {
         var parentID = $("#hfParentID").val();
-        $("#win").OpenWin({ title: "权属角色-新增", url: "../QSRoleManager/QSRoleForm?ParentID=" + parentID, width: 800, height: 450 });
+        $("#win").OpenWin({ title: "权属角色-新增", url: "/QSRoleManager/QSRoleForm?ParentID=" + parentID, width: 800, height: 450 });
     }
     //修改
     function Edit() {
         if ($('#gd_url').datagrid('IsSelectedRow')) {
             var row = $('#gd_url').datagrid('getSelected');
-            $("#win").OpenWin({ title: "权属角色-编辑", url: "../QSRoleManager/QSRoleForm?ID=" + row.ID, width: 800, height: 450 });
+            $("#win").OpenWin({ title: "权属角色-编辑", url: "/QSRoleManager/QSRoleForm?ID=" + row.ID, width: 800, height: 450 });
         }
     }
     //删除
@@ -138,7 +138,7 @@
     function TreeNodeEdit() {
         var node = $('#treeAppRole_QS').tree('getSelected');
         if (node != null)
-            $("#win").OpenWin({ title: "权属角色-编辑", url: "../QSRoleManager/QSRoleForm?ID=" + node.id, width: 800, height: 450 });
+            $("#win").OpenWin({ title: "权属角色-编辑", url: "/QSRoleManager/QSRoleForm?ID=" + node.id, width: 800, height: 450 });
     }
 </script>
 

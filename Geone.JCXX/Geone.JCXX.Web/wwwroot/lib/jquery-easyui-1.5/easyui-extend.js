@@ -94,6 +94,7 @@ $.fn.extend({
             //服务端排序
             remoteSort: false,
         }, opt);
+        opt.url = config_jcxx_url + opt.url;
         $gird.datagrid(opt);
     },
     InitTreeGird: function (opt) {
@@ -132,6 +133,7 @@ $.fn.extend({
             //自动行高
             autoRowHeight: false
         }, opt);
+        opt.url = config_jcxx_url + opt.url;
         $gird.treegrid(opt);
     },
     //窗口统一方法
@@ -167,6 +169,7 @@ $.fn.extend({
             //定义是否将窗体显示为模式化窗口
             modal: true
         }, opt);
+        opt.url = config_jcxx_url + opt.url;
         if (opt.url != null) {
             $win.html('<iframe  src="' + opt.url + '" style="margin:0;border:0;padding:0;width:99%;height:95%;" ></iframe>');
         }
@@ -198,7 +201,7 @@ $.fn.extend({
         }, opt);
 
         if (opt.url != null) {
-            opt.url = '../DictManager/GetItemListByCategoryCode?CategoryCode=' + opt.url;
+            opt.url = config_jcxx_url + '/DictManager/GetItemListByCategoryCode?CategoryCode=' + opt.url;
         }
         if (opt.url != null && opt.parantID != null) {
             opt.url += "&&Note=" + opt.parantID;
@@ -227,7 +230,7 @@ $.fn.extend({
             }
         }, opt);
 
-        opt.url = '../DeptManager/GetItemList';
+        opt.url = config_jcxx_url + '/DeptManager/GetItemList';
 
         $combobox.combobox(opt);
     }

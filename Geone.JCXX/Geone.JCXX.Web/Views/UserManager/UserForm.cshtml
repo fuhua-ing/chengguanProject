@@ -29,8 +29,8 @@
     function BindDept(UserDeptID) {
         $('#DeptID').combotree({
             method: "post",
-            url: "../DeptManager/GetEasyuiTreeList",
-            required:true,
+            url: config_jcxx_url + "/DeptManager/GetEasyuiTreeList",
+            required: true,
             onBeforeSelect: function (node, checked) {
                 //不能选择自己
                 if (node.id == $(":input[name='ID']").val())
@@ -54,7 +54,7 @@
     function Save() {
         if ($("#fmInfo").form('validate'))
             $.DoAjax({
-                needWaiting:true,
+                needWaiting: true,
                 url: "/UserManager/PostInfo",
                 dataParams: { info: $("#fmInfo").getJsonValues().jsonStr },
                 successFunc: function (result) {

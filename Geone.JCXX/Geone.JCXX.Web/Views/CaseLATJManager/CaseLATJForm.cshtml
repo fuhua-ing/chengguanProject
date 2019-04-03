@@ -22,7 +22,7 @@
         //编辑
         if (ID != null && ID != "") {
             $.DoAjax({
-                url: '@Url.Action("GetInfo", "CaseLATJManager")',
+                url: '/CaseLATJManager/GetInfo',
                 dataParams: { ID: ID },
                 successFunc: function (result) {
                     $("#fmInfo").form("load", result);
@@ -35,7 +35,7 @@
     function Save() {
         if ($("#fmInfo").form('validate'))
             $.DoAjax({
-                url: '@Url.Action("PostInfo", "CaseLATJManager")',
+                url: '/CaseLATJManager/PostInfo',
                 dataParams: { info: $("#fmInfo").getJsonValues().jsonStr },
                 successFunc: function (result) {
                     if (result.StatusCode == "200") {

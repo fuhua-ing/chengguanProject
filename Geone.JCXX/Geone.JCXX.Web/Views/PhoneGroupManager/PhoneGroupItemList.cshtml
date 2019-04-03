@@ -12,7 +12,7 @@
         //初始化表格
         var param = $("#queryTab").getJsonValues().jsonData;
 
-        $('#gd_url').InitGird({ url: '@Url.Action("GetItemGrid", "PhoneGroupManager")', queryParams: param });
+        $('#gd_url').InitGird({ url: '/PhoneGroupManager/GetItemGrid', queryParams: param });
 
         InitSize();
 
@@ -51,13 +51,13 @@
     //新增
     function Add() {
         var GroupID = $("#hfGroupID").val();
-        $("#win").OpenWin({ title: "短信号码组-新增", url: "../PhoneGroupManager/PhoneGroupItemForm?GroupID=" + GroupID, width: 800, height: 450 });
+        $("#win").OpenWin({ title: "短信号码组-新增", url: "/PhoneGroupManager/PhoneGroupItemForm?GroupID=" + GroupID, width: 800, height: 450 });
     }
     //修改
     function Edit() {
         if ($('#gd_url').datagrid('IsSelectedRow')) {
             var row = $('#gd_url').datagrid('getSelected');
-            $("#win").OpenWin({ title: "短信号码组-编辑", url: "../PhoneGroupManager/PhoneGroupItemForm?ID=" + row.ID, width: 800, height: 450 });
+            $("#win").OpenWin({ title: "短信号码组-编辑", url: "/PhoneGroupManager/PhoneGroupItemForm?ID=" + row.ID, width: 800, height: 450 });
         }
     }
     //删除
@@ -68,7 +68,7 @@
                     var row = $('#gd_url').datagrid('getSelected');
                     $.DoAjax({
                         needWaiting: true,
-                        url: '@Url.Action("DelItemInfo", "PhoneGroupManager")',
+                        url: '/PhoneGroupManager/DelItemInfo',
                         dataParams: { ID: row.ID },
                         successFunc: function (result) {
                             if (result.StatusCode == "200") {

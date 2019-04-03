@@ -33,7 +33,7 @@
         }
 
         //初始化表格
-        $('#gd_url').InitGird({ url: '@Url.Action("GetGrid", "GridManager")' });
+        $('#gd_url').InitGird({ url: '/GridManager/GetGrid' });
         //初始化数据字典
         $('#GridType').InitDictCombobox({ url: Dict_GridType });
         InitSize();
@@ -70,13 +70,13 @@
     }
     //新增
     function Add() {
-        $("#win").OpenWin({ title: "网格-新增", url: "../GridManager/GridForm", width: 800, height: 550 });
+        $("#win").OpenWin({ title: "网格-新增", url: "/GridManager/GridForm", width: 800, height: 550 });
     }
     //修改
     function Edit() {
         if ($('#gd_url').datagrid('IsSelectedRow')) {
             var row = $('#gd_url').datagrid('getSelected');
-            $("#win").OpenWin({ title: "网格-编辑", url: "../GridManager/GridForm?ID=" + row.ID, width: 800, height: 550 });
+            $("#win").OpenWin({ title: "网格-编辑", url: "/GridManager/GridForm?ID=" + row.ID, width: 800, height: 550 });
         }
     }
     //删除
@@ -87,7 +87,7 @@
                     var row = $('#gd_url').datagrid('getSelected');
                     $.DoAjax({
                         needWaiting: true,
-                        url: '@Url.Action("DelInfo", "GridManager")',
+                        url: '/GridManager/DelInfo',
                         dataParams: { ID: row.ID },
                         successFunc: function (result) {
                             if (result.StatusCode == "200") {
@@ -109,19 +109,19 @@
     function OpenGroupRole() {
         if ($('#gd_url').datagrid('IsSelectedRow')) {
             var row = $('#gd_url').datagrid('getSelected');
-            $("#win").OpenWin({ title: "网格权属角色", url: "../GridManager/RoleGridForm?ID=" + row.ID, width: 800, height: 500 });
+            $("#win").OpenWin({ title: "网格权属角色", url: "/GridManager/RoleGridForm?ID=" + row.ID, width: 800, height: 500 });
         }
     }
     //网格权属设置
     function OpenOwnerShip() {
         if ($('#gd_url').datagrid('IsSelectedRow')) {
             var row = $('#gd_url').datagrid('getSelected');
-            $("#win").OpenWin({ title: "网格权属多级配置", url: "../GridManager/OwnerShipGuidForm?ID=" + row.ID, width: 800, height: 500 });
+            $("#win").OpenWin({ title: "网格权属多级配置", url: "/GridManager/OwnerShipGuidForm?ID=" + row.ID, width: 800, height: 500 });
         }
     }
     //导入
     function Import() {
-        $("#win").OpenWin({ title: "网格-批量导入", url: "../GridManager/GridImport", width: 700, height: 350 });
+        $("#win").OpenWin({ title: "网格-批量导入", url: "/GridManager/GridImport", width: 700, height: 350 });
     }
     //导出
     function Export() {

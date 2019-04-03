@@ -29,48 +29,48 @@
 </style>
 <script>
     $(function () {
-         //初始化表格
+        //初始化表格
         $('#gd_url').InitGird({
-                url: '@Url.Action("GetGrid", "DictManager")',
-                view: detailview,
-                detailFormatter: function (index, row) {
-                    return '<div class="divDictItem"><div class="submenu">'
-                        + '<a href="javascript:void(0);" onclick=ItemAdd(' + index + ',"' + row.ID + '")>新增</a><em></em>'
-                        + '<a href="javascript:void(0);" onclick=ItemEdit(' + index + ',"' + row.ID + '")>修改</a><em></em>'
-                        + '<a href="javascript:void(0);" onclick=ItemDel(' + index + ',"' + row.ID + '")>删除</a><em></em>'
-                        + '<a href="javascript:void(0);" onclick=ItemRefresh(' + index + ',"' + row.ID + '")>刷新</a><em></em></div>'
-                        + '<table id="tbDictItem-' + index + '"></table></div>';
-                },
-                onExpandRow: function (index, row) {
-                    $('#tbDictItem-' + index).datagrid({
-                        url: '@Url.Action("GetItemAllList", "DictManager")',
-                        queryParams: { CategoryID: row.ID, sort: "ItemCode", order:"asc" },
-                        fitColumns: true,
-                        singleSelect: true,
-                        rownumbers: true,
-                        columns: [[
-                            { field: 'ItemCode', title: '明细编号', width: 100 },
-                            { field: 'ItemName', title: '明细名称', width: 100 },
-                            { field: 'Note', title: '备注', width: 100 },
-                            { field: 'Enabled', title: '是否有效', align: 'center', formatter: formatter_valid }
-                        ]],
-                        onResize: function () {
+            url: '/DictManager/GetGrid',
+            view: detailview,
+            detailFormatter: function (index, row) {
+                return '<div class="divDictItem"><div class="submenu">'
+                    + '<a href="javascript:void(0);" onclick=ItemAdd(' + index + ',"' + row.ID + '")>新增</a><em></em>'
+                    + '<a href="javascript:void(0);" onclick=ItemEdit(' + index + ',"' + row.ID + '")>修改</a><em></em>'
+                    + '<a href="javascript:void(0);" onclick=ItemDel(' + index + ',"' + row.ID + '")>删除</a><em></em>'
+                    + '<a href="javascript:void(0);" onclick=ItemRefresh(' + index + ',"' + row.ID + '")>刷新</a><em></em></div>'
+                    + '<table id="tbDictItem-' + index + '"></table></div>';
+            },
+            onExpandRow: function (index, row) {
+                $('#tbDictItem-' + index).datagrid({
+                    url: '/DictManager/GetItemAllList',
+                    queryParams: { CategoryID: row.ID, sort: "ItemCode", order: "asc" },
+                    fitColumns: true,
+                    singleSelect: true,
+                    rownumbers: true,
+                    columns: [[
+                        { field: 'ItemCode', title: '明细编号', width: 100 },
+                        { field: 'ItemName', title: '明细名称', width: 100 },
+                        { field: 'Note', title: '备注', width: 100 },
+                        { field: 'Enabled', title: '是否有效', align: 'center', formatter: formatter_valid }
+                    ]],
+                    onResize: function () {
+                        $('#gd_url').datagrid('fixDetailRowHeight', index);
+                    },
+                    onLoadSuccess: function () {
+                        setTimeout(function () {
                             $('#gd_url').datagrid('fixDetailRowHeight', index);
-                        },
-                        onLoadSuccess: function () {
-                            setTimeout(function () {
-                                $('#gd_url').datagrid('fixDetailRowHeight', index);
-                            }, 0);
-                        }
-                    })
-                    $('#gd_url').datagrid('fixDetailRowHeight', index);
-                }
-            });
+                        }, 0);
+                    }
+                })
+                $('#gd_url').datagrid('fixDetailRowHeight', index);
+            }
+        });
 
         //初始化应用选择列表
         $('#sysApp').combobox({
             method: 'get',
-            url: '@Url.Action("GetAllList", "AppManager")',
+            url: config_jcxx_url + '/AppManager/GetAllList',
             editable: false,
             valueField: 'ID',
             textField: 'AppName',
@@ -120,13 +120,13 @@
     }
     //新增
     function Add() {
-        $("#win").OpenWin({ title: "数据字典管理-新增", url: "../DictManager/DictCategoryForm?AppID=" + $("#hfAppID").val(), width: 600, height: 350 });
+        $("#win").OpenWin({ title: "数据字典管理-新增", url: "/DictManager/DictCategoryForm?AppID=" + $("#hfAppID").val(), width: 600, height: 350 });
     }
     //修改
     function Edit() {
         if ($('#gd_url').datagrid('IsSelectedRow')) {
             var row = $('#gd_url').datagrid('getSelected');
-            $("#win").OpenWin({ title: "数据字典管理-编辑", url: "../DictManager/DictCategoryForm?ID=" + row.ID, width: 600, height: 350 });
+            $("#win").OpenWin({ title: "数据字典管理-编辑", url: "/DictManager/DictCategoryForm?ID=" + row.ID, width: 600, height: 350 });
         }
     }
     //删除
@@ -166,13 +166,14 @@
     //新增
     function ItemAdd(TbRowIndex, TbID) {
         $("#win").OpenWin({
-            title: "字典明细管理-新增", url: "../DictManager/DictItemForm?TbID=" + TbID + "&TbRowIndex=" + TbRowIndex, width: 600, height: 400 });
+            title: "字典明细管理-新增", url: "/DictManager/DictItemForm?TbID=" + TbID + "&TbRowIndex=" + TbRowIndex, width: 600, height: 400
+        });
     }
     //修改
     function ItemEdit(TbRowIndex, TbID) {
         if ($('#tbDictItem-' + TbRowIndex).datagrid('IsSelectedRow')) {
             var row = $('#tbDictItem-' + TbRowIndex).datagrid('getSelected');
-            $("#win").OpenWin({ title: "字典明细管理-编辑", url: "../DictManager/DictItemForm?ID=" + row.ID + "&TbID=" + TbID + "&&TbRowIndex=" + TbRowIndex, width: 600, height: 400 });
+            $("#win").OpenWin({ title: "字典明细管理-编辑", url: "/DictManager/DictItemForm?ID=" + row.ID + "&TbID=" + TbID + "&&TbRowIndex=" + TbRowIndex, width: 600, height: 400 });
         }
     }
     //删除
@@ -183,7 +184,7 @@
                     var row = $('#tbDictItem-' + TbRowIndex).datagrid('getSelected');
                     $.DoAjax({
                         needWaiting: true,
-                        url: '@Url.Action("DelItemInfo", "DictManager")',
+                        url: '/DictManager/DelItemInfo',
                         dataParams: { ID: row.ID },
                         successFunc: function (result) {
                             if (result.StatusCode == "200") {

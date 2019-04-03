@@ -8,7 +8,7 @@
     $(function () {
         //初始化表格
         $('#gd_url').InitTreeGird({
-            url: "../DeptManager/GetEasyuiTreeList",
+            url: "/DeptManager/GetEasyuiTreeList",
             idField: 'id',
             treeField: 'text',
             pagination: false,
@@ -74,7 +74,7 @@
     //新增
     function Add() {
         var parentID = $("#hfParentID").val();
-        $("#win").OpenWin({ title: "部门-新增", url: "../DeptManager/DeptForm?ParentID=" + parentID, width: 800, height: 450 });
+        $("#win").OpenWin({ title: "部门-新增", url: "/DeptManager/DeptForm?ParentID=" + parentID, width: 800, height: 450 });
     }
     //修改
     function Edit() {
@@ -82,7 +82,7 @@
             var row = $('#gd_url').treegrid('getSelected');
             if (row.id == "")
                 return;
-            $("#win").OpenWin({ title: "部门-编辑", url: "../DeptManager/DeptForm?ID=" + row.id, width: 800, height: 450 });
+            $("#win").OpenWin({ title: "部门-编辑", url: "/DeptManager/DeptForm?ID=" + row.id, width: 800, height: 450 });
         }
     }
     //删除
@@ -127,7 +127,7 @@
     function TreeNodeEdit() {
         var node = $('#treeDept').tree('getSelected');
         if (node != null)
-            $("#win").OpenWin({ title: "部门-编辑", url: "../DeptManager/DeptForm?ID=" + node.id, width: 800, height: 450 });
+            $("#win").OpenWin({ title: "部门-编辑", url: "/DeptManager/DeptForm?ID=" + node.id, width: 800, height: 450 });
     }
 </script>
 

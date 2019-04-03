@@ -6,7 +6,7 @@
 <script>
     $(function () {
         //初始化表格
-        $('#gd_url').InitGird({ url: "../AppManager/GetGrid" });
+        $('#gd_url').InitGird({ url: "/AppManager/GetGrid" });
 
         InitSize();
 
@@ -42,13 +42,13 @@
     }
     //新增
     function Add() {
-        $("#win").OpenWin({ title: "应用-新增", url: "../AppManager/AppForm", width: 700, height: 350 });
+        $("#win").OpenWin({ title: "应用-新增", url: "/AppManager/AppForm", width: 700, height: 350 });
     }
     //修改
     function Edit() {
         if ($('#gd_url').datagrid('IsSelectedRow')) {
             var row = $('#gd_url').datagrid('getSelected');
-            $("#win").OpenWin({ title: "应用-编辑", url: "../AppManager/AppForm?ID=" + row.ID, width: 700, height: 350 });
+            $("#win").OpenWin({ title: "应用-编辑", url: "/AppManager/AppForm?ID=" + row.ID, width: 700, height: 350 });
         }
     }
     //删除

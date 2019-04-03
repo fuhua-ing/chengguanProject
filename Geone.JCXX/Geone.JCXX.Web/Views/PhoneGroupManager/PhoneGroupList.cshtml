@@ -8,7 +8,7 @@
     $(function () {
 
         //初始化表格
-        $('#gd_url').InitGird({ url: "../PhoneGroupManager/GetGrid" });
+        $('#gd_url').InitGird({ url: "/PhoneGroupManager/GetGrid" });
 
         InitSize();
 
@@ -47,27 +47,27 @@
     function OpenGroupItem() {
         if ($('#gd_url').datagrid('IsSelectedRow')) {
             var row = $('#gd_url').datagrid('getSelected');
-            $("#win").OpenWin({ title: "号码设置", url: "../PhoneGroupManager/PhoneGroupItemList?GroupID=" + row.ID, width: 800, height: 500 });
+            $("#win").OpenWin({ title: "号码设置", url: "/PhoneGroupManager/PhoneGroupItemList?GroupID=" + row.ID, width: 800, height: 500 });
         }
     }
     //角色号码组设置
     function OpenGroupRole() {
         if ($('#gd_url').datagrid('IsSelectedRow')) {
             var row = $('#gd_url').datagrid('getSelected');
-            $("#win").OpenWin({ title: "角色设置", url: "../PhoneGroupManager/RoleGroupForm?GroupID=" + row.ID, width: 800, height: 500 });
+            $("#win").OpenWin({ title: "角色设置", url: "/PhoneGroupManager/RoleGroupForm?GroupID=" + row.ID, width: 800, height: 500 });
         }
     }
 
     //新增
     function Add() {
 
-        $("#win").OpenWin({ title: "短信号码组-新增", url: "../PhoneGroupManager/PhoneGroupForm" , width: 800, height: 450 });
+        $("#win").OpenWin({ title: "短信号码组-新增", url: "/PhoneGroupManager/PhoneGroupForm" , width: 800, height: 450 });
     }
     //修改
     function Edit() {
         if ($('#gd_url').datagrid('IsSelectedRow')) {
             var row = $('#gd_url').datagrid('getSelected');
-            $("#win").OpenWin({ title: "短信号码组-编辑", url: "../PhoneGroupManager/PhoneGroupForm?ID=" + row.ID, width: 800, height: 450 });
+            $("#win").OpenWin({ title: "短信号码组-编辑", url: "/PhoneGroupManager/PhoneGroupForm?ID=" + row.ID, width: 800, height: 450 });
         }
     }
     //删除

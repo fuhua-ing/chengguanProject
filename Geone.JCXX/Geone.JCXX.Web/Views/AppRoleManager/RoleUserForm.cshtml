@@ -75,7 +75,7 @@
         //初始化左侧部门树
         $('#treeDept').tree({
             method: "post",
-            url: "../DeptManager/GetEasyuiTreeList",
+            url: config_jcxx_url + "/DeptManager/GetEasyuiTreeList",
             onSelect: function (node) {
                 Search(false)
             },
@@ -99,7 +99,7 @@
     function LoadUser() {
         //获取用户
         $.DoAjax({
-            url: '@Url.Action("GetAllList", "UserManager")',
+            url: '/UserManager/GetAllList',
             successFunc: function (udata) {
                 var _html = "";
                 $.each(udata, function (index, item) {
@@ -114,7 +114,7 @@
 
                 //获取角色用户
                 $.DoAjax({
-                    url: '@Url.Action("GetRoleUserList", "AppRoleManager")',
+                    url: '/AppRoleManager/GetRoleUserList',
                     dataParams: { RoleID: RoleID },
                     successFunc: function (rudata) {
                         var _selectHtml = "";
@@ -154,7 +154,7 @@
         var queryDept = treenode == null ? "" : treenode.id;
         var queryName = IsNeedName ? $("#searchName").val().trim() : "";
         $.DoAjax({
-             url: '@Url.Action("GetAllList", "UserManager")',
+            url: '/UserManager/GetAllList',
             dataParams: { DeptParentID: queryDept, Like_AccountOrName: queryName },
             successFunc: function (data) {
                 $("#userList li").hide();
@@ -180,8 +180,8 @@
             ids += $(this).attr("id") + ",";
         });
         $.DoAjax({
-            needWaiting:true,
-            url: '@Url.Action("PostRoleUser", "AppRoleManager")',
+            needWaiting: true,
+            url: '/AppRoleManager/PostRoleUser',
             dataParams: { RoleID: RoleID, UserIDs: ids },
             successFunc: function (result) {
                 if (result.StatusCode == "200") {

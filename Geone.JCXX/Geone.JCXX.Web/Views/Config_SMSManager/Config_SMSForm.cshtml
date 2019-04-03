@@ -14,7 +14,7 @@
         //编辑
         if (ID != null && ID != "")
             $.DoAjax({
-                url: '@Url.Action("GetInfo", "Config_SMSManager")',
+                url: '/Config_SMSManager/GetInfo',
                 dataParams: { ID: ID },
                 successFunc: function (result) {
                     $("#fmInfo").form("load", result);
@@ -27,7 +27,7 @@
         if ($("#fmInfo").form('validate'))
             $.DoAjax({
                 needWaiting: true,
-                url: '@Url.Action("PostInfo", "Config_SMSManager")',
+                url: '/Config_SMSManager/PostInfo',
                 dataParams: { info: $("#fmInfo").getJsonValues().jsonStr },
                 successFunc: function (result) {
                     if (result.StatusCode == "200") {

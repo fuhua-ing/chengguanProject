@@ -15,7 +15,6 @@ li {
 /********************************** 菜单 ************************************/
 .index_menu {
     position: fixed;
-    width: 60px;
     height: 100%;
     background: #2C6F9B;
     top: 0px;
@@ -23,67 +22,143 @@ li {
     z-index: 10;
 }
 
-    /********************************** 一级 ************************************/
-    .index_menu .fi-ul {
-        margin: 0px;
-        padding: 0px;
-        list-style: none;
-        border: 0;
+/* nav */
+.nav {
+    position: fixed;
+    height: 100%;
+    background: #2C6F9B;
+    transition: all .3s;
+}
+
+    .nav a {
+        display: block;
+        overflow: hidden;
+        padding-left: 20px;
+        line-height: 46px;
+        max-height: 46px;
+        color: #FFF;
+        transition: all .3s;
     }
 
-        .index_menu .fi-ul .fi-li {
-            height: 50px;
-            position: relative;
-            cursor: pointer;
+        .nav a span {
+            margin-left: 30px;
         }
 
-            .index_menu .fi-ul .fi-li:hover, .index_menu .fi-ul li.on, .index_menu .fi-li:hover .sec-ul {
-                display: block;
-                background-color: #138cda;
-            }
+.nav-item {
+    position: relative;
+}
 
-            .index_menu .fi-ul .fi-li span {
-                background-size: 85% auto !important;
-                width: 50px;
-                height: 50px;
-                display: inline-block;
-                margin-top: 5px;
-                margin-left: 5px;
-            }
+    .nav-item.nav-show {
+        border-bottom: none;
+    }
 
-            .index_menu .fi-ul .fi-li a {
-                color: #FFF;
-                white-space: nowrap;
-                font: 25px/50px "微软雅黑","Microsoft YaHei";
-                padding: 0 0 0 20px;
-                border-bottom: 1px solid #245C80;
-                display: block;
-                color: #DDE7EF;
-            }
-
-    /********************************** 二级 ************************************/
-    .index_menu .sec-ul {
+    .nav-item ul {
         display: none;
-        background: #138cda;
-        width: 150px;
-        position: absolute;
-        top: -1px;
-        left: 60px;
+        background: rgba(0,0,0,.1);
     }
 
-        .index_menu .sec-ul .sec-li {
-            height: 50px;
-            position: relative;
-            border-bottom: 1px solid #347FB1;
+    .nav-item.nav-show ul {
+        display: block;
+    }
+
+    .nav-item > a:before {
+        content: "";
+        position: absolute;
+        left: 0px;
+        width: 2px;
+        height: 46px;
+        background: #34A0CE;
+        opacity: 0;
+        transition: all .3s;
+    }
+
+.nav .nav-icon {
+    font-size: 20px;
+    margin-left: -1px;
+    line-height: 46px;
+    position: absolute;
+}
+
+/*---------------------*/
+.nav-more {
+    font-size: 20px;
+    line-height: 46px;
+    float: right;
+    margin-right: 20px;
+    transition: transform .3s;
+}
+
+/*---------------------*/
+.nav-show, .nav-item > a:hover {
+    color: #FFF;
+    background: rgba(0,0,0,.1);
+}
+
+    .nav-show > a:before, .nav-item > a:hover:before {
+        opacity: 1;
+    }
+
+.nav-item li:hover a {
+    color: #FFF;
+    background: rgba(0, 0, 0,.1);
+}
+
+/* nav-mini */
+.nav-mini.nav {
+    width: 60px;
+}
+
+    .nav-mini.nav .nav-icon {
+        position: inherit;
+        /* margin-left:-2px; */
+    }
+
+    .nav-mini.nav .nav-item > a span {
+        display: none;
+    }
+
+    .nav-mini.nav .nav-more {
+        margin-right: -20px;
+    }
+
+    .nav-mini.nav .nav-item ul {
+        position: absolute;
+        top: 0px;
+        left: 60px;
+        width: 180px;
+        z-index: 99;
+        background: #3C474C;
+        overflow: hidden;
+    }
+
+    .nav-mini.nav .nav-item:hover {
+        background: rgba(255,255,255,.1);
+    }
+
+        .nav-mini.nav .nav-item:hover .nav-item a {
+            color: #FFF;
         }
 
-            .index_menu .sec-ul .sec-li:hover {
-                background: #2fa7f5;
-            }
+        .nav-mini.nav .nav-item:hover a:before {
+            opacity: 1;
+        }
 
-            .index_menu .sec-ul .sec-li a {
-                font: 16px/50px "微软雅黑","Microsoft YaHei";
-            }
+        .nav-mini.nav .nav-item:hover ul {
+            display: block;
+        }
+
+#mini {
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255,255,255,.1);
+    font-size: 20px;
+    line-height: 46px;
+    color: #fff;
+    padding-left: 20px;
+}
+
+    #mini span {
+        margin-left: 20px;
+    }
 
 /********************************** 顶部标题栏 ************************************/
 .index_top {
@@ -101,10 +176,9 @@ li {
 }
 
 .rt_box {
-    position: absolute;
-    right: 70px;
+    float: right;
+    margin-right: 20px;
     top: 0;
-
     z-index: 101;
 }
     /*提醒*/

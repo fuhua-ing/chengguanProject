@@ -15,7 +15,7 @@
         //编辑
         if (ID != null && ID != "") {
             $.DoAjax({
-                url: '@Url.Action("GetInfo", "GridManager")',
+                url: '/GridManager/GetInfo',
                 dataParams: { ID: ID },
                 successFunc: function (result) {
                     $("#fmInfo").form("load", result);
@@ -28,7 +28,7 @@
     function Save() {
         if ($("#fmInfo").form('validate'))
             $.DoAjax({
-                url: '@Url.Action("PostInfo", "GridManager")',
+                url: '/GridManager/PostInfo',
                 dataParams: { info: $("#fmInfo").getJsonValues().jsonStr },
                 successFunc: function (result) {
                     if (result.StatusCode == "200") {

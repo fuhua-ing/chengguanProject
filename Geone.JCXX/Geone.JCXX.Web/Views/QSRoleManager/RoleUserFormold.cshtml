@@ -42,7 +42,7 @@
         //初始化左侧部门树
         $('#treeRoleQS').tree({
             method: "post",
-            url: "../QSRoleManager/GetEasyuiTreeList",
+            url: config_jcxx_url+"/QSRoleManager/GetEasyuiTreeList",
             checkbox: true,
             onCheck: function (node) {
                 var _tree = $('#treeRoleQS').tree('getChecked');

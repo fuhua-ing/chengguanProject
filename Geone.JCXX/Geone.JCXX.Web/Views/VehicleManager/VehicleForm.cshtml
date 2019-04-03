@@ -11,9 +11,9 @@
         InitCombo();
         //编辑
         if (ID != null && ID != "") {
-          
+
             $.DoAjax({
-                url: '@Url.Action("GetInfo", "VehicleManager")',
+                url: '/VehicleManager/GetInfo',
                 dataParams: { ID: ID },
                 successFunc: function (result) {
                     $("#fmInfo").form("load", result);
@@ -32,7 +32,7 @@
         if ($("#fmInfo").form('validate'))
             $.DoAjax({
                 needWaiting: true,
-                url: '@Url.Action("PostInfo", "VehicleManager")',
+                url: '/VehicleManager/PostInfo',
                 dataParams: { info: $("#fmInfo").getJsonValues().jsonStr },
                 successFunc: function (result) {
                     if (result.StatusCode == "200") {
@@ -68,7 +68,7 @@
         //初始化树形选择框
         $('#DeptID').combotree({
             method: "post",
-            url: "../DeptManager/GetEasyuiTreeList?ChoiceAll=0",
+            url: config_jcxx_url+ "/DeptManager/GetEasyuiTreeList?ChoiceAll=0",
             loadFilter: function (data, DeptParentID) {
 
                 return data;

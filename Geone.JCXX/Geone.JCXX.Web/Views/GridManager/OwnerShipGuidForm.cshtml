@@ -17,11 +17,11 @@
             $('#sTree2').tree({
                 method: "post",
                 dnd: true,
-                url: "../GridManager/GetEasyuiTreeList?GridID=" + ID,
+                url: config_jcxx_url + "/GridManager/GetEasyuiTreeList?GridID=" + ID,
                 onDrop: function (targetNode, source, point) {
                     var targetId = $('#sTree2').tree('getNode', targetNode).id;
                     $.ajax({
-                        url: '../GridManager/UpdateTreeByID',
+                        url: config_jcxx_url + '/GridManager/UpdateTreeByID',
                         type: 'post',
                         dataType: 'json',
                         data: {

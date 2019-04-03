@@ -42,7 +42,7 @@
         //初始化左侧部门树
         $('#treeRoleQS').tree({
             method: "post",
-            url: '@Url.Action("GetEasyuiTreeList", "QSRoleManager")',
+            url: config_jcxx_url + '/QSRoleManager/GetEasyuiTreeList',
             checkbox: true,
             onCheck: function (node, isCheck) {
 
@@ -98,7 +98,7 @@
     function LoadRoleGroup() {
         //获取用户
         $.DoAjax({
-            url: '@Url.Action("GetRoleGroupList", "PhoneGroupManager")',
+            url: '/PhoneGroupManager/GetRoleGroupList',
             dataParams: { GroupID: GroupID },
             successFunc: function (udata) {
                 LoadChoiceRoleInfo(udata);
@@ -173,7 +173,7 @@
 
         $.DoAjax({
             needWaiting: true,
-            url: '@Url.Action("PostRoleGroup", "PhoneGroupManager")',
+            url: '/PhoneGroupManager/PostRoleGroup',
             dataParams: { GroupID: GroupID, RoleIDs: ids },
             successFunc: function (result) {
                 if (result.StatusCode == "200") {

@@ -54,7 +54,7 @@
         //初始化左侧树
         $('#treeRoleQS').tree({
             method: "post",
-            url: "../QSRoleManager/GetEasyuiTreeList",
+            url: config_jcxx_url + "/QSRoleManager/GetEasyuiTreeList",
             checkbox: true,
             onCheck: function (node, isCheck) {
 
@@ -111,7 +111,7 @@
     function LoadRoleGroup() {
         //获取用户
         $.DoAjax({
-            url: '@Url.Action("GetRoleCaseList", "CaseClassManager")',
+            url: '/CaseClassManager/GetRoleCaseList',
             dataParams: { ID: CaseClassID },
             successFunc: function (udata) {
                 LoadChoiceRoleInfo(udata);
@@ -186,7 +186,7 @@
 
         $.DoAjax({
             needWaiting: true,
-            url: '@Url.Action("PostRoleCase", "CaseClassManager")',
+            url: '/CaseClassManager/PostRoleCase',
             dataParams: { CaseClassID: CaseClassID, RoleIDs: ids },
             successFunc: function (result) {
                 if (result.StatusCode == "200") {

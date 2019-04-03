@@ -9,7 +9,7 @@
 
     $(function () {
         //初始化表格
-        $('#gd_url').InitGird({ url: "../MonitorManager/GetGrid" });
+        $('#gd_url').InitGird({ url: "/MonitorManager/GetGrid" });
         //初始化数据字典
         $('#MonitorType').InitDictCombobox({ url: Dict_MonitorType});
         InitSize();
@@ -53,13 +53,13 @@
     }
     //新增
     function Add() {
-        $("#win").OpenWin({ title: "设备-新增", url: "../MonitorManager/MonitorForm", width: 700, height: 400 });
+        $("#win").OpenWin({ title: "设备-新增", url: "/MonitorManager/MonitorForm", width: 700, height: 400 });
     }
     //修改
     function Edit() {
         if ($('#gd_url').datagrid('IsSelectedRow')) {
             var row = $('#gd_url').datagrid('getSelected');
-            $("#win").OpenWin({ title: "设备-编辑", url: "../MonitorManager/MonitorForm?ID=" + row.ID, width: 700, height: 400 });
+            $("#win").OpenWin({ title: "设备-编辑", url: "/MonitorManager/MonitorForm?ID=" + row.ID, width: 700, height: 400 });
         }
     }
     //删除

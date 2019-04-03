@@ -6,7 +6,7 @@
 <script>
     $(function () {
         //初始化表格
-        $('#gd_url').InitGird({ url: "../CaseTimeLimitManager/GetGrid" });
+        $('#gd_url').InitGird({ url: "/CaseTimeLimitManager/GetGrid" });
         InitSize();
         //搜索栏切换显示
         $(".StTitle .s_s_morebtn,.s_s_close a").click(function () {
@@ -38,13 +38,13 @@
     }
     //新增
     function Add() {
-        $("#win").OpenWin({ title: "处置时限-新增", url: "../CaseTimeLimitManager/CaseTimeLimitForm", width: 700, height: 400 });
+        $("#win").OpenWin({ title: "处置时限-新增", url: "/CaseTimeLimitManager/CaseTimeLimitForm", width: 700, height: 400 });
     }
     //修改
     function Edit() {
         if ($('#gd_url').datagrid('IsSelectedRow')) {
             var row = $('#gd_url').datagrid('getSelected');
-            $("#win").OpenWin({ title: "处置时限-编辑", url: "../CaseTimeLimitManager/CaseTimeLimitForm?ID=" + row.ID, width: 700, height: 400 });
+            $("#win").OpenWin({ title: "处置时限-编辑", url: "/CaseTimeLimitManager/CaseTimeLimitForm?ID=" + row.ID, width: 700, height: 400 });
         }
     }
     //删除

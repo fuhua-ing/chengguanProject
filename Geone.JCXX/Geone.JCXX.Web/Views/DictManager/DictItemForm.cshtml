@@ -12,7 +12,7 @@
         //初始化应用选择列表
         $('#CategoryID').combobox({
             method: 'get',
-            url: '@Url.Action("GetAllList", "DictManager")',
+            url: config_jcxx_url + '/DictManager/GetAllList',
             editable: false,
             valueField: 'ID',
             textField: 'CategoryName',
@@ -26,7 +26,7 @@
         //编辑
         if (ID != null && ID != "")
             $.DoAjax({
-                url: '@Url.Action("GetItemInfo", "DictManager")',
+                url: '/DictManager/GetItemInfo',
                 dataParams: { ID: ID },
                 successFunc: function (result) {
                     $("#fmInfo").form("load", result);
@@ -39,7 +39,7 @@
         if ($("#fmInfo").form('validate'))
             $.DoAjax({
                 needWaiting: true,
-                 url: '@Url.Action("PostItemInfo", "DictManager")',
+                url: '/DictManager/PostItemInfo',
                 dataParams: { info: $("#fmInfo").getJsonValues().jsonStr },
                 successFunc: function (result) {
                     if (result.StatusCode == "200") {

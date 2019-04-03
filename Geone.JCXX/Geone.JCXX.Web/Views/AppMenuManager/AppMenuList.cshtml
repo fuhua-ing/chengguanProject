@@ -9,7 +9,7 @@
         //初始化应用选择列表
         $('#sysApp').combobox({
             method: 'get',
-            url: '../AppManager/GetAllList',
+            url: config_jcxx_url + '/AppManager/GetAllList',
             editable: false,
             valueField: 'ID',
             textField: 'AppName',
@@ -44,7 +44,7 @@
     function loadTree() {
         $('#treeMenu').tree({
             method: "post",
-            url: "../AppMenuManager/GetEasyuiTreeList",
+            url: config_jcxx_url+ "/AppMenuManager/GetEasyuiTreeList",
             queryParams: $("#queryTab").getJsonValues().jsonData,
             onDblClick: function (node) {
                 //取消选择
@@ -71,7 +71,7 @@
     function Search() {
         var param = $("#queryTab").getJsonValues().jsonData;
         //初始化表格
-        $('#gd_url').InitGird({ url: "../AppMenuManager/GetGrid", queryParams: param });
+        $('#gd_url').InitGird({ url: "/AppMenuManager/GetGrid", queryParams: param });
         InitSize();
     }
     //刷新
@@ -84,13 +84,13 @@
     function Add() {
         var appID = $("#hfAppID").val();
         var parentID = $("#hfParentID").val();
-        $("#win").OpenWin({ title: "菜单-新增", url: "../AppMenuManager/AppMenuForm?AppID=" + appID + "&ParentID=" + parentID, width: 700, height: 400 });
+        $("#win").OpenWin({ title: "菜单-新增", url: "/AppMenuManager/AppMenuForm?AppID=" + appID + "&ParentID=" + parentID, width: 700, height: 400 });
     }
     //修改
     function Edit() {
         if ($('#gd_url').datagrid('IsSelectedRow')) {
             var row = $('#gd_url').datagrid('getSelected');
-            $("#win").OpenWin({ title: "菜单-编辑", url: "../AppMenuManager/AppMenuForm?ID=" + row.ID, width: 700, height: 400 });
+            $("#win").OpenWin({ title: "菜单-编辑", url: "/AppMenuManager/AppMenuForm?ID=" + row.ID, width: 700, height: 400 });
         }
     }
     //删除

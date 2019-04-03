@@ -5,7 +5,7 @@
 <script>
     $(function () {
         //初始化表格
-        $('#gd_url').InitGird({ url: "../Config_SMSManager/GetGrid" });
+        $('#gd_url').InitGird({ url: "/Config_SMSManager/GetGrid" });
         InitSize();
         //搜索栏切换显示
         $(".StTitle .s_s_morebtn,.s_s_close a").click(function () {
@@ -44,13 +44,13 @@
     }
     //新增
     function Add() {
-        $("#win").OpenWin({ title: "短信服务参数-新增", url: "../Config_SMSManager/Config_SMSForm", width: 700, height: 400 });
+        $("#win").OpenWin({ title: "短信服务参数-新增", url: "/Config_SMSManager/Config_SMSForm", width: 700, height: 400 });
     }
     //修改
     function Edit() {
         if ($('#gd_url').datagrid('IsSelectedRow')) {
             var row = $('#gd_url').datagrid('getSelected');
-            $("#win").OpenWin({ title: "短信服务参数-编辑", url: "../Config_SMSManager/Config_SMSForm?ID=" + row.ID, width: 700, height: 400 });
+            $("#win").OpenWin({ title: "短信服务参数-编辑", url: "/Config_SMSManager/Config_SMSForm?ID=" + row.ID, width: 700, height: 400 });
         }
     }
     //删除
