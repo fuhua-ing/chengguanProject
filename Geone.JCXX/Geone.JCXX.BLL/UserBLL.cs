@@ -137,9 +137,9 @@ namespace Geone.JCXX.BLL
             if (!string.IsNullOrEmpty(query.Account))
                 list = list.And(t => t.Account.Eq(query.Account));
             if (!string.IsNullOrEmpty(query.Like_UserName))
-                list = list.And(t => t.UserName.Like(query.Like_UserName));
+                list = list.And(t => t.UserName.Like("%" + query.Like_UserName + "%"));
             if (!string.IsNullOrEmpty(query.Like_Account))
-                list = list.And(t => t.Account.Like(query.Like_Account));
+                list = list.And(t => t.Account.Like("%" + query.Like_Account + "%"));
             if (!string.IsNullOrEmpty(query.Like_AccountOrName))
             {
                 list = list.And();
