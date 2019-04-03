@@ -75,7 +75,7 @@
   },
   {
     "id": "06",
-    "name": "网格管理",
+    "name": "权属管理",
     "url": "/GridManager/GridList?PageType=0",
     "icon": "fa fa-table",
     "children": []
@@ -104,35 +104,43 @@
         "name": "案件权属管理",
         "url": "/CaseClassManager/CaseClassList",
         "icon": "fa-bars"
-      },
+      }  
+    ]
+  },
+ {
+    "id": "08",
+    "name": "短信管理",
+    "url": "",
+    "icon": "fa fa-hourglass-half",
+    "children": [
       {
-        "id": "0707",
+        "id": "0801",
         "name": "短信号码组管理",
         "url": "/PhoneGroupManager/PhoneGroupList",
         "icon": "fa-bars"
       },
       {
-        "id": "0708",
-        "name": "短信服务参数管理",
+        "id": "0802",
+        "name": "服务参数管理",
         "url": "/Config_SMSManager/Config_SMSList",
         "icon": "fa-bars"
       }
     ]
   },
   {
-    "id": "08",
+    "id": "09",
     "name": "时限管理",
     "url": "",
     "icon": "fa fa-hourglass-half",
     "children": [
       {
-        "id": "0801",
+        "id": "0901",
         "name": "平台时限",
         "url": "/CaseLATJManager/CaseLATJList",
         "icon": "fa-bars"
       },
       {
-        "id": "0802",
+        "id": "0902",
         "name": "处置时限",
         "url": "/CaseTimeLimitManager/CaseTimeLimitList",
         "icon": "fa-bars"
