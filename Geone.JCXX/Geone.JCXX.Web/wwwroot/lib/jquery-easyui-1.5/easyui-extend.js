@@ -59,6 +59,8 @@ $.fn.extend({
     InitGird: function (opt) {
         var $gird = $(this);
         var opt = $.extend({
+            //是否全屏显示
+            isMax: true,
             //工具栏ID
             toolbar: '#ToolBar',
             //是否自适应行
@@ -80,7 +82,7 @@ $.fn.extend({
             //在设置分页属性的时候初始化页码
             pageNumber: 1,
             //在设置分页属性的时候初始化页面大小
-            pageSize: 10,
+            pageSize: 20,
             //在设置分页属性的时候 初始化页面大小选择列表
             pageList: [10, 20, 30],
             //如果为true，则显示一个行号列
@@ -94,12 +96,39 @@ $.fn.extend({
             //服务端排序
             remoteSort: false,
         }, opt);
+
+        var w = opt.width;
+        var h = opt.height;
+        opt.width = opt.isMax ? $(window).width() : $(window).width() - w;
+        opt.height = opt.isMax ? $(window).height() : $(window).height() - h;
         opt.url = config_jcxx_url + opt.url;
         $gird.datagrid(opt);
+
+        //窗口尺寸变化
+        $(window).resize(function () {
+            $gird.treegrid('resize', {
+                width: opt.isMax ? $(window).width() : $(window).width() - w,
+                height: opt.isMax ? $(window).height() : $(window).height() - h
+            });
+        });
+        //搜索栏切换显示
+        $(".StTitle .s_s_morebtn,.s_s_close a").click(function () {
+            $(".sipac_rtsearchbar").toggle();
+            $(".sipac_searchBox").toggle();
+            $gird.treegrid('resize', {
+                width: opt.isMax ? $(window).width() : $(window).width() - w,
+                height: opt.isMax ? $(window).height() : $(window).height() - h
+            });
+        });
+      
+
+      
     },
     InitTreeGird: function (opt) {
         var $gird = $(this);
         var opt = $.extend({
+            //是否全屏显示
+            isMax: true,
             //工具栏ID
             toolbar: '#ToolBar',
             //是否自适应行
@@ -121,7 +150,7 @@ $.fn.extend({
             //在设置分页属性的时候初始化页码
             pageNumber: 1,
             //在设置分页属性的时候初始化页面大小
-            pageSize: 10,
+            pageSize: 20,
             //在设置分页属性的时候 初始化页面大小选择列表
             pageList: [10, 20, 30],
             //如果为true，则显示一个行号列
@@ -133,13 +162,17 @@ $.fn.extend({
             //自动行高
             autoRowHeight: false
         }, opt);
+        var w = opt.width;
+        var h = opt.height;
+        opt.width = opt.isMax ? $(window).width() : $(window).width() - w;
+        opt.height = opt.isMax ? $(window).height() : $(window).height() - h;
         opt.url = config_jcxx_url + opt.url;
         $gird.treegrid(opt);
         //窗口尺寸变化
         $(window).resize(function () {
             $gird.treegrid('resize', {
-                width: $(window).width(),
-                height: $(window).height()
+                width: opt.isMax ? $(window).width() : $(window).width() - w,
+                height: opt.isMax ? $(window).height() : $(window).height() - h
             });
         });
         //搜索栏切换显示
@@ -147,8 +180,8 @@ $.fn.extend({
             $(".sipac_rtsearchbar").toggle();
             $(".sipac_searchBox").toggle();
             $gird.treegrid('resize', {
-                width: $(window).width(),
-                height: $(window).height()
+                width: opt.isMax ? $(window).width() : $(window).width() - w,
+                height: opt.isMax ? $(window).height() : $(window).height() - h
             });
         });
     },

@@ -2,6 +2,8 @@
     ViewBag.Title = "角色菜单权限管理";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style>
+</style>
 
 <script>
     var RoleID = getQueryString("RoleID");
@@ -10,13 +12,22 @@
         //初始化表格
         $('#gd_url').InitTreeGird({
             url: "/AppRoleManager/GetRoleMenuTreeGrid",
-            pagination:false,
+            pagination: false,
             queryParams: { RoleID: RoleID },
             idField: 'id',
             treeField: 'text'
         });
-
-       
+        //全选操作
+        $(".layui-unselect").click(function () {
+            if ($(this).hasClass("layui-form-checked")) {
+                $("input:checkbox").prop("checked", false);
+                $(this).removeClass("layui-form-checked");
+            }
+            else {
+                $("input:checkbox").prop("checked", true);
+                $(this).addClass("layui-form-checked");
+            }
+        })
     })
 
     //刷新
@@ -61,10 +72,6 @@
         CheckParent(obj);
     }
 
-    //全选
-    function CheckAll(IsChecked) {
-        $("input:checkbox").prop("checked", IsChecked);
-    }
 
     //保存
     function Save() {
@@ -95,10 +102,9 @@
 <div class="content_grid">
     <div class="StTitle" id="ToolBar">
         <div class="sipac_table_menu">
-            <a href="javascript:void(0);" onclick="CheckAll(true)">全选</a><em></em>
-            <a href="javascript:void(0);" onclick="CheckAll(false)">取消全选</a><em></em>
-            <a href="javascript:void(0);" onclick="Save()">保存</a><em></em>
-            <a href="javascript:void(0);" onclick="Refresh()">刷新</a><em></em>
+            <div class="layui-unselect layui-form-checkbox" lay-skin=""><span>全选</span><i class="fa fa-check"></i></div>
+            <button class="layui-btn layui-btn-warning" onclick="Save()"><i class="fa fa-save"></i>保存</button>
+            <button class="layui-btn layui-btn-info" onclick="Refresh()"><i class="fa fa-refresh "></i>刷新</button>
         </div>
     </div>
 

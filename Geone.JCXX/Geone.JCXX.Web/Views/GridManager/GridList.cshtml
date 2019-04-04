@@ -17,16 +17,14 @@
             $("#btn_delete").show();    //按钮：删除
             $("#btn_import").show();    //按钮：导入
             $("#btn_export").show();    //按钮：导出
-            $("#em_roleset").hide();
-            $("#em_ownership").hide();
+            $("#btn_roleset").hide();   
         } else if (PageType == 1) {     //菜单：网格权属管理
             $("#btn_roleset").show();   //按钮：角色设置
-            $("#btn_ownership").show();
-            $("#em_add").hide();
-            $("#em_edit").hide();
-            $("#em_delete").hide();
-            $("#em_import").hide();
-            $("#em_export").hide();
+            $("#btn_add").hide();
+            $("#btn_edit").hide();
+            $("#btn_delete").hide();
+            $("#btn_import").hide();
+            $("#btn_export").hide();
         } else {
             $.messager.alert('提示', '无法识别页类型！');
             return false;
@@ -36,26 +34,10 @@
         $('#gd_url').InitGird({ url: '/GridManager/GetGrid' });
         //初始化数据字典
         $('#GridType').InitDictCombobox({ url: Dict_GridType });
-        InitSize();
 
-        //搜索栏切换显示
-        $(".StTitle .s_s_morebtn,.s_s_close a").click(function () {
-            $(".sipac_rtsearchbar").toggle();
-            $(".sipac_searchBox").toggle();
-            InitSize();
-        });
-        $(window).resize(function () {
-            InitSize();
-        });
     })
 
-    //初始化尺寸
-    function InitSize() {
-        $('#gd_url').datagrid('resize', {
-            width: $(window).width() - 100,
-            height: $(window).height() - 20
-        });
-    }
+    
 
     //查询
     function Search() {
@@ -109,14 +91,7 @@
     function OpenGroupRole() {
         if ($('#gd_url').datagrid('IsSelectedRow')) {
             var row = $('#gd_url').datagrid('getSelected');
-            $("#win").OpenWin({ title: "网格权属角色", url: "/GridManager/RoleGridForm?ID=" + row.ID, width: 800, height: 500 });
-        }
-    }
-    //网格权属设置
-    function OpenOwnerShip() {
-        if ($('#gd_url').datagrid('IsSelectedRow')) {
-            var row = $('#gd_url').datagrid('getSelected');
-            $("#win").OpenWin({ title: "网格权属多级配置", url: "/GridManager/OwnerShipGuidForm?ID=" + row.ID, width: 800, height: 500 });
+            $("#win").OpenWin({ title: "网格权属角色", url: "/GridManager/RoleGridForm?ID=" + row.ID, width: 800, height: 600 });
         }
     }
     //导入
@@ -142,8 +117,6 @@
 <div class="content_grid">
     <div class="StTitle" id="ToolBar">
         <div class="sipac_rtsearchbar">
-            @*<input class="s_s_text" type="text" value="当前栏目搜索">
-                <input class="StBtn_submit" type="submit" value="查询">*@
             <div class="s_s_mBox">
                 <a title="点击下拉内容较多搜索" class="s_s_morebtn" href="#">
                     <i class="fa fa-chevron-down"></i>
@@ -151,36 +124,27 @@
             </div>
         </div>
         <div class="sipac_searchBox sipac_form" id="queryTab">
-            <table>
-                <tbody>
-                    <tr>
-                        <th>网格编号</th>
-                        <td width="35%"><input class="easyui-textbox" name="Like_GridCode"></td>
-                        <th>网格名称</th>
-                        <td width="35%"><input class="easyui-textbox" name="Like_GridName"></td>
-                    </tr>
-                    <tr>
-                        <th>网格类型</th>
-                        <td width="35%"><input class="easyui-combobox defaultAll" name="GridType" id="GridType"></td>
-                        <th>是否有效</th>
-                        <td width="35%">
-                            <input class="easyui-combobox Dict_Enabled defaultAll" name="Enabled" />
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="s_s_bar"><button class="StBtn StBtn_submit" onclick="Search()">搜索</button></div>
-            <div class="s_s_close"><a href="javascript:void(0);" title="点击收起"><i class="fa fa-chevron-up"></i></a></div>
+            <input type="hidden" name="AppID" id="hfAppID" />
+            <fieldset class="layui-elem-field">
+                <legend>更多查询</legend>
+                <div class="sipac_form_row">
+                    <label>网格类型</label><input class="easyui-combobox defaultAll" name="GridType" id="GridType">
+                    <label>网格编号</label><input class="easyui-textbox" name="Like_GridCode">
+                    <label>网格名称</label><input class="easyui-textbox" name="Like_GridName">
+                    <label>是否有效</label><input class="easyui-combobox Dict_Enabled defaultAll" name="Enabled" />
+                    <button class="layui-btn" onclick="Search()"><i class="fa fa-search"></i>搜索</button>
+                </div>
+                <div class="s_s_close"><a href="javascript:void(0);" title="点击收起"><i class="fa fa-chevron-up"></i></a></div>
+            </fieldset>
         </div>
         <div class="sipac_table_menu">
-            <a style="display:none;" id="btn_add" href="javascript:void(0);" onclick="Add()">新增</a><em id="em_add"></em>
-            <a style="display:none;" id="btn_edit" href="javascript:void(0);" onclick="Edit()">修改</a><em id="em_edit"></em>
-            <a style="display:none;" id="btn_delete" href="javascript:void(0);" onclick="Del()">删除</a><em id="em_delete"></em>
-            <a style="display:none;" id="btn_roleset" href="javascript:void(0);" onclick="OpenGroupRole()">角色设置</a><em id="em_roleset"></em>
-            <a style="display:none;" id="btn_ownership" href="javascript:void(0);" onclick="OpenOwnerShip()">权属设置</a><em id="em_ownership"></em>
-            <a style="display:none;" id="btn_import" href="javascript:void(0);" onclick="Import()">导入</a><em id="em_import"></em>
-            <a style="display:none;" id="btn_export" href="javascript:void(0);" onclick="Export()">导出</a><em id="em_export"></em>
-            <a href="javascript:void(0);" onclick="Refresh()">刷新</a><em></em>
+            <button id="btn_add" class="layui-btn" onclick="Add()"><i class="fa fa-plus"></i>新增</button>
+            <button id="btn_edit" class="layui-btn layui-btn-warning" onclick="Edit()"><i class="fa fa-edit"></i>修改</button>
+            <button id="btn_delete" class="layui-btn layui-btn-danger" onclick="Del()"><i class="fa fa-minus"></i>删除</button>
+            <button id="btn_roleset" class="layui-btn" onclick="OpenGroupRole()"><i class="fa fa-user"></i>角色设置</button>
+            <button id="btn_import" class="layui-btn" onclick="Import()"><i class="fa fa-upload"></i>导入</button>
+            <button id="btn_export" class="layui-btn layui-btn-warning" onclick="Export()"><i class="fa fa-download"></i>导出</button>
+            <button class="layui-btn layui-btn-info" onclick="Refresh()"><i class="fa fa-refresh "></i>刷新</button>
         </div>
     </div>
 

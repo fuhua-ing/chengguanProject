@@ -131,6 +131,73 @@ layui-btn {
 }
 
 
+.layui-form-checkbox, .layui-form-checkbox *, .layui-form-switch {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.layui-form-checkbox {
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+    height: 36px;
+    line-height: 34px;
+    margin-right: 10px;
+    padding-right: 10px;
+    border: 1px solid #d2d2d2;
+    cursor: pointer;
+    font-size: 0;
+    border-radius: 2px;
+    -webkit-transition: .1s linear;
+    transition: .1s linear;
+    box-sizing: border-box;
+    background-color: #fff;
+}
+
+    .layui-form-checkbox:hover {
+        border: 1px solid #c2c2c2
+    }
+
+    .layui-form-checkbox span {
+        padding: 0 10px;
+        height: 100%;
+        font-size: 14px;
+        background-color: #d2d2d2;
+        color: #fff;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    .layui-form-checkbox:hover span {
+        background-color: #c2c2c2
+    }
+
+
+    .layui-form-checkbox i {
+        right: 0;
+        margin-left: 10px;
+        color: #fff;
+        font-size: 20px;
+    }
+
+    .layui-form-checkbox:hover i {
+        color: #c2c2c2
+    }
+
+.layui-form-checked, .layui-form-checked:hover {
+    border-color: #5fb878
+}
+
+    .layui-form-checked span, .layui-form-checked:hover span {
+        background-color: #0dc316
+    }
+
+    .layui-form-checked i, .layui-form-checked:hover i {
+        color: #5fb878
+    }
+
+
 .StBtn {
     border: none;
     font: 16px/30px "微软雅黑","Microsoft YaHei";
@@ -367,6 +434,11 @@ layui-btn {
     width: 200px;
 }
 
+.sipac_form button {
+    margin-top: -4px;
+}
+
+
 .sipac_searchBox .s_input {
     padding: 0 4px;
     border: 1px solid #D4D4D3;
@@ -395,6 +467,7 @@ layui-btn {
     border: 1px solid #e4e4e4;
     background: #f2f2f2;
 }
+
     .layui-elem-field legend {
         margin-left: 20px;
         padding: 0 10px;

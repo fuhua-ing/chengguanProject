@@ -12,26 +12,10 @@
         $('#gd_url').InitGird({ url: "/MonitorManager/GetGrid" });
         //初始化数据字典
         $('#MonitorType').InitDictCombobox({ url: Dict_MonitorType});
-        InitSize();
 
-        //搜索栏切换显示
-        $(".StTitle .s_s_morebtn,.s_s_close a").click(function () {
-            $(".sipac_rtsearchbar").toggle();
-            $(".sipac_searchBox").toggle();
-            InitSize();
-        });
-        $(window).resize(function () {
-            InitSize();
-        });
     })
 
-    //初始化尺寸
-    function InitSize() {
-        $('#gd_url').datagrid('resize', {
-            width: $(window).width() - 100,
-            height: $(window).height() - 20
-        });
-    }
+
     //是否带音柱渲染
     function formatter_IsYZ(value, row, index) {
             if (value.toString() == "1")

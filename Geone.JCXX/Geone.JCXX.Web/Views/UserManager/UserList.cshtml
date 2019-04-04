@@ -5,6 +5,7 @@
 <script>
 
     $(function () {
+        $(".content_grid_lft").height($(window).height());
         //初始化左侧部门树
         $('#treeDept').tree({
             method: "post",
@@ -23,30 +24,12 @@
         });
 
         //初始化表格
-        $('#gd_url').InitGird({ url: "/UserManager/GetGrid" });
-
-        InitSize();
-
-        //搜索栏切换显示
-        $(".StTitle .s_s_morebtn,.s_s_close a").click(function () {
-            $(".sipac_rtsearchbar").toggle();
-            $(".sipac_searchBox").toggle();
-            InitSize();
-        });
+        $('#gd_url').InitGird({ url: "/UserManager/GetGrid", isMax: false, width: 210,height:0 });
 
         $(window).resize(function () {
-            InitSize();
+            $(".content_grid_lft").height($(window).height());
         });
     })
-
-    //初始化尺寸
-    function InitSize() {
-        $(".content_grid_lft").height($(window).height());
-        $('#gd_url').datagrid('resize', {
-            width: $(window).width() - 210,
-            height: $(window).height()
-        });
-    }
 
     //新增
     function Add() {
@@ -151,7 +134,7 @@
             <button class="layui-btn" onclick="Add()"><i class="fa fa-plus"></i>新增</button>
             <button class="layui-btn layui-btn-warning" onclick="Edit()"><i class="fa fa-edit"></i>修改</button>
             <button class="layui-btn layui-btn-danger" onclick="Del()"><i class="fa fa-minus"></i>删除</button>
-            <button class="layui-btn layui-btn-warning" onclick="PwdReset()"><i class="fa fa-edit"></i>密码重置</button>
+            <button class="layui-btn layui-btn-warning" onclick="PwdReset()"><i class="fa fa-key"></i>密码重置</button>
             <button class="layui-btn layui-btn-info" onclick="Refresh()"><i class="fa fa-refresh "></i>刷新</button>
         </div>
     </div>

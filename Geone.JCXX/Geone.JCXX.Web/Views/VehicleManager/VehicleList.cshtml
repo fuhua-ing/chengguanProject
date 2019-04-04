@@ -7,7 +7,7 @@
 
 <script>
     $(function () {
-
+        $(".content_grid_lft").height($(window).height());
         $('#treeDept').tree({
             method: "post",
             url: config_jcxx_url+ "/DeptManager/GetEasyuiTreeList",
@@ -35,28 +35,13 @@
         });
 
         //初始化表格
-        $('#gd_url').InitGird({ url: "/VehicleManager/GetGrid" });
-
-        InitSize();
+        $('#gd_url').InitGird({ url: "/VehicleManager/GetGrid", isMax: false, width: 210, height: 0 });
         InitCombo();
-        //搜索栏切换显示
-        $(".StTitle .s_s_morebtn,.s_s_close a").click(function () {
-            $(".sipac_rtsearchbar").toggle();
-            $(".sipac_searchBox").toggle();
-            InitSize();
-        });
         $(window).resize(function () {
-            InitSize();
+            $(".content_grid_lft").height($(window).height());
         });
     })
 
-    //初始化尺寸
-    function InitSize() {
-        $(".content_grid_lft").height($(window).height());
-        $('#gd_url').datagrid('resize', {
-            width: $(window).width() - 210
-        });
-    }
     function InitCombo() {
         var Dict_VehicleType = '@Dict_VehicleType';
         var Dict_CarType = '@Dict_CarType';

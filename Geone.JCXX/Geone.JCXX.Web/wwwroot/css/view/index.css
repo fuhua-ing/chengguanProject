@@ -20,7 +20,7 @@ li {
     left: 0px;
     z-index: 10;
     height: 100%;
-    background: #428bca;
+    background: #fff;
     transition: all .3s;
 }
 
@@ -30,7 +30,6 @@ li {
         padding-left: 20px;
         line-height: 46px;
         max-height: 46px;
-        color: #FFF;
         transition: all .3s;
     }
 
@@ -48,12 +47,12 @@ li {
 
     .nav-item ul {
         display: none;
-        background: rgba(0,0,0,.1);
+        background: #f3ece2;
     }
-
-    .nav-item.nav-show ul {
-        display: block;
-    }
+      
+        .nav-item.nav-show ul {
+            display: block;
+        }
 
     .nav-item > a:before {
         content: "";
@@ -83,9 +82,10 @@ li {
 }
 
 /*---------------------*/
-.nav-show, .nav-item > a:hover {
-    color: #FFF;
-    background: rgba(0,0,0,.1);
+.nav-show , .nav-show a, .nav-item > a:hover {
+    color: #fff;
+    background: #f0ad4e;
+    opacity: 1;
 }
 
     .nav-show > a:before, .nav-item > a:hover:before {
@@ -93,8 +93,8 @@ li {
     }
 
 .nav-item li:hover a {
-    color: #FFF;
-    background: rgba(0, 0, 0,.1);
+    color: #fff;
+    background: #f0ad4e;
 }
 
 /* nav-mini */
@@ -121,16 +121,16 @@ li {
         left: 60px;
         width: 180px;
         z-index: 99;
-        background: #3C474C;
         overflow: hidden;
     }
 
     .nav-mini.nav .nav-item:hover {
+        color: #fff;
         background: rgba(255,255,255,.1);
     }
 
         .nav-mini.nav .nav-item:hover .nav-item a {
-            color: #FFF;
+            color: #fff;
         }
 
         .nav-mini.nav .nav-item:hover a:before {
@@ -143,29 +143,29 @@ li {
 
 #mini {
     cursor: pointer;
-    border-bottom: 1px solid rgba(255,255,255,.1);
-    
-    line-height: 46px;
-    color: #fff;
+    border-bottom: 1px solid #D4D4D4;
+    line-height: 40px;
     padding-left: 20px;
 }
+
     #mini i {
         font-size: 20px;
     }
+
     #mini span {
         margin-left: 20px;
     }
 
 /********************************** 顶部标题栏 ************************************/
 .index_top {
-    background: #F9F9F9;
+    background: #418aca;
     min-height: 50px;
     border-bottom: 1px solid #DDDDDD;
 }
 
 .lft_title {
     font: 18px/40px "微软雅黑","Microsoft YaHei";
-    color: #444444;
+    color: #fff;
     padding: 5px 20px;
     width: 300px;
     float: left;
@@ -185,6 +185,7 @@ li {
         cursor: pointer;
         position: relative;
         top: 5px;
+        color:#fff;
     }
 
     /*提醒的红点*/
@@ -206,13 +207,16 @@ li {
 
     /*用户头像*/
     .rt_box .avatar {
-        border-left: 1px solid #DDDDDD;
+        border-left: 1px solid #fff;
         display: inline-block;
-        width: 40px;
+        width: 30px;
+        height: 30px;
         background: url(../../images/avatar.gif);
-        background-size: 40px 40px;
+        background-size: 30px 30px;
         background-repeat: no-repeat;
         cursor: pointer;
+        line-height: 30px;
+        border-radius: 20px;
     }
 
         .rt_box .avatar img {
@@ -226,6 +230,7 @@ li {
     .rt_box .username {
         display: inline-block;
         line-height: 50px;
+        color:#fff;
     }
 
     /*更多菜单*/
@@ -236,6 +241,7 @@ li {
         margin-left: 5px;
         position: relative;
         top: 5px;
+        color: #fff;
     }
 
 .dropdown_nav {
@@ -349,3 +355,8 @@ li {
             padding: 0 2px;
             font-size: 25px;
         }
+
+.tabs li.tabs-selected {
+    border: none;
+    border-bottom: 2.5px solid #2196F3;
+}

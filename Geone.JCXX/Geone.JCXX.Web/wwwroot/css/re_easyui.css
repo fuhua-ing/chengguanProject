@@ -22,7 +22,7 @@
     border-right: 2px solid #f6f6f6;
     vertical-align: top;
     margin: 0 1px -1px 0;
-    border-top: 2px solid transparent;
+    border-bottom: 2px solid transparent;
 }
 
     .tabs li.tabs-selected a.tabs-inner {

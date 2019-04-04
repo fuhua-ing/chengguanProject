@@ -35,7 +35,7 @@
     "children": []
   },
   {
-    "id": "04",
+    "id": "0401",
     "name": "节假日管理",
     "url": "/HolidayManager/HolidayList",
     "icon": "fa-calendar",
@@ -75,14 +75,14 @@
   },
   {
     "id": "06",
-    "name": "权属管理",
+    "name": "网格管理",
     "url": "/GridManager/GridList?PageType=0",
     "icon": "fa fa-table",
     "children": []
   },
   {
     "id": "07",
-    "name": "地图管理",
+    "name": "权属管理",
     "url": "",
     "icon": "fa-globe",
     "children": [

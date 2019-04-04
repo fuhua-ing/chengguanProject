@@ -11,22 +11,10 @@
 <script>
 
     $(function () {
-
         //初始化表格
         $('#gd_url').InitGird({ url: "/CaseClassManager/GetGrid" });
 
-        InitSize();
         InitCombo();
-        //搜索栏切换显示
-        $(".StTitle .s_s_morebtn,.s_s_close a").click(function () {
-            $(".sipac_rtsearchbar").toggle();
-            $(".sipac_searchBox").toggle();
-            InitSize();
-        });
-
-        $(window).resize(function () {
-            InitSize();
-        });
 
         $('#CaseType').combobox({
             onChange: function (newValue, oldValue) {
@@ -89,14 +77,7 @@
         }
 
     }
-    //初始化尺寸
-    function InitSize() {
-        $(".content_grid_lft").height($(window).height() - 20);
-        $('#gd_url').datagrid('resize', {
-            width: $(window).width() -100,
-            height: $(window).height() - 20
-        });
-    }
+
     //查询
     function Search() {
         var param = $("#queryTab").getJsonValues().jsonData;
@@ -113,7 +94,7 @@
     function OpenGroupRole() {
         if ($('#gd_url').datagrid('IsSelectedRow')) {
             var row = $('#gd_url').datagrid('getSelected');
-            $("#win").OpenWin({ title: "案件权属角色", url: "/CaseClassManager/RoleCaseForm?CaseClassID=" + row.ID, width: 800, height: 500 });
+            $("#win").OpenWin({ title: "案件权属角色", url: "/CaseClassManager/RoleCaseForm?CaseClassID=" + row.ID, width: 800, height: 600 });
         }
     }
 
@@ -178,7 +159,7 @@
 </script>
 <div id="win"></div>
 
-<div class="content_grid_rt content_grid">
+<div class="content_grid">
     <div class="StTitle" id="ToolBar">
         <div class="sipac_rtsearchbar">
             <div class="s_s_mBox">
@@ -189,60 +170,40 @@
         </div>
         <div class="sipac_searchBox sipac_form" id="queryTab">
             <input type="hidden" id="hfParentID" name="ParentID" />
-            <table>
-                <tbody>
-                    <tr>
-                        <th>类型</th>
-                        <td width="25%">
-                            <input class="easyui-combobox defaultAll" id="CaseType" name="CaseType" />
-                        </td>
-                        <th>大类</th>
-                        <td width="25%">
-                            <input class="easyui-combobox defaultAll" id="CaseClassI" name="CaseClassI" />
-                        </td>
-                        <th>小类</th>
-                        <td width="25%">
-                            <input class="easyui-combobox defaultAll" id="CaseClassII" name="CaseClassII" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>子类</th>
-                        <td width="25%">
-                            <input class="easyui-combobox defaultAll" id="CaseClassIII" name="CaseClassIII" />
-                        </td>
-                        <th>权属类型</th>
-                        <td width="25%">
-                            <input class="easyui-combobox defaultAll" id="RoleType" name="RoleType" />
-                        </td>
-
-                        <th>是否有效</th>
-                        <td>
-                            <input class="easyui-combobox Dict_Enabled defaultAll" name="Enabled" />
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="s_s_bar"><button class="StBtn StBtn_submit" onclick="Search()">搜索</button></div>
-            <div class="s_s_close"><a href="javascript:void(0);" title="点击收起"><i class="fa fa-chevron-up"></i></a></div>
+            <fieldset class="layui-elem-field">
+                <legend>更多查询</legend>
+                <div class="sipac_form_row">
+                    <label>案件类型</label> <input class="easyui-combobox defaultAll" id="CaseType" name="CaseType" />
+                    <label>案件大类</label> <input class="easyui-combobox defaultAll" id="CaseClassI" name="CaseClassI" />
+                    <label>案件小类</label> <input class="easyui-combobox defaultAll" id="CaseClassII" name="CaseClassII" />
+                </div>
+                <div class="sipac_form_row">
+                    <label>案件子类</label>  <input class="easyui-combobox defaultAll" id="CaseClassIII" name="CaseClassIII" />
+                    <label>权属类型</label> <input class="easyui-combobox defaultAll" id="RoleType" name="RoleType" />
+                    <label>是否有效</label> <input class="easyui-combobox Dict_Enabled defaultAll" name="Enabled" />
+                    <button class="layui-btn" onclick="Search()"><i class="fa fa-search"></i>搜索</button>
+                </div>
+                <div class="s_s_close"><a href="javascript:void(0);" title="点击收起"><i class="fa fa-chevron-up"></i></a></div>
+            </fieldset>
         </div>
         <div class="sipac_table_menu">
-            <a href="javascript:void(0);" onclick="Add()">新增</a><em></em>
-            <a href="javascript:void(0);" onclick="Edit()">修改</a><em></em>
-            <a href="javascript:void(0);" onclick="Del()">删除</a><em></em>
-            <a href="javascript:void(0);" onclick="OpenGroupRole()">角色设置</a><em></em>
-            <a href="javascript:void(0);" onclick="Import()">导入</a><em></em>
-            <a href="javascript:void(0);" onclick="Export()">导出</a><em></em>
-            <a href="javascript:void(0);" onclick="Refresh()">刷新</a><em></em>
+            <button class="layui-btn" onclick="Add()"><i class="fa fa-plus"></i>新增</button>
+            <button class="layui-btn layui-btn-warning" onclick="Edit()"><i class="fa fa-edit"></i>修改</button>
+            <button class="layui-btn layui-btn-danger" onclick="Del()"><i class="fa fa-minus"></i>删除</button>
+            <button class="layui-btn layui-btn-warning" onclick="OpenGroupRole()"><i class="fa fa-user"></i>角色设置</button>
+            <button class="layui-btn" onclick="Import()"><i class="fa fa-upload"></i>导入</button>
+            <button class="layui-btn layui-btn-warning" onclick="Export()"><i class="fa fa-download"></i>导出</button>
+            <button class="layui-btn layui-btn-info" onclick="Refresh()"><i class="fa fa-refresh "></i>刷新</button>
         </div>
     </div>
 
     <table id="gd_url">
         <thead>
             <tr>
-                <th data-options="field:'CaseTypeDesc',width:10">类型</th>
-                <th data-options="field:'CaseClassIDesc',width:15">大类</th>
-                <th data-options="field:'CaseClassIIDesc',width:15">小类</th>
-                <th data-options="field:'CaseClassIIIDesc',width:15">子类</th>
+                <th data-options="field:'CaseTypeDesc',width:10">案件类型</th>
+                <th data-options="field:'CaseClassIDesc',width:15">案件大类</th>
+                <th data-options="field:'CaseClassIIDesc',width:15">案件小类</th>
+                <th data-options="field:'CaseClassIIIDesc',width:15">案件子类</th>
                 <th data-options="field:'RoleCount',width:10,align:'center',formatter:formatter_count">角色(个)</th>
                 <th data-options="field:'RoleTypeDesc',width:10">案件权属类型</th>
                 <th data-options="field:'NeedGrid',width:10,align:'center',formatter:formatter_YesOrNo">是否需要配置网格</th>

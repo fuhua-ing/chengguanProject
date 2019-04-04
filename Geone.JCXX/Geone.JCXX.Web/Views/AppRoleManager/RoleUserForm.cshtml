@@ -52,7 +52,7 @@
 
             #userList li.selected a {
                 border: 1px solid #2c6f9b;
-                padding: 0 0px;
+                padding: 0;
             }
 
             #userList li.selected i.select {
@@ -85,6 +85,17 @@
                 $("#userList li").show();
             }
         });
+        //全选操作
+        $(".layui-unselect").click(function () {
+            if ($(this).hasClass("layui-form-checked")) {
+                $("#userList li:not(:hidden)").removeClass("selected");
+                $(this).removeClass("layui-form-checked");
+            }
+            else {
+                $("#userList li:not(:hidden)").addClass("selected");
+                $(this).addClass("layui-form-checked");
+            }
+        })
 
         LoadUser();
 
@@ -165,14 +176,6 @@
         });
     }
 
-    //全选
-    function CheckAll(IsChecked) {
-        if (IsChecked)
-            $("#userList li:not(:hidden)").addClass("selected");
-        else
-            $("#userList li:not(:hidden)").removeClass("selected");
-    }
-
     //保存
     function Save() {
         var ids = "";
@@ -209,9 +212,8 @@
             <input class="StBtn_submit" type="button" value="查询" onclick="Search(true) ">
         </div>
         <div class="sipac_table_menu">
-            <a href="javascript:void(0);" onclick="CheckAll(true)">全选</a><em></em>
-            <a href="javascript:void(0);" onclick="CheckAll(false)">取消全选</a><em></em>
-            <a href="javascript:void(0);" onclick="Save()">保存</a><em></em>
+            <div class="layui-unselect layui-form-checkbox" style="margin-left:15px;"><span>全选</span><i class="fa fa-check"></i></div>
+            <button class="layui-btn layui-btn-warning" onclick="Save()"><i class="fa fa-save"></i>保存</button>
         </div>
     </div>
     <ul id="userList"></ul>

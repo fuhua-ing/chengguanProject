@@ -87,6 +87,19 @@
                 LoadRoleGroup();
             }
         });
+        //全选操作
+        $(".layui-unselect").click(function () {
+            if ($(this).hasClass("layui-form-checked")) {
+                CheckAll(false);
+                $(this).removeClass("layui-form-checked");
+            }
+            else {
+                CheckAll(true);
+                $(this).addClass("layui-form-checked");
+            }
+        });
+
+
         InitSize();
 
         $(window).resize(function () {
@@ -141,10 +154,10 @@
     }
     //初始化尺寸
     function InitSize() {
-        $('.content_grid_lft').height($(window).height() - 20);
+        $('.content_grid_lft').height($(window).height());
         $('.content_grid_lft').width(280);
-        $('.content_grid_rt').height($(window).height() - 20);
-        $('.content_grid_rt').width($(window).width() - 330);
+        $('.content_grid_rt').height($(window).height() );
+        $('.content_grid_rt').width($(window).width() - 300);
     }
 
     //全选
@@ -207,11 +220,9 @@
             <input class="s_s_text" type="text" id="searchName" placeholder="输入角色名">
             <input class="StBtn_submit" type="button" value="查询" onclick="Search() ">
         </div>
-        <div class="sipac_table_menu" style="width:100%;">
-
-            <a href="javascript:void(0);" onclick="CheckAll(true)">全选</a><em></em>
-            <a href="javascript:void(0);" onclick="CheckAll(false)">取消全选</a><em></em>
-            <a href="javascript:void(0);" onclick="Save()">保存</a><em></em>
+        <div class="sipac_table_menu" style="width:100%;height:auto">
+            <div class="layui-unselect layui-form-checkbox"><span>全选</span><i class="fa fa-check"></i></div>
+            <button class="layui-btn layui-btn-warning" onclick="Save()"><i class="fa fa-save"></i>保存</button>
         </div>
     </div><br />
     <ul id="treeRoleQS"></ul>
