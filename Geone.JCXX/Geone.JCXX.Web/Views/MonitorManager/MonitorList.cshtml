@@ -101,8 +101,6 @@
 <div class="content_grid">
     <div class="StTitle" id="ToolBar">
         <div class="sipac_rtsearchbar">
-            @*<input class="s_s_text" type="text" value="当前栏目搜索">
-                <input class="StBtn_submit" type="submit" value="查询">*@
             <div class="s_s_mBox">
                 <a title="点击下拉内容较多搜索" class="s_s_morebtn" href="#">
                     <i class="fa fa-chevron-down"></i>
@@ -110,30 +108,23 @@
             </div>
         </div>
         <div class="sipac_searchBox sipac_form" id="queryTab">
-            <table>
-                <tbody>
-                    <tr>
-                        <th>设备类型</th>
-                        <td width="35%"><input class="easyui-combobox defaultAll" name="MonitorType" id="MonitorType"></td>
-                        <th>设备名称</th>
-                        <td width="35%"><input class="easyui-textbox" name="Like_MonitorName"></td>
-                    </tr>
-                    <tr>
-                        <th>是否有效</th>
-                        <td colspan="3">
-                            <input class="easyui-combobox Dict_Enabled defaultAll" name="Enabled" />
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="s_s_bar"><button class="StBtn StBtn_submit" onclick="Search()">搜索</button></div>
-            <div class="s_s_close"><a href="javascript:void(0);" title="点击收起"><i class="fa fa-chevron-up"></i></a></div>
+            <input type="hidden" id="hfParentID" />
+            <fieldset class="layui-elem-field">
+                <legend>更多查询</legend>
+                <div class="sipac_form_row">
+                    <label>设备类型</label><input class="easyui-combobox defaultAll" name="MonitorType" id="MonitorType">
+                    <label>设备名称</label><input class="easyui-textbox" name="Like_MonitorName">
+                    <label>是否有效</label><input class="easyui-combobox Dict_Enabled defaultAll" name="Enabled" />
+                    <button class="layui-btn" onclick="Search()"><i class="fa fa-search"></i>搜索</button>
+                </div>
+                <div class="s_s_close"><a href="javascript:void(0);" title="点击收起"><i class="fa fa-chevron-up"></i></a></div>
+            </fieldset>
         </div>
         <div class="sipac_table_menu">
-            <a href="javascript:void(0);" onclick="Add()">新增</a><em></em>
-            <a href="javascript:void(0);" onclick="Edit()">修改</a><em></em>
-            <a href="javascript:void(0);" onclick="Del()">删除</a><em></em>
-            <a href="javascript:void(0);" onclick="Refresh()">刷新</a><em></em>
+            <button class="layui-btn" onclick="Add()"><i class="fa fa-plus"></i>新增</button>
+            <button class="layui-btn layui-btn-warning" onclick="Edit()"><i class="fa fa-edit"></i>修改</button>
+            <button class="layui-btn layui-btn-danger" onclick="Del()"><i class="fa fa-minus"></i>删除</button>
+            <button class="layui-btn layui-btn-info" onclick="Refresh()"><i class="fa fa-refresh "></i>刷新</button>
         </div>
     </div>
 

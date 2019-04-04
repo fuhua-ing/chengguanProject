@@ -52,10 +52,9 @@
 
     //初始化尺寸
     function InitSize() {
-        $(".content_grid_lft").height($(window).height() - 20);
+        $(".content_grid_lft").height($(window).height());
         $('#gd_url').datagrid('resize', {
-            width: $(window).width() - 300,
-            height: $(window).height() - 20
+            width: $(window).width() - 210
         });
     }
     function InitCombo() {
@@ -147,47 +146,27 @@
             </div>
         </div>
         <div class="sipac_searchBox sipac_form" id="queryTab">
-            <table>
-                <tbody>
-                    <tr>
-                        <th>车牌号</th>
-
-                        <td width="35%">
-                            <input type="hidden" id="DeptID" name="DeptID" />
-                            <input class="easyui-textbox" name="Like_CarNo">
-                        </td>
-                        <th>GPS设备码</th>
-                        <td width="35%">
-                            <input class="easyui-textbox" name="Like_GPRS">
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>设备类型</th>
-                        <td width="35%">
-                            <input class="easyui-combobox defaultAll" id="VehicleType" name="VehicleType" />
-                        </td>
-                        <th>车辆类型</th>
-                        <td width="35%">
-
-                            <input class="easyui-combobox defaultAll" id="CarType" name="CarType" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>是否有效</th>
-                        <td colspan="3">
-                            <input class="easyui-combobox Dict_Enabled defaultAll" name="Enabled" />
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="s_s_bar"><button class="StBtn StBtn_submit" onclick="Search()">搜索</button></div>
-            <div class="s_s_close"><a href="javascript:void(0);" title="点击收起"><i class="fa fa-chevron-up"></i></a></div>
+            <fieldset class="layui-elem-field">
+                <legend>更多查询</legend>
+                <input type="hidden" id="DeptID" name="DeptID" />
+                <div class="sipac_form_row">
+                    <label>车牌号</label><input class="easyui-textbox" name="Like_CarNo">
+                    <label>GPS设备码</label><input class="easyui-textbox" name="Like_GPRS">
+                    <label>设备类型</label><input class="easyui-combobox defaultAll" id="VehicleType" name="VehicleType" />
+                </div>
+                <div class="sipac_form_row">
+                    <label>车辆类型</label> <input class="easyui-combobox defaultAll" id="CarType" name="CarType" />
+                    <label>是否有效</label><input class="easyui-combobox Dict_Enabled defaultAll" name="Enabled" />
+                    <button class="layui-btn" onclick="Search()"><i class="fa fa-search"></i>搜索</button>
+                </div>
+                <div class="s_s_close"><a href="javascript:void(0);" title="点击收起"><i class="fa fa-chevron-up"></i></a></div>
+            </fieldset>
         </div>
         <div class="sipac_table_menu">
-            <a href="javascript:void(0);" onclick="Add()">新增</a><em></em>
-            <a href="javascript:void(0);" onclick="Edit()">修改</a><em></em>
-            <a href="javascript:void(0);" onclick="Del()">删除</a><em></em>
-            <a href="javascript:void(0);" onclick="Refresh()">刷新</a><em></em>
+            <button class="layui-btn" onclick="Add()"><i class="fa fa-plus"></i>新增</button>
+            <button class="layui-btn layui-btn-warning" onclick="Edit()"><i class="fa fa-edit"></i>修改</button>
+            <button class="layui-btn layui-btn-danger" onclick="Del()"><i class="fa fa-minus"></i>删除</button>
+            <button class="layui-btn layui-btn-info" onclick="Refresh()"><i class="fa fa-refresh "></i>刷新</button>
         </div>
     </div>
 

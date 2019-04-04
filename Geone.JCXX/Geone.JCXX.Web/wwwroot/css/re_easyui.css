@@ -1,5 +1,6 @@
 ﻿.tabs-header, .tabs-tool {
     background: none;
+    padding-top: 0;
 }
 
     .tabs-header .tabs {
@@ -30,7 +31,7 @@
 
     .tabs li.tabs-selected {
         background-color: #f6f6f6;
-        border-top: 2px solid #2c6f9b;
+        border-top: 2px solid #2196F3;
     }
 
         .tabs li.tabs-selected a.tabs-inner {
@@ -53,6 +54,10 @@
             background: none;
             color: #000;
         }
+
+.tabs-panels {
+    padding: 0 10px;
+}
 /**************************************窗体样式 begin**************************************/
 .window-shadow {
     display: none !important;
@@ -151,8 +156,9 @@
 }
 
 .datagrid-header, .datagrid-td-rownumber {
-    background: none;
+    background: #f2f2f2;
 }
+
 
 .datagrid-header-rownumber, .datagrid-cell-rownumber {
     padding: 10px 0;
@@ -162,12 +168,16 @@
     background: inherit;
 }
 
+.datagrid-row-over {
+    background: #b8dbfc;
+}
+
 .datagrid-row-selected {
-    background: #509ecf;
-    color: #fff;
+    background: #418aca;
 }
 
     .datagrid-row-selected .datagrid-cell-rownumber {
+        background: #418aca;
         color: #fff;
     }
 
@@ -183,37 +193,28 @@
     border-radius: .25em;
 }
 
+    .label[href]:focus, .label[href]:hover {
+        opacity: 0.8;
+    }
+
 .label-success {
     background-color: #5cb85c
 }
 
-    .label-success[href]:focus, .label-success[href]:hover {
-        background-color: #449d44
-    }
 
 .label-info {
     background-color: #5bc0de
 }
 
-    .label-info[href]:focus, .label-info[href]:hover {
-        background-color: #31b0d5
-    }
-
 .label-warning {
     background-color: #f0ad4e
 }
 
-    .label-warning[href]:focus, .label-warning[href]:hover {
-        background-color: #ec971f
-    }
 
 .label-danger {
     background-color: #d9534f
 }
 
-    .label-danger[href]:focus, .label-danger[href]:hover {
-        background-color: #c9302c
-    }
 /**************************************表格datagrid样式 end**************************************/
 /**************************************分页pagination样式 begin**************************************/
 .pagination {

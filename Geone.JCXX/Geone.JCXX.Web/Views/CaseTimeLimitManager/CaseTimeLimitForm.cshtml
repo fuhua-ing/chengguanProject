@@ -48,53 +48,53 @@
 
 <form id="fmInfo" style="overflow: hidden;">
     <input name="ID" type="hidden" />
-    <div class="easyui-from-row">
-        <div class="easyui-from-row-col6">
+    <div class="easyui-form-row">
+        <div class="easyui-form-row-col6">
             <label class="easyui-form-label">*节点类型：</label>
-            <div class="easyui-from-row-item">
+            <div class="easyui-form-row-item">
                 <input class="easyui-textbox" name="NodeType" data-options="required:true" style="width:100%" />
             </div>
         </div>
-        <div class="easyui-from-row-col6">
+        <div class="easyui-form-row-col6">
             <label class="easyui-form-label">*节点类型描述：</label>
-            <div class="easyui-from-row-item">
+            <div class="easyui-form-row-item">
                 <input class="easyui-textbox" name="NodeTypeDesc" data-options="required:true" style="width:100%" />
             </div>
         </div>
     </div>
-    <div class="easyui-from-row">
-        <div class="easyui-from-row-col6">
+    <div class="easyui-form-row">
+        <div class="easyui-form-row-col6">
             <label class="easyui-form-label">*时限：</label>
-            <div class="easyui-from-row-item">
+            <div class="easyui-form-row-item">
                 <input class="easyui-numberbox" name="TimeLimit" data-options="required:true,prompt:'仅限输入数字',min:0,max:2147483647" style="width:100%" />
             </div>
         </div>
-        <div class="easyui-from-row-col6">
+        <div class="easyui-form-row-col6">
             <label class="easyui-form-label">*时限描述：</label>
-            <div class="easyui-from-row-item">
+            <div class="easyui-form-row-item">
                 <input class="easyui-textbox" name="TimeLimitDesc" data-options="required:true" style="width:100%" />
             </div>
         </div>
     </div>
-    <div class="easyui-from-row">
-        <div class="easyui-from-row-col6">
+    <div class="easyui-form-row">
+        <div class="easyui-form-row-col6">
             <label class="easyui-form-label">是否有效：</label>
-            <div class="easyui-from-row-item">
+            <div class="easyui-form-row-item">
                 <input class="easyui-combobox Dict_Enabled" name="Enabled" style="width:100%" value="1" />
             </div>
         </div>
     </div>
-    <div class="easyui-from-row">
+    <div class="easyui-form-row">
         <label class="easyui-form-label">备注：</label>
-        <div class="easyui-from-row-item">
+        <div class="easyui-form-row-item">
             <input class="easyui-textbox" name="Note" data-options="multiline:true" style="width:100%;height:80px" />
         </div>
     </div>
-    <div class="easyui-from-row">
+    <div class="easyui-form-row">
         <label class="easyui-form-label">&nbsp;</label>
-        <div class="easyui-from-row-item">
-            <input type="button" class="StBtn StBtn_submit" onclick="Save()" value="保存" />
-            <input type="button" class="StBtn StBtn_cancel" onclick="Cancel()" value="取消" />
+        <div class="easyui-form-row-item">
+             <button class="layui-btn" onclick="Save()"><i class="fa fa-save"></i>保存</button>
+            <button class="layui-btn layui-btn-danger" onclick="Cancel()"><i class="fa fa-undo"></i>取消</button>
         </div>
     </div>
 </form>

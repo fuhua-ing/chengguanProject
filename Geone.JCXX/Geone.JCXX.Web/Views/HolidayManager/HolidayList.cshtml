@@ -118,11 +118,11 @@
     }
 
     //新增
-    function AddDay() {
-        $("#win").OpenWin({ title: "节假日-新增", url: "/HolidayManager/HolidayForm", width: 400, height: 300 });
+    function Add() {
+        $("#win").OpenWin({ title: "节假日-新增", url: "/HolidayManager/HolidayForm", width: 400, height:250 });
     }
     //修改
-    function EditDay() {
+    function Edit() {
         if ($('td.checked').length == 0) {
             $.messager.alert('提示', '请先选择日期！');
             return;
@@ -132,10 +132,10 @@
             return;
         }
         var ID = $('td.checked .enable').eq(0).attr("ID");
-        $("#win").OpenWin({ title: "节假日-编辑", url: "/HolidayManager/HolidayForm?ID=" + ID, width: 400, height: 300 });
+        $("#win").OpenWin({ title: "节假日-编辑", url: "/HolidayManager/HolidayForm?ID=" + ID, width: 400, height: 250 });
     }
     //删除
-    function DelDay() {
+    function Del() {
         if ($('td.checked').length == 0) {
             $.messager.alert('提示', '请先选择日期！');
             return;
@@ -203,7 +203,7 @@
         margin: auto;
         padding: 8px;
         color: #333;
-        background: #fff;
+        background: #f2f2f2;
         border: 1px solid #ccc;
         border-right-color: #bbb;
         border-bottom-color: #bbb;
@@ -272,13 +272,13 @@
     <div class="StTitle" id="ToolBar">
         <div class="sipac_rtsearchbar">
             <input class="easyui-combobox" id="searchYear" data-options='' />
-            <input class="StBtn_submit" type="button" value="查询" onclick="Search() ">
+            <button class="layui-btn" onclick="Search()"><i class="fa fa-search"></i>搜索</button>
         </div>
         <div class="sipac_table_menu">
-            <a href="#" onclick="AddDay()">新增</a><em></em>
-            <a href="#" onclick="EditDay()">修改</a><em></em>
-            <a href="#" onclick="DelDay()">删除</a><em></em>
-            <a href="#" onclick="Search()">刷新</a><em></em>
+            <button class="layui-btn" onclick="Add()"><i class="fa fa-plus"></i>新增</button>
+            <button class="layui-btn layui-btn-warning" onclick="Edit()"><i class="fa fa-edit"></i>修改</button>
+            <button class="layui-btn layui-btn-danger" onclick="Del()"><i class="fa fa-minus"></i>删除</button>
+            <button class="layui-btn layui-btn-info" onclick="Search()"><i class="fa fa-refresh "></i>刷新</button>
         </div>
     </div>
 

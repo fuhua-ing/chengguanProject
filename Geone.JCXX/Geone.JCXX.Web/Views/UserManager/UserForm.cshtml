@@ -83,91 +83,91 @@
 
 <form id="fmInfo">
     <input type="hidden" name="ID" />
-    <div class="easyui-from-row">
-        <div class="easyui-from-row-col6">
+    <div class="easyui-form-row">
+        <div class="easyui-form-row-col6">
             <label class="easyui-form-label">所属部门：</label>
-            <div class="easyui-from-row-item">
+            <div class="easyui-form-row-item">
                 <input class="easyui-combotree" name="DeptID" id="DeptID" style="width:100%" />
             </div>
         </div>
-        <div class="easyui-from-row-col6">
+        <div class="easyui-form-row-col6">
             <label class="easyui-form-label">*人员编号：</label>
-            <div class="easyui-from-row-item">
+            <div class="easyui-form-row-item">
                 <input class="easyui-textbox" name="UserCode" data-options="required:true" style="width:100%" />
             </div>
         </div>
     </div>
-    <div class="easyui-from-row">
-        <div class="easyui-from-row-col6">
+    <div class="easyui-form-row">
+        <div class="easyui-form-row-col6">
             <label class="easyui-form-label">*人员姓名：</label>
-            <div class="easyui-from-row-item">
+            <div class="easyui-form-row-item">
                 <input class="easyui-textbox" name="UserName" data-options="required:true" style="width:100%" />
             </div>
         </div>
-        <div class="easyui-from-row-col6">
+        <div class="easyui-form-row-col6">
             <label class="easyui-form-label">*人员性别：</label>
-            <div class="easyui-from-row-item">
+            <div class="easyui-form-row-item">
                 <input class="easyui-combobox" name="Gender" data-options="editable:false,data:[
                                   {text: '男',value:'男'},{text: '女',value:'女'}]" value="男" style="width:100%" />
             </div>
         </div>
     </div>
-    <div class="easyui-from-row">
-        <div class="easyui-from-row-col6">
+    <div class="easyui-form-row">
+        <div class="easyui-form-row-col6">
             <label class="easyui-form-label">*登陆账号：</label>
-            <div class="easyui-from-row-item">
+            <div class="easyui-form-row-item">
                 <input class="easyui-textbox" name="Account" data-options="required:true" style="width:100%" />
             </div>
         </div>
-        <div class="easyui-from-row-col6" id="divPwd">
+        <div class="easyui-form-row-col6" id="divPwd">
             <label class="easyui-form-label">*登陆密码：</label>
-            <div class="easyui-from-row-item">
+            <div class="easyui-form-row-item">
                 <input type="password" class="easyui-textbox" name="Pwd" data-options="required:true" style="width:100%" />
             </div>
         </div>
     </div>
-    <div class="easyui-from-row">
-        <div class="easyui-from-row-col6">
+    <div class="easyui-form-row">
+        <div class="easyui-form-row-col6">
             <label class="easyui-form-label">身份证号：</label>
-            <div class="easyui-from-row-item">
+            <div class="easyui-form-row-item">
                 <input class="easyui-textbox" name="IDNumber" data-options="" style="width:100%" />
             </div>
         </div>
-        <div class="easyui-from-row-col6">
+        <div class="easyui-form-row-col6">
             <label class="easyui-form-label">联系电话：</label>
-            <div class="easyui-from-row-item">
+            <div class="easyui-form-row-item">
                 <input class="easyui-textbox" name="Mobile" data-options="" style="width:100%" />
             </div>
         </div>
     </div>
-    <div class="easyui-from-row">
-        <div class="easyui-from-row-col6">
+    <div class="easyui-form-row">
+        <div class="easyui-form-row-col6">
             <label class="easyui-form-label">联系邮箱：</label>
-            <div class="easyui-from-row-item">
+            <div class="easyui-form-row-item">
                 <input class="easyui-textbox" name="Email" data-options="" style="width:100%" />
             </div>
         </div>
     </div>
-    <div class="easyui-from-row">
+    <div class="easyui-form-row">
         <label class="easyui-form-label">备注：</label>
-        <div class="easyui-from-row-item">
+        <div class="easyui-form-row-item">
             <input class="easyui-textbox" name="Note" data-options="multiline:true" style="width:100%;height:80px" />
         </div>
     </div>
-    <div class="easyui-from-row">
-        <div class="easyui-from-row-col6">
+    <div class="easyui-form-row">
+        <div class="easyui-form-row-col6">
             <label class="easyui-form-label">*是否有效：</label>
-            <div class="easyui-from-row-item">
+            <div class="easyui-form-row-item">
                 <input class="easyui-combobox Dict_Enabled" name="Enabled" value="1" />
             </div>
         </div>
     </div>
 </form>
 
-<div class="easyui-from-row">
+<div class="easyui-form-row">
     <label class="easyui-form-label"></label>
-    <div class="easyui-from-row-item">
-        <button class="StBtn StBtn_submit" onclick="Save()">保存</button>
-        <button class="StBtn StBtn_cancel" onclick="Cancel()">取消</button>
+    <div class="easyui-form-row-item">
+        <button class="layui-btn" onclick="Save()"><i class="fa fa-save"></i>保存</button>
+        <button class="layui-btn layui-btn-danger" onclick="Cancel()"><i class="fa fa-undo"></i>取消</button>
     </div>
 </div>

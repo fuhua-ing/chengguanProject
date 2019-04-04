@@ -1,12 +1,14 @@
 * {
     padding: 0;
     margin: 0;
-    font-size: 16px;
-    font-family: 微软雅黑;
 }
 
 body {
-    color: #444444;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #333;
+    background-color: #fff;
 }
 
 #all {
@@ -45,7 +47,6 @@ a {
 
 .StTitle {
     clear: both;
-    margin-bottom: 10px;
 }
 
     .StTitle h1 {
@@ -83,6 +84,53 @@ table.StTable {
         padding: 10px 5px;
     }
 /***********************************通用按钮***********************************/
+.layui-btn {
+    margin-left: 10px;
+    display: inline-block;
+    height: 36px;
+    line-height: 36px;
+    vertical-align: top;
+    padding: 0 15px;
+    background-color: #5cb85c;
+    color: #fff;
+    white-space: nowrap;
+    text-align: center;
+    font-size: 14px;
+    border: 0;
+    border-radius: 2px;
+    cursor: pointer;
+    outline: 0;
+    -webkit-appearance: none;
+    -webkit-transition: all .3s;
+    box-sizing: border-box;
+    border-radius: .25em;
+}
+
+    .layui-btn:hover {
+        opacity: 0.8;
+    }
+
+    .layui-btn i {
+        margin-right: 3px;
+        vertical-align: middle;
+    }
+
+layui-btn {
+}
+
+.layui-btn-warning {
+    background: #f0ad4e;
+}
+
+.layui-btn-danger {
+    background-color: #d9534f;
+}
+
+.layui-btn-info {
+    background-color: #5bc0de;
+}
+
+
 .StBtn {
     border: none;
     font: 16px/30px "微软雅黑","Microsoft YaHei";
@@ -94,11 +142,11 @@ table.StTable {
 }
 
 .StBtn_submit {
-    background: #157DBf;
+    background: #2196F3;
 }
 
     .StBtn_submit:hover {
-        background: #128BDA;
+        background: #1e8ee6;
     }
 
 .StBtn_add {
@@ -128,6 +176,7 @@ table.StTable {
 /*********************************** 数据列表表格操作菜单 ***********************************/
 .sipac_table_menu {
     height: 36px;
+    padding: 5px 0;
 }
 
     .sipac_table_menu a {
@@ -241,7 +290,6 @@ table.StTable {
     float: left;
     width: 200px;
     overflow: auto;
-    padding-top: 10px;
 }
 
 .content_grid_rt {
@@ -251,15 +299,15 @@ table.StTable {
 }
 
 .content_grid {
-    padding: 10px 10px 10px 30px;
 }
 
-.StTitle .sipac_rtsearchbar {
+.sipac_rtsearchbar {
     float: right;
     z-index: 101;
+    padding: 5px 0;
 }
 
-    .StTitle .sipac_rtsearchbar input {
+    .sipac_rtsearchbar input {
         display: block;
         float: left;
         font: 12px/18px "微软雅黑", "Microsoft YaHei";
@@ -271,7 +319,7 @@ table.StTable {
         width: 180px;
     }
 
-    .StTitle .sipac_rtsearchbar .StBtn_submit {
+    .sipac_rtsearchbar .StBtn_submit {
         border: none;
         color: #fff;
         overflow: hidden;
@@ -280,15 +328,15 @@ table.StTable {
         margin: 0 5px 0 0;
     }
 
-    .StTitle .sipac_rtsearchbar .s_s_mBox {
+    .sipac_rtsearchbar .s_s_mBox {
         float: left;
     }
 
-        .StTitle .sipac_rtsearchbar .s_s_mBox .s_s_morebtn {
+        .sipac_rtsearchbar .s_s_mBox .s_s_morebtn {
             height: 36px;
             display: inline-block;
             padding: 0 8px;
-            background: #157CBF;
+            background: #2196F3;
             margin: 0 5px 0 0;
             color: #fff;
             line-height: 36px;
@@ -296,64 +344,61 @@ table.StTable {
             font-size: 20px;
         }
 
-.StTitle .sipac_searchBox {
+.sipac_searchBox {
     display: none;
-    background: #F9F9F9;
     border-bottom: 1px solid #E4E4E4;
-    padding: 20px 20px 0;
-    margin-bottom: 20px;
+    padding-left: 15px;
+    padding-right: 10px;
+    padding-top: 10px;
 }
 
-    .StTitle .sipac_searchBox table {
-        border: none;
-        width: 100%;
+.sipac_form .sipac_form_row {
+    margin-bottom: 10px;
+}
+
+.sipac_form label {
+    display: inline-block;
+    margin-left: 10px;
+    width: 80px;
+}
+
+.sipac_form input {
+    height: 25px !important;
+    width: 200px;
+}
+
+.sipac_searchBox .s_input {
+    padding: 0 4px;
+    border: 1px solid #D4D4D3;
+    border-radius: 5px 5px 5px 5px;
+}
+
+
+.sipac_searchBox .s_s_close {
+    overflow: auto;
+    text-align: center;
+}
+
+    .sipac_searchBox .s_s_close a {
+        display: block;
+        margin: 0 auto;
+        background: #DDDDDD;
+        width: 50px;
+        padding: 0 8px;
+        font-size: 20px;
+        color: #fff;
     }
 
-    .StTitle .sipac_searchBox th, .StTitle .sipac_searchBox td {
-        height: 35px;
-        font: 14px/30px Arial;
+.layui-elem-field {
+    margin-bottom: 10px;
+    padding: 0;
+    border: 1px solid #e4e4e4;
+    background: #f2f2f2;
+}
+    .layui-elem-field legend {
+        margin-left: 20px;
+        padding: 0 10px;
+        padding-bottom: 10px;
+        font-size: 18px;
+        font-weight: 300;
     }
-
-    .StTitle .sipac_searchBox th {
-        text-align: right;
-        color: #666666;
-    }
-
-    .StTitle .sipac_searchBox td {
-        padding-left: 1em;
-    }
-
-    .StTitle .sipac_searchBox input {
-        height: 25px !important;
-        width: 200px;
-    }
-
-    .StTitle .sipac_searchBox .s_input {
-        padding: 0 4px;
-        border: 1px solid #D4D4D3;
-        border-radius: 5px 5px 5px 5px;
-    }
-
-    .StTitle .sipac_searchBox .s_s_bar {
-        overflow: auto;
-    }
-
-        .StTitle .sipac_searchBox .s_s_bar .StBtn {
-            float: right;
-            margin-right: 20px;
-        }
-
-    .StTitle .sipac_searchBox .s_s_close {
-        overflow: auto;
-        text-align: center;
-    }
-
-        .StTitle .sipac_searchBox .s_s_close a {
-            display: block;
-            margin: 0 auto;
-            background: #DDDDDD;
-            width: 50px;
-            padding: 0 8px;
-            font-size: 20px;
-            color: #fff;
-        }

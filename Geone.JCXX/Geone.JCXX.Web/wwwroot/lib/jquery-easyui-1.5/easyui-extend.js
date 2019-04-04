@@ -64,9 +64,9 @@ $.fn.extend({
             //是否自适应行
             fitColumns: true,
             //宽度
-            width: $(window).width() - 50,
+            width: $(window).width(),
             //高度
-            height: $(window).height() - 50,
+            height: $(window).height(),
             //url请求方式
             method: 'post',
             //url地址
@@ -105,9 +105,9 @@ $.fn.extend({
             //是否自适应行
             fitColumns: true,
             //宽度
-            width: $(window).width() - 50,
+            width: $(window).width(),
             //高度
-            height: $(window).height() - 50,
+            height: $(window).height(),
             //url请求方式
             method: 'post',
             //url地址
@@ -135,6 +135,22 @@ $.fn.extend({
         }, opt);
         opt.url = config_jcxx_url + opt.url;
         $gird.treegrid(opt);
+        //窗口尺寸变化
+        $(window).resize(function () {
+            $gird.treegrid('resize', {
+                width: $(window).width(),
+                height: $(window).height()
+            });
+        });
+        //搜索栏切换显示
+        $(".StTitle .s_s_morebtn,.s_s_close a").click(function () {
+            $(".sipac_rtsearchbar").toggle();
+            $(".sipac_searchBox").toggle();
+            $gird.treegrid('resize', {
+                width: $(window).width(),
+                height: $(window).height()
+            });
+        });
     },
     //窗口统一方法
     OpenWin: function (opt) {

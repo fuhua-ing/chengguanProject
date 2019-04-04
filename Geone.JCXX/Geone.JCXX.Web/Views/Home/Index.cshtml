@@ -32,8 +32,6 @@
 
     }
 
-
-
     //加载菜单
     function LoadMenu(menuobj, menu) {
         let _html = '';
@@ -99,8 +97,8 @@
             if (id != undefined && id != null) {
                 var title = $(this).attr("dd-name");
                 var url = $(this).attr("dd-url");
-                $(".nav li").removeClass("on");
-                $(this).addClass("on");
+                $(".nav li").removeClass("nav-show");
+                $(this).addClass("nav-show");
                 addTab(id, title, url);
             }
         });
@@ -170,40 +168,39 @@
         tabPanel.tabs('close', index);
     }
 
-    $(function () {
-
-    });
+  
 </script>
 
 
 
 <div class="easyui-layout" id="cc-c" data-options="fit:true" style="width:100%">
+    <div class="index_top" data-options="region:'north'">
+        <div class="lft_title">基础信息管理系统</div>
+
+        <div class="rt_box">
+            <div class="TopTip">
+                <i class="fa fa-bell-o "></i>
+                <span class="badge-dot"></span>
+            </div>
+            <div class="avatar">&nbsp;</div>
+            <div id="MenuUserName" class="username" title="xxxx">
+                管理员
+            </div>
+            <div class="more">
+                <i class=" fa fa-ellipsis-v"></i>
+            </div>
+        </div>
+    </div>
+
     <div class="index_menu nav" data-options="region:'west',width:180">
         <div class="nav-top">
-            <div id="mini"><i class="fa fa-angle-double-left"></i><span>@*折叠*@</span></div>
+            <div id="mini"><i class="fa fa-angle-double-left"></i><span>目录</span></div>
         </div>
         <ul></ul>
     </div>
 
 
     <div data-options="region:'center'" class="index_center">
-        <div class="index_top">
-            <div class="lft_title">基础信息管理系统</div>
-
-            <div class="rt_box">
-                <div class="TopTip">
-                    <i class="fa fa-bell-o "></i>
-                    <span class="badge-dot"></span>
-                </div>
-                <div class="avatar">&nbsp;</div>
-                <div id="MenuUserName" class="username" title="xxxx">
-                    管理员
-                </div>
-                <div class="more">
-                    <i class=" fa fa-ellipsis-v"></i>
-                </div>
-            </div>
-        </div>
         <div id="mainTabs" class="easyui-tabs" data-options="fit:true,border:false"></div>
     </div>
 </div>

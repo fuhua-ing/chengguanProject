@@ -2,6 +2,8 @@
     ViewBag.Title = "部门管理";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style>
+</style>
 
 <script>
 
@@ -38,28 +40,8 @@
                 $('#gd_url').treegrid("unselect", parentID);
             }
         });
-
-        InitSize();
-
-        //搜索栏切换显示
-        $(".StTitle .s_s_morebtn,.s_s_close a").click(function () {
-            $(".sipac_rtsearchbar").toggle();
-            $(".sipac_searchBox").toggle();
-            InitSize();
-        });
-
-        $(window).resize(function () {
-            InitSize();
-        });
     })
 
-    //初始化尺寸
-    function InitSize() {
-        $('#gd_url').treegrid('resize', {
-            width: $(window).width()-100,
-            height: $(window).height() - 20
-        });
-    }
     //查询
     function Search() {
         var param = $("#queryTab").getJsonValues().jsonData;
@@ -123,7 +105,7 @@
         }
     }
 
-    //树节点右击
+    //修改树节点
     function TreeNodeEdit() {
         var node = $('#treeDept').tree('getSelected');
         if (node != null)
@@ -148,30 +130,23 @@
         </div>
         <div class="sipac_searchBox sipac_form" id="queryTab">
             <input type="hidden" id="hfParentID" />
-            <table>
-                <tbody>
-                    <tr>
-                        <th>部门编号</th>
-                        <td width="35%"><input class="easyui-textbox" name="Like_DeptCode"></td>
-                        <th>部门名称</th>
-                        <td width="35%"><input class="easyui-textbox" name="Like_DeptName"></td>
-                    </tr>
-                    <tr>
-                        <th>是否有效</th>
-                        <td colspan="3">
-                            <input class="easyui-combobox Dict_Enabled defaultAll" name="Enabled" />
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="s_s_bar"><button class="StBtn StBtn_submit" onclick="Search()">搜索</button></div>
-            <div class="s_s_close"><a href="javascript:void(0);" title="点击收起"><i class="fa fa-chevron-up"></i></a></div>
+            <fieldset class="layui-elem-field">
+                <legend>更多查询</legend>
+                <input type="hidden" id="DeptID" name="DeptID" />
+                <div class="sipac_form_row">
+                    <label>部门编号</label><input class="easyui-textbox" name="Like_DeptCode">
+                    <label>部门名称</label><input class="easyui-textbox" name="Like_DeptName">
+                    <label>是否有效</label><input class="easyui-combobox Dict_Enabled defaultAll" name="Enabled" />
+                    <button class="layui-btn" onclick="Search()"><i class="fa fa-search"></i>搜索</button>
+                </div>
+                <div class="s_s_close"><a href="javascript:void(0);" title="点击收起"><i class="fa fa-chevron-up"></i></a></div>
+            </fieldset>
         </div>
         <div class="sipac_table_menu">
-            <a href="javascript:void(0);" onclick="Add()">新增</a><em></em>
-            <a href="javascript:void(0);" onclick="Edit()">修改</a><em></em>
-            <a href="javascript:void(0);" onclick="Del()">删除</a><em></em>
-            <a href="javascript:void(0);" onclick="Refresh()">刷新</a><em></em>
+            <button class="layui-btn" onclick="Add()"><i class="fa fa-plus"></i>新增</button>
+            <button class="layui-btn layui-btn-warning" onclick="Edit()"><i class="fa fa-edit"></i>修改</button>
+            <button class="layui-btn layui-btn-danger" onclick="Del()"><i class="fa fa-minus"></i>删除</button>
+            <button class="layui-btn layui-btn-info" onclick="Refresh()"><i class="fa fa-refresh "></i>刷新</button>
         </div>
     </div>
 

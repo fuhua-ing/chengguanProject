@@ -107,11 +107,11 @@
       }  
     ]
   },
- {
+  {
     "id": "08",
     "name": "短信管理",
     "url": "",
-    "icon": "fa fa-hourglass-half",
+    "icon": "fa fa-book",
     "children": [
       {
         "id": "0801",

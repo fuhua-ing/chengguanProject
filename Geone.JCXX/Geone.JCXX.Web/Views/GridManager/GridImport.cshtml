@@ -40,15 +40,15 @@
 </script>
 
 <form id="fmInfo" enctype="multipart/form-data" method="post" action="UploadFile">
-    <div class="easyui-from-row">
+    <div class="easyui-form-row">
         <label class="easyui-form-label">*网格类型：</label>
-        <div class="easyui-from-row-item">
+        <div class="easyui-form-row-item">
             <input class="easyui-combobox" name="GridType" id="GridType" style="width:100%" />
         </div>
     </div>
-    <div class="easyui-from-row">
+    <div class="easyui-form-row">
         <label class="easyui-form-label">*选择文件：</label>
-        <div class="easyui-from-row-item">
+        <div class="easyui-form-row-item">
             <input class="easyui-filebox" id="upload" name="uploadfile" data-options="buttonText: '选择文件',
         accept: 'application/json'" style="width:100%">
 
@@ -57,14 +57,14 @@
         </div>
     </div>
 
-    <div class="easyui-from-row">
+    <div class="easyui-form-row">
         <label class="easyui-form-label">&nbsp;</label>
-        <div class="easyui-from-row-item">
-            <input type="button" class="StBtn StBtn_submit" onclick="Save()" value="保存" />
-            <input type="button" class="StBtn StBtn_cancel" onclick="Cancel()" value="取消" />
+        <div class="easyui-form-row-item">
+             <button class="layui-btn" onclick="Save()"><i class="fa fa-save"></i>保存</button>
+            <button class="layui-btn layui-btn-danger" onclick="Cancel()"><i class="fa fa-undo"></i>取消</button>
         </div>
     </div>
-    <div class="easyui-from-row" style="color:#AAA;padding:0 10px">
+    <div class="easyui-form-row" style="color:#AAA;padding:0 10px">
         格式说明：<br>
         1.当前只支持Json文件的导入；<br>
         2.Json文件的内容就是网格的Json数据，<a href="DownloadDemo?FilePath=json/GridList.json" >点击示例下载</a>；

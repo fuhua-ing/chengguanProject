@@ -13,20 +13,14 @@ li {
 }
 
 /********************************** 菜单 ************************************/
-.index_menu {
-    position: fixed;
-    height: 100%;
-    background: #2C6F9B;
-    top: 0px;
-    left: 0px;
-    z-index: 10;
-}
 
 /* nav */
 .nav {
     position: fixed;
+    left: 0px;
+    z-index: 10;
     height: 100%;
-    background: #2C6F9B;
+    background: #428bca;
     transition: all .3s;
 }
 
@@ -150,12 +144,14 @@ li {
 #mini {
     cursor: pointer;
     border-bottom: 1px solid rgba(255,255,255,.1);
-    font-size: 20px;
+    
     line-height: 46px;
     color: #fff;
     padding-left: 20px;
 }
-
+    #mini i {
+        font-size: 20px;
+    }
     #mini span {
         margin-left: 20px;
     }
