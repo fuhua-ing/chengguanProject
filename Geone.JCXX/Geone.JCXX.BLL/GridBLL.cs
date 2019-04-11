@@ -456,17 +456,17 @@ namespace Geone.JCXX.BLL
         /// <summary>
         /// 获取动态网格参数配置
         /// </summary>
-        /// <param name="query"></param>
+        /// <param name="GridCode"></param>
         /// <returns></returns>
-        public JCXX_Grid_Config GetConfig(string GridID)
+        public JCXX_Grid_Config GetConfig(string GridCode)
         {
             try
             {
-                if (string.IsNullOrEmpty(GridID))
+                if (string.IsNullOrEmpty(GridCode))
                     return new JCXX_Grid_Config();
                 else
                 {
-                    return Respostry_Config.Select().Where(t => t.GridID.Eq(GridID)).QueryFirst();
+                    return Respostry_Config.Select().Where(t => t.GridCode.Eq(GridCode)).QueryFirst();
                 }
             }
             catch (Exception ex)

@@ -44,13 +44,6 @@ namespace Geone.JCXX.WebService
                 var rep = ss.GetGridList(req);
                 return Response.AsJson(rep);
             });
-            //网格动态配置列表
-            Get("/Grid/ConfigList", parameter =>
-            {
-                var rep = ss.GetGridConfigList();
-                return Response.AsJson(rep);
-            });
-
             //部门列表
             Get("/Dept/List", parameter =>
             {

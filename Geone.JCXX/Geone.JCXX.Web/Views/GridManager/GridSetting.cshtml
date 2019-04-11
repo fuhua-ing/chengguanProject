@@ -21,26 +21,29 @@
     var Dict_GridType = '@Dict_GridType';
 
     $(function () {
-        var ID = getQueryString("ID");
+        var GridCode = getQueryString("GridCode");
 
         //初始化数据字典
         $('#GridType').InitDictCombobox({ url: Dict_GridType, required: true });
 
         $.DoAjax({
             url: '/GridManager/GetConfig',
-            dataParams: { GridID: ID },
+            dataParams: { GridCode: GridCode },
             successFunc: function (result) {
                 console.log(result);
                 if (result && result != null) {
                     $("#fmInfo").form("load", result);
                     let config;
-                    try { config = eval('(' + result.Config + ')') } catch (e) { }
-                    $("#fmInfo").form("load", config.ldq);
-                    $("#fmInfo").form("load", config.cq);
+                    try {
+                        config = eval('(' + result.Config + ')');
+                        console.log(config)
+                        $("#fmInfo").form("load", config.ldq);
+                        $("#fmInfo").form("load", config.cq);
+                    } catch (e) { }
                     LoadTopClass(config);
                 }
                 else {
-                    $("#hidGridID").val(ID);
+                    $("#hidGridCode").val(GridCode);
                     LoadTopClass(null);
                 }
             }
@@ -139,7 +142,7 @@
 
 <form id="fmInfo">
     <input type="hidden" name="ID" />
-    <input type="hidden" name="GridID" id="hidGridID" />
+    <input type="hidden" name="GridCode" id="hidGridCode" />
     <input type="hidden" name="Config" id="hidConfig" />
     <fieldset class="layui-elem-field easyui-form-row">
         <legend>临到期案件提醒</legend>

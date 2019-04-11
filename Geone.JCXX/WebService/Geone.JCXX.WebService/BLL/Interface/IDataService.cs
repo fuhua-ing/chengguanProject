@@ -30,7 +30,7 @@ namespace Geone.JCXX.WebService
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        RepModel GetGridConfigList();
+        RepModel GetGridConfigList(Req_Grid query);
         /// <summary>
         /// 根据网格点位获取到对应的网格权属角色
         /// </summary>

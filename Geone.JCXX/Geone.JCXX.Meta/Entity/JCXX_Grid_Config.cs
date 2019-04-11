@@ -25,7 +25,7 @@ namespace Geone.JCXX.Meta
         ///// <summary>
         ///// 网格ID
         ///// </summary>
-        public string GridID
+        public string GridCode
         {
             get;
             set;

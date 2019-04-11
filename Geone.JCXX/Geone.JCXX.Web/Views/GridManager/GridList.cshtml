@@ -68,7 +68,7 @@
     function Setting() {
         if ($('#gd_url').datagrid('IsSelectedRow')) {
             var row = $('#gd_url').datagrid('getSelected');
-            $("#win").OpenWin({ title: "网格-动态配置", url: "/GridManager/GridSetting?ID=" + row.ID, width: 900, height: 700 });
+            $("#win").OpenWin({ title: "网格-动态配置", url: "/GridManager/GridSetting?GridCode=" + row.GridCode, width: 900, height: 700 });
         }
     }
     //删除
@@ -142,7 +142,7 @@
                     <label>网格编号</label><input class="easyui-textbox" name="Like_GridCode">
                     <label>网格名称</label><input class="easyui-textbox" name="Like_GridName">
                     <label>是否有效</label><input class="easyui-combobox Dict_Enabled defaultAll" name="Enabled" />
-                    <button type="button" class="layui-btn" onclick="Search()"><i class="fa fa-search"></i>搜索</button>
+                    <button type="button" class="layui-btn layui-btn-search" onclick="Search()"><i class="fa fa-search"></i>搜索</button>
                 </div>
                 <div class="s_s_close"><a href="javascript:void(0);" title="点击收起"><i class="fa fa-chevron-up"></i></a></div>
             </fieldset>

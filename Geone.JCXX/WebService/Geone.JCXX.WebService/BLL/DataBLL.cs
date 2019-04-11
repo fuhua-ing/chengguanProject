@@ -323,14 +323,26 @@ namespace Geone.JCXX.WebService
         /// 查询网格动态参数列表
         /// </summary>
         /// <returns></returns>
-        public RepModel GetGridConfigList()
+        public RepModel GetGridConfigList(Req_Grid query)
         {
             try
             {
+                string[] listCode = null;
+                var q = Respostry_Grid.Select().Where("1=1");
+                if (!string.IsNullOrEmpty(query.GridType))
+                {
 
-                var q = Respostry_GridConfig.Select().Where("1=1");
-                var list = q.QueryList();
-                return RepModel.Success(list);
+                    q.And(t => t.GridType.Eq(query.GridType));
+                    listCode = q.QueryList().Select(m => m.GridCode).ToArray();
+                }
+                var q2 = Respostry_GridConfig.Select().Where("1=1");
+
+                if (listCode != null)
+                {
+                    q2.And(t => t.GridCode.In(listCode));
+                }
+                var result = q2.QueryList();
+                return RepModel.Success(result);
             }
             catch (Exception ex)
             {
@@ -338,7 +350,7 @@ namespace Geone.JCXX.WebService
                 return RepModel.Error();
             }
         }
-        
+
 
         /// <summary>
         /// 查询立案条件列表

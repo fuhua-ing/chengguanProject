@@ -122,7 +122,14 @@ table.StTable {
 
 layui-btn {
 }
-
+ /*搜索按钮*/
+.layui-btn-search {
+    background-color: #5cb85c;
+    color: #fff;
+    border: 0;
+    padding: 0px 15px;
+    margin-left: 10px;
+}
 /*保存按钮*/
 .layui-btn-save {
     background-color: #5cb85c;

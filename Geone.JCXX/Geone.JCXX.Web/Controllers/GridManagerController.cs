@@ -252,8 +252,8 @@ namespace Geone.JCXX.Web.Controllers
         /// <returns></returns>
         public ActionResult GetConfig()
         {
-            string GridID = Request.Form["GridID"];
-            return Json(bll.GetConfig(GridID));
+            string GridCode = Request.Form["GridCode"];
+            return Json(bll.GetConfig(GridCode));
         }
 
         /// <summary>
