@@ -25,7 +25,12 @@ namespace Geone.JCXX.WebService
         /// <param name="query"></param>
         /// <returns></returns>
         RepModel GetGridList(Req_Grid query);
-
+        /// <summary>
+        /// 查询网格动态配置列表
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        RepModel GetGridConfigList();
         /// <summary>
         /// 根据网格点位获取到对应的网格权属角色
         /// </summary>

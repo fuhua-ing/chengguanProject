@@ -1,0 +1,210 @@
+﻿@{
+    ViewBag.Title = "网格动态属性配置";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string Dict_GridType = ConstHelper.Dict_GridType;//数据字典-网格类型
+}
+<style>
+    #divTopClass {
+        padding-left: 3em;
+    }
+
+    .layui-form-checkbox {
+        height: 30px;
+        line-height: 28px;
+    }
+
+        .layui-form-checkbox span {
+            width: 100px;
+        }
+</style>
+<script>
+    var Dict_GridType = '@Dict_GridType';
+
+    $(function () {
+        var ID = getQueryString("ID");
+
+        //初始化数据字典
+        $('#GridType').InitDictCombobox({ url: Dict_GridType, required: true });
+
+        $.DoAjax({
+            url: '/GridManager/GetConfig',
+            dataParams: { GridID: ID },
+            successFunc: function (result) {
+                console.log(result);
+                if (result && result != null) {
+                    $("#fmInfo").form("load", result);
+                    let config;
+                    try { config = eval('(' + result.Config + ')') } catch (e) { }
+                    $("#fmInfo").form("load", config.ldq);
+                    $("#fmInfo").form("load", config.cq);
+                    LoadTopClass(config);
+                }
+                else {
+                    $("#hidGridID").val(ID);
+                    LoadTopClass(null);
+                }
+            }
+        });
+    });
+
+    //高发案件设置
+    function LoadTopClass(config) {
+        //获取系统预设的高发类型
+        $.DoAjax({
+            typeAction: 'get',
+            url: '/DictManager/GetItemListByCategoryCode',
+            dataParams: { CategoryCode: "Gird_CaseClassIITop10" },
+            successFunc: function (result) {
+                var jsonresult = JSON.parse(result);
+                var _html = "";
+                $.each(jsonresult, function (index, item) {
+                    _html += '<div class="easyui-form-row-col6"><div class="layui-unselect layui-form-checkbox caseclass-' + item.ItemCode+'" caseclass="' + item.ItemCode + '"><span>'
+                        + item.ItemName + '</span><i class="fa fa-check"></i></div> <input class="easyui-numberbox" id="cc-' + item.ItemCode +'" data-options="value:1,min:1,prompt:\'请输入对应案件数量\'" /></div>';
+                });
+                $("#divTopClass").html(_html);
+                $.parser.parse('#divTopClass');
+
+                //设置好的勾选
+                if (config && config != null) {
+                    $.each(config.caseclasstop, function (index, item) {
+                        $(".caseclass-" + item.code).addClass("layui-form-checked");
+                        $("#cc-" + item.code).numberbox({ required: true });
+                        $("#cc-" + item.code).numberbox('setValue', item.maxtotal);
+                    });
+                }
+
+                //高发多选
+                $(".layui-unselect").click(function () {
+                    let code = $(this).attr("caseclass");
+                    if ($(this).hasClass("layui-form-checked")) {
+                        $(this).removeClass("layui-form-checked");
+                        $("#cc-" + code).numberbox({ required: false });
+                    }
+                    else {
+                        $(this).addClass("layui-form-checked");
+                        $("#cc-" + code).numberbox({ required: true });
+                    }
+                })
+            }
+        });
+    }
+
+    //保存
+    function Save() {
+        if ($("#fmInfo").form('validate')) {
+            let config = {
+                ldq: {
+                    ldq_time: $('input[name="ldq_time"]').val(),
+                    ldq_level1: $('input[name="ldq_level1"]').val(),
+                    ldq_level2: $('input[name="ldq_level2"]').val(),
+                    ldq_level3: $('input[name="ldq_level3"]').val()
+                },
+                cq: {
+                    cq_level1: $('input[name="cq_level1"]').val(),
+                    cq_level2: $('input[name="cq_level2"]').val(),
+                    cq_level3: $('input[name="cq_level3"]').val()
+                },
+                caseclasstop:[]
+            };
+            $(".layui-form-checked").each(function () {
+                let code = $(this).attr("caseclass");
+                config.caseclasstop.push({code: code, maxtotal: $("#cc-" + code).numberbox('getValue')});
+            });
+            $("#hidConfig").val(JSON.stringify(config));
+            $.DoAjax({
+                url: '/GridManager/PostConfig',
+                dataParams: { info: $("#fmInfo").getJsonValues().jsonStr },
+                successFunc: function (result) {
+                    if (result.StatusCode == "200") {
+                        $.messager.alert('提示', '保存成功', 'info', function () {
+                            parent.callback(false);
+                        });
+                    }
+                    else {
+                        console.log(result);
+                        $.messager.alert('提示', '保存失败', 'info', function () {
+                            window.location.reload();
+                        });
+                    }
+                }
+            });
+        }
+    }
+
+    //取消
+    function Cancel() {
+        parent.callback(false);
+    }
+</script>
+
+<form id="fmInfo">
+    <input type="hidden" name="ID" />
+    <input type="hidden" name="GridID" id="hidGridID" />
+    <input type="hidden" name="Config" id="hidConfig" />
+    <fieldset class="layui-elem-field easyui-form-row">
+        <legend>临到期案件提醒</legend>
+        <div class="easyui-form-row-col6">
+            <label class="easyui-form-label">时间限制：</label>
+            <div class="easyui-form-row-item">
+                <input class="easyui-numberbox" name="ldq_time" style="width:100%" data-options="prompt:'请输入对应小时'" />
+            </div>
+        </div>
+        <div class="easyui-form-row-col6">
+            <label class="easyui-form-label"><span class="label label-success"><i class="fa fa-warning"></i></span>轻微：</label>
+            <div class="easyui-form-row-item">
+                <input class="easyui-numberbox" name="ldq_level1" style="width:100%" data-options="prompt:'请输入对应案件数量'" />
+            </div>
+        </div>
+        <div class="easyui-form-row-col6">
+            <label class="easyui-form-label"><span class="label label-warning"><i class="fa fa-warning"></i></span>一般：</label>
+            <div class="easyui-form-row-item">
+                <input class="easyui-numberbox" name="ldq_level2" style="width:100%" data-options="prompt:'请输入对应案件数量'" />
+            </div>
+        </div>
+        <div class="easyui-form-row-col6">
+            <label class="easyui-form-label"><span class="label label-danger"><i class="fa fa-warning"></i></span>严重：</label>
+            <div class="easyui-form-row-item">
+                <input class="easyui-numberbox" name="ldq_level3" style="width:100%" data-options="prompt:'请输入对应案件数量'" />
+            </div>
+        </div>
+    </fieldset>
+    <fieldset class="layui-elem-field easyui-form-row">
+        <legend>超期未结案件提醒</legend>
+        <div class="easyui-form-row-col6">
+            <label class="easyui-form-label"><span class="label label-success"><i class="fa fa-warning"></i></span>轻微：</label>
+            <div class="easyui-form-row-item">
+                <input class="easyui-numberbox" name="cq_level1" style="width:100%" data-options="prompt:'请输入对应案件数量'" />
+            </div>
+        </div>
+        <div class="easyui-form-row-col6">
+            <label class="easyui-form-label"><span class="label label-warning"><i class="fa fa-warning"></i></span>一般：</label>
+            <div class="easyui-form-row-item">
+                <input class="easyui-numberbox" name="cq_level2" style="width:100%" data-options="prompt:'请输入对应案件数量'" />
+            </div>
+        </div>
+        <div class="easyui-form-row-col6">
+            <label class="easyui-form-label"><span class="label label-danger"><i class="fa fa-warning"></i></span>严重：</label>
+            <div class="easyui-form-row-item">
+                <input class="easyui-numberbox" name="cq_level3" style="width:100%" data-options="prompt:'请输入对应案件数量'" />
+            </div>
+        </div>
+    </fieldset>
+    <fieldset class="layui-elem-field easyui-form-row">
+        <legend>高发案件提醒</legend>
+        <div id="divTopClass">
+            <div class="easyui-form-row-col6">
+                <div class="layui-unselect layui-form-checkbox">
+                    <span>
+                        机动车乱停放
+                    </span><i class="fa fa-check"></i>
+                </div>
+
+            </div>
+        </div>
+
+    </fieldset>
+    <div class="easyui-form-row" style="text-align:center">
+        <button type="button" class="layui-btn layui-btn-save" onclick="Save()"><i class="fa fa-save"></i>保存</button>
+        <button type="button" class="layui-btn layui-btn-cancel" onclick="Cancel()"><i class="fa fa-undo"></i>取消</button>
+    </div>
+</form>

@@ -11,23 +11,29 @@ namespace Geone.JCXX.BLL
     public class GridBLL : IGridBLL
     {
         private IDbEntity<JCXX_Grid> Respostry;
+        private IDbEntity<JCXX_Grid_Config> Respostry_Config;
         private IDbEntity<View_Grid> Respostry_V;
         private IDbEntity<JCXX_QSRole> Respostry_Role;
         private IDbEntity<JCXX_GridQSRoleTree> Respostry_R;
         private IDbEntity<JCXX_QSRole_Grid> Respostry_RG;
         private IDbEntity<View_QSRoleGrid> Respostry_VRG;
+
+
         private ILogWriter log;
 
         /// <summary>
         /// 构造函数注入
         /// </summary>
         /// <param name="_t"></param>
-        public GridBLL(IDbEntity<JCXX_Grid> _t, IDbEntity<JCXX_QSRole_Grid> _trg,
+        public GridBLL(IDbEntity<JCXX_Grid> _t, IDbEntity<JCXX_Grid_Config> _tconfig, IDbEntity<JCXX_QSRole_Grid> _trg,
             IDbEntity<View_Grid> _tv, IDbEntity<JCXX_GridQSRoleTree> _r, IDbEntity<View_QSRoleGrid> _tvrg, IDbEntity<JCXX_QSRole> _role,
             ILogWriter logWriter)
         {
             Respostry = _t;
             Respostry.SetTable("JCXX_Grid");
+
+            Respostry_Config = _tconfig;
+            Respostry_Config.SetTable("JCXX_Grid_Config");
 
             Respostry_V = _tv;
             Respostry_V.SetTable("View_Grid");
@@ -443,6 +449,65 @@ namespace Geone.JCXX.BLL
                 return new JCXX_QSRole();
             }
         }
-        #endregion 
+        #endregion
+
+        #region 动态网格参数配置
+
+        /// <summary>
+        /// 获取动态网格参数配置
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public JCXX_Grid_Config GetConfig(string GridID)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(GridID))
+                    return new JCXX_Grid_Config();
+                else
+                {
+                    return Respostry_Config.Select().Where(t => t.GridID.Eq(GridID)).QueryFirst();
+                }
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex);
+                return new JCXX_Grid_Config();
+            }
+        }
+
+        /// <summary>
+        /// 保存动态网格参数配置
+        /// </summary>
+        /// <param name="GridID"></param>
+        /// <param name="RoleIDs"></param>
+        /// <returns></returns>
+        public RepModel SaveConfig(JCXX_Grid_Config entity)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(entity.ID))
+                {
+                    entity.ID = Guid.NewGuid().ToString();
+                    entity.CREATED = DateTime.Now;
+                    entity.CREATED_MAN = entity.CREATED_MAN;
+                    return Respostry_Config.Insert(entity).ExecInsert() ? RepModel.Success("新增成功") : RepModel.Error("新增失败");
+                }
+                else
+                {
+                    entity.UPDATED = DateTime.Now;
+                    entity.UPDATED_MAN = entity.UPDATED_MAN;
+                    return Respostry_Config.Minus(t => t.CREATED, t => t.CREATED_MAN).
+                       UpdateByPKey(entity).ExecModify() ? RepModel.Success("更新成功") : RepModel.Error("更新失败");
+                }
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex);
+                return RepModel.Error(ex.Message);
+            }
+        }
+
+        #endregion
     }
 }

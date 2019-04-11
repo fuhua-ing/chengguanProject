@@ -16,6 +16,7 @@ namespace Geone.JCXX.WebService
         private IDbEntity<View_QSRole> Respostry_QSRole;
         private IDbEntity<View_QSRoleUser> Respostry_QSRoleUser;
         private IDbEntity<JCXX_Grid> Respostry_Grid;
+        private IDbEntity<JCXX_Grid_Config> Respostry_GridConfig;
         private IDbEntity<JCXX_GridQSRoleTree> Respostry_qsTree;
         private IDbEntity<View_Grid> Respostry_VGrid;
         private IDbEntity<JCXX_Dept> Respostry_Dept;
@@ -27,6 +28,7 @@ namespace Geone.JCXX.WebService
             IDbEntity<View_QSRole> _QSRole,
             IDbEntity<View_QSRoleUser> _QSRoleUser,
             IDbEntity<JCXX_Grid> _Grid,
+             IDbEntity<JCXX_Grid_Config> _GridConfig,
             IDbEntity<View_Grid> _VGrid,
             IDbEntity<JCXX_Dept> _Dept,
             IDbEntity<JCXX_CaseLATJ> _LATJ,
@@ -42,6 +44,9 @@ namespace Geone.JCXX.WebService
 
             Respostry_Grid = _Grid;
             Respostry_Grid.SetTable(JCXX_Grid.GetTbName());
+
+            Respostry_GridConfig = _GridConfig;
+            Respostry_GridConfig.SetTable(JCXX_Grid_Config.GetTbName());
 
             Respostry_VGrid = _VGrid;
             Respostry_VGrid.SetTable(View_Grid.GetTbName());
@@ -313,6 +318,27 @@ namespace Geone.JCXX.WebService
                 return RepModel.Error();
             }
         }
+
+        /// <summary>
+        /// 查询网格动态参数列表
+        /// </summary>
+        /// <returns></returns>
+        public RepModel GetGridConfigList()
+        {
+            try
+            {
+
+                var q = Respostry_GridConfig.Select().Where("1=1");
+                var list = q.QueryList();
+                return RepModel.Success(list);
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex);
+                return RepModel.Error();
+            }
+        }
+        
 
         /// <summary>
         /// 查询立案条件列表

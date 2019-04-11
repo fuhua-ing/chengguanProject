@@ -27,6 +27,9 @@
     <Content Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Update="Views\GridManager\GridSetting.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="wwwroot\json\menu.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

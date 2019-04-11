@@ -30,6 +30,11 @@ namespace Geone.JCXX.Web.Controllers
         {
             return View();
         }
+        public ActionResult GridSetting()
+        {
+            return View();
+        }
+
 
         public ActionResult GridImport()
         {
@@ -239,5 +244,29 @@ namespace Geone.JCXX.Web.Controllers
 
             return Json(bll.UpdateTreeByID(GridID, RoleID, ParentRoleID));
         }
+
+        #region 动态网格参数配置
+        /// <summary>
+        /// 获取
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult GetConfig()
+        {
+            string GridID = Request.Form["GridID"];
+            return Json(bll.GetConfig(GridID));
+        }
+
+        /// <summary>
+        /// 保存
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult PostConfig()
+        {
+            string info = Request.Form["info"];
+            JCXX_Grid_Config entity = JsonHelper.JsonDllDeserialize<JCXX_Grid_Config>(info);
+            RepModel result = bll.SaveConfig(entity);
+            return Json(result);
+        }
+        #endregion
     }
 }

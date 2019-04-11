@@ -84,5 +84,23 @@ namespace Geone.JCXX.BLL
         /// <param name=""></param>
         /// <returns></returns>
         RepModel UpdateTreeByID(string GridID, string RoleID, string RoleParentID);
+
+        #region 动态网格参数配置
+
+        /// <summary>
+        /// 根据GridID获取单条数据
+        /// </summary>
+        /// <param name="GridID">网格ID</param>
+        /// <returns></returns>
+        JCXX_Grid_Config GetConfig(string GridID);
+
+        /// <summary>
+        /// 保存数据
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        RepModel SaveConfig(JCXX_Grid_Config entity);
+
+        #endregion
     }
 }

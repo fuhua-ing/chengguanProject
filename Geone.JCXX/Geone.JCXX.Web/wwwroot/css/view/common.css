@@ -85,18 +85,18 @@ table.StTable {
     }
 /***********************************通用按钮***********************************/
 .layui-btn {
-    margin-left: 10px;
+    /*margin-left: 10px;
+    padding: 0 15px;
+    background-color: #5cb85c;
+    color: #fff;
+    border: 0;*/
     display: inline-block;
     height: 36px;
     line-height: 36px;
     vertical-align: top;
-    padding: 0 15px;
-    background-color: #5cb85c;
-    color: #fff;
     white-space: nowrap;
     text-align: center;
     font-size: 14px;
-    border: 0;
     border-radius: 2px;
     cursor: pointer;
     outline: 0;
@@ -104,6 +104,11 @@ table.StTable {
     -webkit-transition: all .3s;
     box-sizing: border-box;
     border-radius: .25em;
+    background-color: transparent;
+    color: #444444;
+    border: 0;
+    border-right: 1px solid #DDDDDD;
+    padding: 0 10px;
 }
 
     .layui-btn:hover {
@@ -118,16 +123,33 @@ table.StTable {
 layui-btn {
 }
 
+/*保存按钮*/
+.layui-btn-save {
+    background-color: #5cb85c;
+    color: #fff;
+    border: 0;
+    padding: 0px 15px;
+    margin-left: 10px;
+}
+/*取消按钮*/
+.layui-btn-cancel {
+    background-color: #d9534f;
+    color: #fff;
+    border: 0;
+    padding: 0px 15px;
+    margin-left: 10px;
+}
+
 .layui-btn-warning {
-    background: #f0ad4e;
+    /*background: #f0ad4e;*/
 }
 
 .layui-btn-danger {
-    background-color: #d9534f;
+    /*background-color: #d9534f;*/
 }
 
 .layui-btn-info {
-    background-color: #5bc0de;
+    /*background-color: #5bc0de;*/
 }
 
 
